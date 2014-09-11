@@ -1,0 +1,17 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: PlugTest
+Bundle-SymbolicName: PlugTest;singleton:=true
+Bundle-Version: 1.0.0.qualifier
+Bundle-Activator: plugtest.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.resources;bundle-version="3.8.101",
+ org.eclipse.core.expressions;bundle-version="3.4.500",
+ org.eclipse.core.runtime;bundle-version="3.9.0",
+ org.eclipse.jdt.core;bundle-version="3.9.1",
+ org.eclipse.jface.text,
+ org.eclipse.ui.editors,
+ org.eclipse.ui.ide,
+ org.eclipse.ui.forms
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-ActivationPolicy: lazy
