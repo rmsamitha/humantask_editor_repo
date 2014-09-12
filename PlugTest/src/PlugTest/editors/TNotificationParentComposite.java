@@ -8,13 +8,14 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroup;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 
 public class TNotificationParentComposite extends TMultiParentComposite {
 
 	public TNotificationParentComposite(XMLEditor editor, Composite parent,
-			int style) {
+			int style) throws JAXBException {
 		super(editor, parent, style);
 	}
 
@@ -57,8 +58,8 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 			j++;
 			System.out.println("j  value" + j);
 		}
-		l = j;
-		System.out.println("refresh l value is " + l);
+		index = j;
+		System.out.println("refresh l value is " + index);
 
 	}
 
@@ -67,7 +68,7 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 			ScrolledComposite sc3, XMLEditor editor, Composite composite)
 			throws JAXBException {
 		if (i == 0) {
-			i = l;
+			i = index;
 		}
 		System.out.println("new button l value is " + i);
 		TNotificationComposite tNot = new TNotificationComposite(editor,
@@ -93,8 +94,10 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 		Label lblNewLabel = toolkit.createLabel(composite, "New Label",
 				SWT.NONE);
 		lblNewLabel.setBounds(20, 23, 55, 15);
-		txtNewText = toolkit.createText(composite, "New Text", SWT.NONE);
+		Text txtNewText = toolkit.createText(composite, "New Text", SWT.NONE);
 		txtNewText.setBounds(102, 23, 61, 21);
+		textBoxes.add(txtNewText);
+		
 
 	}
 

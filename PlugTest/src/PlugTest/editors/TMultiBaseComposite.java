@@ -1,6 +1,9 @@
 package PlugTest.editors;
 
+import java.util.ArrayList;
+
 import javax.xml.bind.JAXBException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
@@ -19,7 +22,7 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class TMultiBaseComposite extends Composite {
 	protected final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
 	protected CentralUtils centralHandler;
-	protected Text txtNewText,txtReference;
+	protected ArrayList<Text> textBoxes;
 	protected Composite detailArea;
 	
 	public TMultiBaseComposite(final XMLEditor editor,Composite parent,final int index, int style,String text) {
@@ -29,6 +32,7 @@ public abstract class TMultiBaseComposite extends Composite {
 				toolkit.dispose();
 			}
 		});
+		textBoxes=new ArrayList<Text>();
 		try {
 			centralHandler=CentralUtils.getInstance(editor);
 		} catch (JAXBException e1) {
@@ -62,7 +66,6 @@ public abstract class TMultiBaseComposite extends Composite {
 		try {
 			initialize(index,centralHandler);
 		} catch (JAXBException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		
@@ -72,7 +75,6 @@ public abstract class TMultiBaseComposite extends Composite {
 				try {
 					newButtonHandleLogic(index,editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

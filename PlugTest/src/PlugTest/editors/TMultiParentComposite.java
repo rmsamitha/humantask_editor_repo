@@ -23,19 +23,16 @@ import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class TMultiParentComposite extends Composite {
 	protected final FormToolkit toolkit;
-	protected Text txtNewText; // //////// Should be dynamic
-	protected int l = 0;
-	CentralUtils ch2;
+	protected ArrayList<Text> textBoxes; 
+	protected int index = 0;
+	protected CentralUtils ch2;
 	protected Section secLogicalPeopleGroups;
 
 	public TMultiParentComposite(final XMLEditor editor, Composite parent,
-			int style) {
+			int style) throws JAXBException {
 		super(parent, style);
-		try {
-			ch2=CentralUtils.getInstance(editor);
-		} catch (JAXBException e1) {
-			e1.printStackTrace();
-		}
+		ch2=CentralUtils.getInstance(editor);
+		textBoxes=new ArrayList<Text>();
 		toolkit= new FormToolkit(Display.getCurrent());
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

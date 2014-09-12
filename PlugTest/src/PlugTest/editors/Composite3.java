@@ -2,6 +2,8 @@ package PlugTest.editors;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.JAXBException;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
@@ -244,9 +246,15 @@ public class Composite3 extends Composite {
 		toolkit.paintBordersFor(secNotifications);
 		secNotifications.setText("Testing");
 
-		TNotificationParentComposite composite3 = new TNotificationParentComposite(
-				editor, secNotifications, SWT.NONE);
-		secNotifications.setClient(composite3);
+		TNotificationParentComposite composite3;
+		try {
+			composite3 = new TNotificationParentComposite(
+					editor, secNotifications, SWT.NONE);
+			secNotifications.setClient(composite3);
+		} catch (JAXBException e1) {
+			e1.printStackTrace();
+		}
+		
 		Section secTasks = toolkit.createSection(c2, Section.TWISTIE
 				| Section.TITLE_BAR);
 		FormData fd_sctnNewSection_4 = new FormData();
