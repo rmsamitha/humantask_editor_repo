@@ -68,16 +68,16 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="PlugTest.editors.MultiPageEditor"
+            class="org.wso2.developerstudio.humantask.editor.MultiPageEditor"
             
-            contributorClass="PlugTest.editors.MultiPageEditorContributor"
+            contributorClass="org.wso2.developerstudio.humantask.editor.MultiPageEditorContributor"
             extensions="mpe"
             icon="icons/sample.gif"
             id="PlugTest.editors.MultiPageEditor"
             name="Sample Multi-page Editor">
       </editor>
       <editor
-            class="PlugTest.editors.MyEditor"
+            class="org.wso2.developerstudio.humantask.editor.MyEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="my"
             icon="icons/sample.gif"
