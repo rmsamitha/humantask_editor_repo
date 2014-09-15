@@ -34,8 +34,12 @@ public class CentralUtils {
 			throws JAXBException {
 		if (centralUtils == null) {
 			centralUtils = new CentralUtils();
+			try{
 			centralUtils.setiDocument(textEditor.getDocumentProvider()
 					.getDocument(textEditor.getEditorInput()));
+			}catch(NullPointerException n){
+				n.printStackTrace();
+			}
 			CentralUtils
 					.setJaxbContext(JAXBContext
 							.newInstance("org.oasis_open.docs.ns.bpel4people.ws_humantask._200803"));
