@@ -21,7 +21,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             commandId="PlugTest.commands.sampleCommand"
-            class="plugtest.handlers.SampleHandler">
+            class="PlugTest.handlers.SampleHandler">
       </handler>
    </extension>
    <extension
@@ -68,20 +68,20 @@
    <extension
          point="org.eclipse.ui.editors">
       <editor
-            class="plugtest.editors.MultiPageEditor"
+            class="org.wso2.developerstudio.humantask.editor.MultiPageEditor"
             
-            contributorClass="plugtest.editors.MultiPageEditorContributor"
+            contributorClass="org.wso2.developerstudio.humantask.editor.MultiPageEditorContributor"
             extensions="mpe"
             icon="icons/sample.gif"
-            id="plugtest.editors.MultiPageEditor"
+            id="PlugTest.editors.MultiPageEditor"
             name="Sample Multi-page Editor">
       </editor>
       <editor
-            class="plugtest.editors.MyEditor"
+            class="org.wso2.developerstudio.humantask.editor.MyEditor"
             contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
             extensions="my"
             icon="icons/sample.gif"
-            id="plugtest.editors.MyEditor"
+            id="PlugTest.editors.MyEditor"
             name="Sample MyEditor">
       </editor>
    </extension>

@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: PlugTest
 Bundle-SymbolicName: PlugTest;singleton:=true
 Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: plugtest.Activator
+Bundle-Activator: org.wso2.developerstudio.humantask.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.resources;bundle-version="3.8.101",
  org.eclipse.core.expressions;bundle-version="3.4.500",
