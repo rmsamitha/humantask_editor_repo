@@ -24,11 +24,13 @@ public abstract class AbstractNonReptitiveComposite extends Composite {
 	protected CentralUtils centralUtils;
 	protected ArrayList<Text> textBoxes;
 	protected Composite detailArea;
-
+	protected int compositeIndex;
+	
 	public AbstractNonReptitiveComposite(final XMLEditor textEditor,
-			Composite parent, final int compositeIndex, int style,
+			Composite parent, final int compositeIndexs, int style,
 			String sectionTitle) {
 		super(parent, style);
+		this.compositeIndex = compositeIndexs;
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
@@ -63,14 +65,24 @@ public abstract class AbstractNonReptitiveComposite extends Composite {
 		fillDetailArea();
 		innerSection.setClient(detailArea);
 		Composite textClientComposite = toolkit.createComposite(innerSection,SWT.NONE);
+		textClientComposite.setLayout(new GridLayout());
 		Button btnUpdate = toolkit.createButton(textClientComposite, "Update",
 				SWT.NONE);
+		Button btnRemove = toolkit.createButton(textClientComposite, "Remove",
+				SWT.NONE);
 		innerSection.setTextClient(textClientComposite);
-		try {
-			initialize(compositeIndex, textEditor);
-		} catch (JAXBException e1) {
-			e1.printStackTrace();
-		}
+		
+		
+		btnRemove.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				try {
+					btnRemoveHandleLogic(compositeIndex, textEditor);
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 
 		btnUpdate.addListener(SWT.Selection, new Listener() {
 			@Override
@@ -85,6 +97,9 @@ public abstract class AbstractNonReptitiveComposite extends Composite {
 	}
 
 	public abstract void btnUpdateHandleLogic(int compositeIndex, XMLEditor textEditor)
+			throws JAXBException;
+	
+	public abstract void btnRemoveHandleLogic(int compositeIndex, XMLEditor textEditor)
 			throws JAXBException;
 
 	public abstract void initialize(int compositeIndex, XMLEditor textEditor)

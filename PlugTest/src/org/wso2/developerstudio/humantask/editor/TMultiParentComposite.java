@@ -27,7 +27,7 @@ public abstract class TMultiParentComposite extends Composite {
 	protected int compositeIndex = 0;
 	protected CentralUtils centralUtils;
 	protected Section innerSection;
-
+	protected int i = 0;
 	public TMultiParentComposite(final XMLEditor editor, Composite parent,
 			int style) throws JAXBException {
 		super(parent, style);
@@ -48,18 +48,18 @@ public abstract class TMultiParentComposite extends Composite {
 		final ScrolledComposite scrolledComposite = new ScrolledComposite(this, SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.BORDER);
 
-		FormData fd_sc2 = new FormData();
+		/*FormData fd_sc2 = new FormData();
 		fd_sc2.left = new FormAttachment(0);
 		fd_sc2.right = new FormAttachment(100, -10);
 		fd_sc2.top = new FormAttachment(0, 10);
-		fd_sc2.bottom = new FormAttachment(100);
-		scrolledComposite.setLayoutData(fd_sc2);
+		fd_sc2.bottom = new FormAttachment(100);*/
+		scrolledComposite.setLayout(new GridLayout(1,true));
 		scrolledComposite.setExpandHorizontal(true);
 		scrolledComposite.setExpandVertical(true);
 
 		final Composite innerComposite = new Composite(scrolledComposite, SWT.NONE);
 		scrolledComposite.setContent(innerComposite);
-		innerComposite.setLayout(new FormLayout());
+		innerComposite.setLayout(new GridLayout());
 		
 		innerSection = toolkit.createSection(innerComposite,
 				Section.TWISTIE | Section.TITLE_BAR);
@@ -77,12 +77,7 @@ public abstract class TMultiParentComposite extends Composite {
 		toolkit.adapt(sc3);
 		
 		innerSection.setClient(sc3);
-		FormData fd_sc3 = new FormData();
-		fd_sc3.left = new FormAttachment(0);
-		fd_sc3.right = new FormAttachment(100, 0);
-		fd_sc3.top = new FormAttachment(0, 0);
-		fd_sc3.bottom = new FormAttachment(100);
-		sc3.setLayoutData(fd_sc3);
+		sc3.setLayout(new GridLayout());
 		sc3.setExpandHorizontal(true);
 		sc3.setExpandVertical(true);
 	
@@ -115,12 +110,15 @@ public abstract class TMultiParentComposite extends Composite {
 			}
 		});
 		btnNewButton.addListener(SWT.Selection, new Listener() {
-			int i = 0;
+			
 
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					newButtonLogic(i, composites, sc3, editor, composite);
+					System.out.println("Starting i value "+ compositeIndex);
+					newButtonLogic(compositeIndex, composites, sc3, editor, composite);
+					System.out.println("Ending i value "+ compositeIndex);
+					compositeIndex++;
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
