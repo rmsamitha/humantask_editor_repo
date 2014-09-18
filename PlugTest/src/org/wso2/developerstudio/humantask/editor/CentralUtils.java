@@ -18,8 +18,11 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
+import org.eclipse.jdt.core.dom.ThisExpression;
 import org.eclipse.jface.text.IDocument;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.THumanInteractions;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroup;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotification;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.InputSource;
@@ -29,6 +32,7 @@ public class CentralUtils {
 	private static CentralUtils centralUtils;
 	private static JAXBContext jaxbContext;
 	private IDocument iDocument;
+	private ModelManager modelManager;
 
 	public static CentralUtils getInstance(XMLEditor textEditor)
 			throws JAXBException {
@@ -44,6 +48,7 @@ public class CentralUtils {
 					.setJaxbContext(JAXBContext
 							.newInstance("org.oasis_open.docs.ns.bpel4people.ws_humantask._200803"));
 		}
+		
 		return centralUtils;
 	}
 
@@ -63,7 +68,17 @@ public class CentralUtils {
 		CentralUtils.jaxbContext = jaxbContext;
 	}
 
-
+	public void addInstance(Object obj){
+		if(obj.getClass() == TNotification.class){
+			System.out.println("This works");
+		}
+		/*if(obj instanceof TLogicalPeopleGroup){
+			System.out.println("This is an instance");
+		}*/
+	}
+	public void addListInstance(int index,Object obj){
+		
+	}
 
 	public void unmarshalMe(XMLEditor textEditor)
 			throws JAXBException {

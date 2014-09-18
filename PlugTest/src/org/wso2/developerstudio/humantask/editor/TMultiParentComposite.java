@@ -13,6 +13,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -77,7 +78,7 @@ public abstract class TMultiParentComposite extends Composite {
 		toolkit.adapt(sc3);
 		
 		innerSection.setClient(sc3);
-		sc3.setLayout(new GridLayout());
+		sc3.setLayout(new GridLayout(1,true));
 		sc3.setExpandHorizontal(true);
 		sc3.setExpandVertical(true);
 	
@@ -87,7 +88,7 @@ public abstract class TMultiParentComposite extends Composite {
 		
 		composite.setLayout(new GridLayout(1,true));
 		fillDetailArea(composite);
-
+		
 		Composite textCompo = toolkit.createComposite(innerSection,
 				SWT.None);
 		textCompo.setLayout(new GridLayout(2, true));
@@ -96,6 +97,8 @@ public abstract class TMultiParentComposite extends Composite {
 
 		Button btnRefresh = toolkit
 				.createButton(textCompo, "Refresh", SWT.NONE);
+		final Combo combo = new Combo(textCompo, SWT.NONE);
+        combo.setItems(new String[] {"a", "b", "c", "d", "e"});
 		final ArrayList<Composite> composites = new ArrayList<Composite>();
 		sc3.setContent(composite);
 		btnRefresh.addListener(SWT.Selection, new Listener() {
@@ -115,9 +118,9 @@ public abstract class TMultiParentComposite extends Composite {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					System.out.println("Starting i value "+ compositeIndex);
-					newButtonLogic(compositeIndex, composites, sc3, editor, composite);
-					System.out.println("Ending i value "+ compositeIndex);
+					String s=combo.getItem(combo.getSelectionIndex());
+					newButtonLogic(s,compositeIndex, composites, sc3, editor, composite);
+					
 					compositeIndex++;
 				} catch (JAXBException e) {
 					e.printStackTrace();
@@ -133,7 +136,7 @@ public abstract class TMultiParentComposite extends Composite {
 			ArrayList<Composite> composites, Composite composite,
 			ScrolledComposite sc3) throws JAXBException;
 
-	public abstract void newButtonLogic(int i, ArrayList<Composite> composites,
+	public abstract void newButtonLogic(String selection,int i, ArrayList<Composite> composites,
 			ScrolledComposite sc3, XMLEditor editor, Composite composite) throws JAXBException;
 
 	public abstract void fillDetailArea(Composite composite) ;

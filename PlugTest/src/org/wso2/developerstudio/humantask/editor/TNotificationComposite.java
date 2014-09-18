@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -15,15 +16,17 @@ public class TNotificationComposite extends AbstractNonReptitiveComposite {
 	Composite parent,container;
 	boolean updated;
 	int index;
+	ScrolledComposite sc3;
 	
 
-	public TNotificationComposite(XMLEditor editor, Composite parent,ArrayList<Composite> composites,
+	public TNotificationComposite(ScrolledComposite sc3,XMLEditor editor, Composite parent,ArrayList<Composite> composites,
 			int index, int style,Composite container) {
 		super(editor, parent, index, style,"notification group");
 		this.composites=composites;
 		this.parent= parent;
 		this.index=index;
 		this.container=container;
+		this.sc3=sc3;
 		HTCompositeUtil htCompositeUtil=new HTCompositeUtil();
 		this.setBounds(htCompositeUtil.getRectangle(index, 20,110, parent.getParent().getSize().x, 100, 10));    //remove
 	}
@@ -89,7 +92,7 @@ public class TNotificationComposite extends AbstractNonReptitiveComposite {
 	@Override
 	public void btnRemoveHandleLogic(int compositeIndex, XMLEditor textEditor)
 			throws JAXBException {
-		if(updated){
+		//if(updated){
 		composites.remove(compositeIndex);
 		TNotificationParentComposite parentContainer = (TNotificationParentComposite) container; 
 		System.out.print("[parent composite index :"+parentContainer.compositeIndex);
@@ -107,11 +110,12 @@ public class TNotificationComposite extends AbstractNonReptitiveComposite {
 				d.compositeIndex--;
 			}
 		}
-		}
+		//}
 		index--;
 		
 		Composite tempCompo=this.getParent();
 		this.dispose();
+		sc3.layout(true,true);
 		tempCompo.layout(true,true);
 	}
 }

@@ -29,7 +29,6 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 		} catch (JAXBException e1) {
 			e1.printStackTrace();
 		}
-
 		ArrayList<TLogicalPeopleGroup> groups = new ArrayList<TLogicalPeopleGroup>();
 		if (editor.getRootElement().getLogicalPeopleGroups() != null) {
 			groups = (ArrayList<TLogicalPeopleGroup>) editor.getRootElement()
@@ -41,22 +40,14 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 			if ((composites.size() == groups.size())) {
 				tNot = (TNotificationComposite) composites.get(j);
 				tNot.initialize(j, editor);
-				System.out.println("Equals");
 			} else {
-				tNot = new TNotificationComposite(editor, composite,
+				tNot = new TNotificationComposite(sc3,editor, composite,
 						composites, j, SWT.NONE, this);
 				tNot.initialize(j, editor);
 				composites.add(j, tNot);
-				// int
-				// index=ch.tHumanInteractions.getLogicalPeopleGroups().getLogicalPeopleGroup().indexOf(tl);
-				System.out.println("Not Equals");
+				
 			}
 			tNot.updated = true;
-			
-			/*
-			 * composites.get(j) .setBounds(20, (j + 1) * 110, sc3.getSize().x,
-			 * 100);
-			 */
 			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			sc3.layout(true, true);
 			innerSection.layout(true, true);
@@ -69,33 +60,50 @@ public class TNotificationParentComposite extends TMultiParentComposite {
 	}
 
 	@Override
-	public void newButtonLogic(int i, ArrayList<Composite> composites,
+	public void newButtonLogic(String selection,int i, ArrayList<Composite> composites,
 			ScrolledComposite sc3, XMLEditor editor, Composite composite)
 			throws JAXBException {
 	
-		System.out.println("new button l value is " + i);
-		TNotificationComposite tNot = new TNotificationComposite(editor,
-				composite,composites, i, SWT.NONE , this);
-		composites.add(i, tNot);
-		sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
-				SWT.DEFAULT));
-		/*sc3.layout(true, true);
-		innerSection.layout(true, true);*/
-
-		System.out.println("hikz value is " + i);
-		if (editor.getRootElement().getLogicalPeopleGroups() == null) {
-			TLogicalPeopleGroups tLogicalPeopleGroups = new TLogicalPeopleGroups();
-			editor.getRootElement().setLogicalPeopleGroups(
-					tLogicalPeopleGroups);
+		if (selection.equalsIgnoreCase("a")) {
+			System.out.println("new button l value is " + i);
+			TNotificationComposite tNot = new TNotificationComposite(sc3,editor,
+					composite, composites, i, SWT.NONE, this);
+			composites.add(i, tNot);
+			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			System.out.println("hikz value is " + i);
+			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
+				TLogicalPeopleGroups tLogicalPeopleGroups = new TLogicalPeopleGroups();
+				editor.getRootElement().setLogicalPeopleGroups(
+						tLogicalPeopleGroups);
+			}
+			TLogicalPeopleGroup tLogicalPeopleGroup = new TLogicalPeopleGroup();
+			tLogicalPeopleGroup.setName("");
+			tLogicalPeopleGroup.setReference("");
+			editor.getRootElement().getLogicalPeopleGroups()
+					.getLogicalPeopleGroup().add(i, tLogicalPeopleGroup);
+			centralUtils.addInstance(tLogicalPeopleGroup);
+		}else if(selection.equalsIgnoreCase("b")){
+			System.out.println("new button l value is " + i);
+			TNotificationComposite tNot = new TNotificationComposite(sc3,editor,
+					composite, composites, i, SWT.NONE, this);
+			composites.add(i, tNot);
+			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+			System.out.println("hikz value is " + i);
+			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
+				TLogicalPeopleGroups tLogicalPeopleGroups = new TLogicalPeopleGroups();
+				editor.getRootElement().setLogicalPeopleGroups(
+						tLogicalPeopleGroups);
+			}
+			TLogicalPeopleGroup tLogicalPeopleGroup = new TLogicalPeopleGroup();
+			tLogicalPeopleGroup.setName("");
+			tLogicalPeopleGroup.setReference("");
+			editor.getRootElement().getLogicalPeopleGroups()
+					.getLogicalPeopleGroup().add(i, tLogicalPeopleGroup);
+			centralUtils.addInstance(tLogicalPeopleGroup);
 		}
-		TLogicalPeopleGroup tLogicalPeopleGroup=new TLogicalPeopleGroup();
-		tLogicalPeopleGroup.setName("");
-		tLogicalPeopleGroup.setReference("");	
-		editor.getRootElement().getLogicalPeopleGroups().getLogicalPeopleGroup().add(i,tLogicalPeopleGroup);
+		sc3.layout(true,true);
 		try {
 			centralUtils.marshalMe(editor);
-			
-			//centralUtils.testMarshalMe(textEditor);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
