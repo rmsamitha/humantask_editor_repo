@@ -19,18 +19,19 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class AbstractNonReptitiveComposite extends Composite {
+public abstract class AbstractChildTagComposite extends Composite {
 	protected final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
 	protected CentralUtils centralUtils;
 	protected ArrayList<Text> textBoxes;
 	protected Composite detailArea;
 	protected int compositeIndex;
 	
-	public AbstractNonReptitiveComposite(final XMLEditor textEditor,
+	public AbstractChildTagComposite(final XMLEditor textEditor,
 			Composite parent, final int compositeIndexs, int style,
 			String sectionTitle) {
 		super(parent, style);
 		this.compositeIndex = compositeIndexs;
+		
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {
 				toolkit.dispose();
@@ -106,5 +107,6 @@ public abstract class AbstractNonReptitiveComposite extends Composite {
 			throws JAXBException;
 
 	public abstract void fillDetailArea();
+
 
 }

@@ -22,15 +22,15 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
-public abstract class TMultiParentComposite extends Composite {
+public abstract class AbstractParentTagComposite extends Composite {
 	protected final FormToolkit toolkit;
 	protected ArrayList<Text> textBoxes; 
 	protected int compositeIndex = 0;
 	protected CentralUtils centralUtils;
 	protected Section innerSection;
 	protected int i = 0;
-	public TMultiParentComposite(final XMLEditor editor, Composite parent,
-			int style) throws JAXBException {
+	public AbstractParentTagComposite(final XMLEditor editor, Composite parent,
+			int style,String [] dropDownItems) throws JAXBException {
 		super(parent, style);
 		centralUtils=CentralUtils.getInstance(editor);
 		textBoxes=new ArrayList<Text>();
@@ -98,7 +98,7 @@ public abstract class TMultiParentComposite extends Composite {
 		Button btnRefresh = toolkit
 				.createButton(textCompo, "Refresh", SWT.NONE);
 		final Combo combo = new Combo(textCompo, SWT.NONE);
-        combo.setItems(new String[] {"a", "b", "c", "d", "e"});
+        combo.setItems(dropDownItems);
 		final ArrayList<Composite> composites = new ArrayList<Composite>();
 		sc3.setContent(composite);
 		btnRefresh.addListener(SWT.Selection, new Listener() {

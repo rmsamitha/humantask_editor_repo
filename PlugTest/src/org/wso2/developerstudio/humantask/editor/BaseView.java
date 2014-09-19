@@ -21,6 +21,7 @@ import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Text;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 
 public class BaseView extends Composite {
 
@@ -248,8 +249,16 @@ public class BaseView extends Composite {
 
 		TNotificationParentComposite composite3;
 		try {
+			TLogicalPeopleGroups tLogicalPeopleGroups = null;
+			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
+				tLogicalPeopleGroups= new TLogicalPeopleGroups();
+				editor.getRootElement().setLogicalPeopleGroups(
+						tLogicalPeopleGroups);
+				
+			}
+			
 			composite3 = new TNotificationParentComposite(
-					editor, secNotifications, SWT.NONE);
+					editor, secNotifications, SWT.NONE,tLogicalPeopleGroups);
 			secNotifications.setClient(composite3);
 		} catch (JAXBException e1) {
 			e1.printStackTrace();
