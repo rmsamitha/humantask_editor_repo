@@ -246,7 +246,12 @@ public class BaseView extends Composite {
 		secNotifications.setLayoutData(fd_sctnNewSection_1);
 		toolkit.paintBordersFor(secNotifications);
 		secNotifications.setText("Testing");
-
+		try {
+			CentralUtils centralUtils=CentralUtils.getInstance(editor);
+			centralUtils.unmarshalMe(editor);
+		} catch (JAXBException e1) {
+			e1.printStackTrace();
+		}
 		TNotificationParentComposite composite3;
 		try {
 			TLogicalPeopleGroups tLogicalPeopleGroups = null;
@@ -257,8 +262,7 @@ public class BaseView extends Composite {
 				
 			}
 			
-			composite3 = new TNotificationParentComposite(
-					editor, secNotifications, SWT.NONE,tLogicalPeopleGroups);
+			composite3 = new TNotificationParentComposite(editor,secNotifications,SWT.NONE,tLogicalPeopleGroups,0);
 			secNotifications.setClient(composite3);
 		} catch (JAXBException e1) {
 			e1.printStackTrace();

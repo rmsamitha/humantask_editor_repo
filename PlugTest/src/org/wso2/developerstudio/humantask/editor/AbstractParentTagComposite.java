@@ -25,7 +25,6 @@ import org.eclipse.ui.forms.widgets.Section;
 public abstract class AbstractParentTagComposite extends Composite {
 	protected final FormToolkit toolkit;
 	protected ArrayList<Text> textBoxes; 
-	protected int compositeIndex = 0;
 	protected CentralUtils centralUtils;
 	protected Section innerSection;
 	protected int i = 0;
@@ -97,16 +96,20 @@ public abstract class AbstractParentTagComposite extends Composite {
 
 		Button btnRefresh = toolkit
 				.createButton(textCompo, "Refresh", SWT.NONE);
+		Button btnUpdate = toolkit.createButton(textCompo, "Update",
+				SWT.NONE);
+		Button btnRemove = toolkit.createButton(textCompo, "Remove",
+				SWT.NONE);
 		final Combo combo = new Combo(textCompo, SWT.NONE);
         combo.setItems(dropDownItems);
-		final ArrayList<Composite> composites = new ArrayList<Composite>();
+        combo.select(0);
 		sc3.setContent(composite);
 		btnRefresh.addListener(SWT.Selection, new Listener() {
 
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					refreshLogic(editor, composites, composite, sc3);
+					refreshLogic(editor, composite, sc3);
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
@@ -119,9 +122,9 @@ public abstract class AbstractParentTagComposite extends Composite {
 			public void handleEvent(Event event) {
 				try {
 					String s=combo.getItem(combo.getSelectionIndex());
-					newButtonLogic(s,compositeIndex, composites, sc3, editor, composite);
+					newButtonLogic(s, sc3, editor, composite);
 					
-					compositeIndex++;
+					
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
@@ -129,16 +132,49 @@ public abstract class AbstractParentTagComposite extends Composite {
 			}
 
 		});
+		
+		btnRemove.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				try {
+					btnRemoveHandleLogic(editor);
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+		});
+
+		btnUpdate.addListener(SWT.Selection, new Listener() {
+			@Override
+			public void handleEvent(Event event) {
+				try {
+					btnUpdateHandleLogic(editor);
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+		});
 		innerSection.setTextClient(textCompo);
 	}
-
-	public abstract void refreshLogic(XMLEditor editor,
-			ArrayList<Composite> composites, Composite composite,
-			ScrolledComposite sc3) throws JAXBException;
-
-	public abstract void newButtonLogic(String selection,int i, ArrayList<Composite> composites,
+	
+	
+	public abstract void btnUpdateHandleLogic(XMLEditor textEditor)
+			throws JAXBException;
+	
+	public abstract void btnRemoveHandleLogic(XMLEditor textEditor)
+			throws JAXBException;
+	
+	public abstract void refreshLogic(XMLEditor editor, Composite composite,ScrolledComposite sc3) throws JAXBException;
+	
+	public abstract void initialize(XMLEditor textEditor)
+			throws JAXBException;
+	
+	public abstract void newButtonLogic(String selection,
 			ScrolledComposite sc3, XMLEditor editor, Composite composite) throws JAXBException;
 
 	public abstract void fillDetailArea(Composite composite) ;
+	
+	public abstract void refreshChildren(int childCompositeIndex,int childObjectIndex);
+
 
 }

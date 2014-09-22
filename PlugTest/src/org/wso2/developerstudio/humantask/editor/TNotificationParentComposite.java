@@ -14,26 +14,25 @@ import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGro
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 
 public class TNotificationParentComposite extends AbstractParentTagComposite {
+	int [] childObjectIndexes;
+	private TLogicalPeopleGroups logicalPeopleGroups;
+	private int objectIndex;
+	int compositeIndex;
+	ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	
-	int [] objectIndexes;
-	TLogicalPeopleGroups logicalPeopleGroups;
-	public TNotificationParentComposite(XMLEditor editor, Composite parent,
-			int style,Object modelParent) throws JAXBException {
+	public TNotificationParentComposite(XMLEditor editor,Composite parent,
+			int style,Object modelParent,int objectIndex) throws JAXBException {
 		super(editor, parent, style,new String[] {"a", "b", "c", "d", "e"});
 		this.logicalPeopleGroups=(TLogicalPeopleGroups)modelParent;
-		objectIndexes = new int[5];
-		
+		this.objectIndex=objectIndex;
+		childObjectIndexes = new int[5];
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor, ArrayList<Composite> composites,
+	public void refreshLogic(XMLEditor editor,
 			Composite composite, ScrolledComposite sc3) {
-		int j = 0;
-		try {
-			centralUtils.unmarshalMe(editor);
-		} catch (JAXBException e1) {
-			e1.printStackTrace();
-		}
+		
+		
 		/////////////////////////////////////////// This is Item a //////////////////////////////////
 		ArrayList<TLogicalPeopleGroup> groups = new ArrayList<TLogicalPeopleGroup>();
 		if (editor.getRootElement().getLogicalPeopleGroups() != null) {
@@ -43,32 +42,31 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 		
 		for (int i = 0; i < groups.size(); i++) {
 			TNotificationComposite tNot;
-			if ((composites.size() == groups.size())) {
-				tNot = (TNotificationComposite) composites.get(j);
-				tNot.initialize(j, editor);
+			if ((childComposites.size() == groups.size())) {
+				tNot = (TNotificationComposite) childComposites.get(compositeIndex);
+				tNot.initialize(compositeIndex, editor);
 			} else {
-				tNot = new TNotificationComposite(sc3,editor, composite,
-						composites, j,objectIndexes[0], SWT.NONE, this,groups.get(i));
-				tNot.initialize(j, editor);
-				composites.add(j, tNot);
+				tNot = new TNotificationComposite(editor, composite, compositeIndex,childObjectIndexes[0], SWT.NONE, this,groups.get(i));
+				tNot.initialize(compositeIndex, editor);
+				childComposites.add(compositeIndex, tNot);
 				
 			}
 			tNot.updated = true;
 			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			sc3.layout(true, true);
-			innerSection.layout(true, true);
-			j++;
-			System.out.println("j  value" + j);
-			objectIndexes[0]++;
+			//innerSection.layout(true, true);
+			compositeIndex++;
+			System.out.println("j  value" + compositeIndex);
+			childObjectIndexes[0]++;
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////
-		compositeIndex = j;
-		System.out.println("refresh l value is " + compositeIndex);
+		
+		System.out.println("Agin value" + childObjectIndexes[0]);
 		}
 	}
 
 	@Override
-	public void newButtonLogic(String selection,int i, ArrayList<Composite> composites,
+	public void newButtonLogic(String selection,
 			ScrolledComposite sc3, XMLEditor editor, Composite composite)
 			throws JAXBException {
 	
@@ -81,21 +79,21 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 				
 			}
 			
-			System.out.println("objectIndexes[0] :"+objectIndexes[0]);
+			System.out.println("objectIndexes[0] :"+childObjectIndexes[0]);
 			
 			
 			TLogicalPeopleGroup tLogicalPeopleGroup = new TLogicalPeopleGroup();
 			tLogicalPeopleGroup.setName("");
 			tLogicalPeopleGroup.setReference("");
 			editor.getRootElement().getLogicalPeopleGroups()
-					.getLogicalPeopleGroup().add(i, tLogicalPeopleGroup);
-			TNotificationComposite tNot = new TNotificationComposite(sc3,editor,
-					composite, composites, i,objectIndexes[0], SWT.NONE, this,tLogicalPeopleGroup);
-			composites.add(i, tNot);
+					.getLogicalPeopleGroup().add(childObjectIndexes[0], tLogicalPeopleGroup);
+			TNotificationComposite tNot = new TNotificationComposite(editor,
+					composite, compositeIndex,childObjectIndexes[0], SWT.NONE, this,tLogicalPeopleGroup);
+			childComposites.add(compositeIndex, tNot);
 			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			System.out.println("hikz value is " + i);
 			centralUtils.addInstance(tLogicalPeopleGroup);
-			objectIndexes[0]++;
+			childObjectIndexes[0]++;
 			
 		}else if(selection.equalsIgnoreCase("b")){
 			System.out.println("new button l value is " + i);
@@ -111,13 +109,13 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 			tLogicalPeopleGroup.setReference("");
 			editor.getRootElement().getLogicalPeopleGroups()
 					.getLogicalPeopleGroup().add(i, tLogicalPeopleGroup);
-			TNotificationComposite tNot = new TNotificationComposite(sc3,editor,
-					composite, composites, i,objectIndexes[1], SWT.NONE, this,tLogicalPeopleGroup);
-			composites.add(i, tNot);
+			TNotificationComposite tNot = new TNotificationComposite(editor,
+					composite, i,childObjectIndexes[1], SWT.NONE, this,tLogicalPeopleGroup);
+			childComposites.add(i, tNot);
 			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			System.out.println("hikz value is " + i);
 			centralUtils.addInstance(tLogicalPeopleGroup);
-			objectIndexes[1]++;
+			childObjectIndexes[1]++;
 		}
 		sc3.layout(true,true);
 		try {
@@ -125,16 +123,86 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
+		
+		compositeIndex++;
 	}
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-		Label lblNewLabel = toolkit.createLabel(composite, "New Label",
+		/*Label lblNewLabel = toolkit.createLabel(composite, "New Label",
 				SWT.NONE);
 		lblNewLabel.setBounds(20, 23, 55, 15);
 		Text txtNewText = toolkit.createText(composite, "New Text", SWT.NONE);
 		txtNewText.setBounds(102, 23, 61, 21);
-		textBoxes.add(txtNewText);
+		textBoxes.add(txtNewText);*/
 	}
+
+	@Override
+	public void btnUpdateHandleLogic(XMLEditor textEditor)
+			throws JAXBException {
+		
+		
+		//int index=ch.tHumanInteractions.getLogicalPeopleGroups().getLogicalPeopleGroup().indexOf(tl);
+	//}
+	try {
+		centralUtils.marshalMe(textEditor);
+		
+		//centralUtils.testMarshalMe(textEditor);
+	} catch (JAXBException e) {
+		e.printStackTrace();
+	}
+		
+	}
+
+	@Override
+	public void btnRemoveHandleLogic(XMLEditor textEditor)
+			throws JAXBException {
+		//composites.remove(compositeIndex);
+	
+		refreshChildren(compositeIndex, objectIndex);
+		
+		textEditor.getRootElement().setLogicalPeopleGroups(null);
+		try {
+			centralUtils.marshalMe(textEditor);
+		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		
+		//}
+		//index--;
+		
+		Composite tempCompo=this.getParent();
+		this.dispose();
+		//parentSc.layout(true,true);
+		tempCompo.layout(true,true);
+		
+	}
+
+	@Override
+	public void initialize(XMLEditor textEditor)
+			throws JAXBException {
+		
+		
+	}
+	
+	@Override
+	public void refreshChildren(int childCompositeIndex,int childObjectIndex){
+		childComposites.remove(childCompositeIndex);
+		this.compositeIndex--;
+		this.childObjectIndexes[0]--;
+		for (Composite c : childComposites) {
+			TNotificationComposite d = (TNotificationComposite) c;  //children node type
+			if (d.compositeIndex > childCompositeIndex) {
+				d.compositeIndex--;
+			}
+			if (d.objectIndex >= childObjectIndex) {
+				d.objectIndex--;
+			}
+
+		}
+		
+	}
+
+
 
 }
