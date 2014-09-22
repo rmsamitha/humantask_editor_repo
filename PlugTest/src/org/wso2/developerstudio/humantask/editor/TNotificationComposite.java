@@ -31,7 +31,7 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 	}
 
 	@Override
-	public void initialize(int objectIndex, XMLEditor textEditor) {
+	public void initialize(XMLEditor textEditor) {
 
 		// if(logicalPeopleGroup.size()+1 >= (objectIndex) &&
 		// !logicalPeopleGroup.getName().isEmpty()){
@@ -43,7 +43,7 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(int objectIndex, XMLEditor textEditor) {
+	public void btnUpdateHandleLogic(XMLEditor textEditor) {
 		TLogicalPeopleGroup tLogicalPeopleGroup;
 		// System.out.println("a value :"+ logicalPeopleGroup.size());
 		/*
@@ -54,7 +54,7 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 		 * tLogicalPeopleGroup.setReference(textBoxes.get(1).getText());
 		 * logicalPeopleGroups.add(compositeIndex,tLogicalPeopleGroup); }else{
 		 */
-		System.out.println("a value for :" + objectIndex + 1);
+		
 		tLogicalPeopleGroup = logicalPeopleGroup;
 		tLogicalPeopleGroup.setName(textBoxes.get(0).getText());
 		tLogicalPeopleGroup.setReference(textBoxes.get(1).getText());
@@ -87,10 +87,8 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 	}
 
 	@Override
-	public void btnRemoveHandleLogic(int compositeIndex, XMLEditor textEditor)
+	public void btnRemoveHandleLogic(XMLEditor textEditor)
 			throws JAXBException {
-		// if(updated){
-		// composites.remove(compositeIndex);
 		TNotificationParentComposite parentContainer = (TNotificationParentComposite) container;
 		parentContainer.refreshChildren(compositeIndex, objectIndex);
 		System.out.println("Object Index"+objectIndex);
@@ -101,13 +99,8 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
-
-		// }
-		// index--;
-
 		Composite tempCompo = this.getParent();
 		this.dispose();
-		// sc3.layout(true,true);
 		tempCompo.layout(true, true);
 	}
 }

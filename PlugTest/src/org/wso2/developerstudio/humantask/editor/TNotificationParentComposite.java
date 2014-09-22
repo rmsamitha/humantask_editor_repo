@@ -44,10 +44,10 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 			TNotificationComposite tNot;
 			if ((childComposites.size() == groups.size())) {
 				tNot = (TNotificationComposite) childComposites.get(i);
-				tNot.initialize(i, editor);
+				tNot.initialize(editor);
 			} else {
 				tNot = new TNotificationComposite(editor, composite, compositeIndex,childObjectIndexes[0], SWT.NONE, this,groups.get(i));
-				tNot.initialize(compositeIndex, editor);
+				tNot.initialize(editor);
 				childComposites.add(compositeIndex, tNot);
 				compositeIndex++;
 				childObjectIndexes[0]++;

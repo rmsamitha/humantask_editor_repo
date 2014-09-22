@@ -78,7 +78,7 @@ public abstract class AbstractChildTagComposite extends Composite {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnRemoveHandleLogic(compositeIndex, textEditor);
+					btnRemoveHandleLogic(textEditor);
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
@@ -89,7 +89,7 @@ public abstract class AbstractChildTagComposite extends Composite {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnUpdateHandleLogic(compositeIndex, textEditor);
+					btnUpdateHandleLogic(textEditor);
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
@@ -97,13 +97,13 @@ public abstract class AbstractChildTagComposite extends Composite {
 		});
 	}
 
-	public abstract void btnUpdateHandleLogic(int compositeIndex, XMLEditor textEditor)
+	public abstract void btnUpdateHandleLogic(XMLEditor textEditor)
 			throws JAXBException;
 	
-	public abstract void btnRemoveHandleLogic(int compositeIndex, XMLEditor textEditor)
+	public abstract void btnRemoveHandleLogic(XMLEditor textEditor)
 			throws JAXBException;
 
-	public abstract void initialize(int compositeIndex, XMLEditor textEditor)
+	public abstract void initialize(XMLEditor textEditor)
 			throws JAXBException;
 
 	public abstract void fillDetailArea();
