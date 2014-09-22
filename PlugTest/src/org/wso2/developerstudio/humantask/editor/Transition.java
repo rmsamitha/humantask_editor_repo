@@ -108,7 +108,7 @@ public class Transition extends Composite {
 		// secTasks.setLayoutData(new RowData(615, SWT.DEFAULT));
 		secLPGS.setLayout(secTaskRL1);
 		toolkit.paintBordersFor(secLPGS);
-		secLPGS.setText("Logical People GroupsXY");
+		secLPGS.setText("Logical People GroupsXYZ");
 		secLPGS.setExpanded(true);
 
 		final ScrolledComposite sc_SecLPGS = new ScrolledComposite(secLPGS,

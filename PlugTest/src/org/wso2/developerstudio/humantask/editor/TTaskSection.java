@@ -47,12 +47,12 @@ public class TTaskSection extends AbstractParentTagSection {
 		}
 
 		for (int i = 0; i < groups.size(); i++) {
-			TTaskInterfaceSection2 tNot;
+			TTaskInterfaceSection tNot;
 			if ((composites.size() == groups.size())) {
-				tNot = (TTaskInterfaceSection2) composites.get(j);
+				tNot = (TTaskInterfaceSection) composites.get(j);
 				tNot.initialize(j, editor);
 			} else {
-				tNot = new TTaskInterfaceSection2(editor, composite, j,SWT.NONE);
+				tNot = new TTaskInterfaceSection(editor, composite, j,SWT.NONE);
 				tNot.initialize(j, editor);
 				composites.add(j, tNot);
 
@@ -99,12 +99,12 @@ public class TTaskSection extends AbstractParentTagSection {
 		});*/
 		
 
-		TTaskInterfaceSection2 TISx = new TTaskInterfaceSection2(editor,
+		TTaskInterfaceSection TISx = new TTaskInterfaceSection(editor,
 				composite, 2, Section.TWISTIE | Section.TITLE_BAR);
 		TISx.setExpanded(false);
 		//System.out.println("created a Task Interface section");
 
-		Section sc3 = new TTaskInterfaceSection2(editor, composite, 1,
+		Section sc3 = new TTaskInterfaceSection(editor, composite, 1,
 				Section.TWISTIE | Section.TITLE_BAR);
 		sc3.setExpanded(false);
 		// sc3.setText("hooyee");
