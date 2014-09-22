@@ -85,7 +85,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 
 	void createPage1() {
 		BaseView composite = new BaseView(textEditor, getContainer(), SWT.NONE);
-	//	Transition composite=new Transition(textEditor, getContainer(), SWT.NONE);
+		//Transition composite=new Transition(textEditor, getContainer(), SWT.NONE);
 		int pageIndex = addPage(composite);
 		setPageText(pageIndex, HTEditorConstants.UI_EDITOR_TITLE);
 	}

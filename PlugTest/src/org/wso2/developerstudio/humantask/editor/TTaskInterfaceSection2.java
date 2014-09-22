@@ -11,7 +11,9 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.forms.widgets.Section;
 
-public class TTaskInterfaceSection2 extends AbstractNonReptitiveSection{
+public class TTaskInterfaceSection2 extends AbstractEndTagSection{
+
+	public boolean updated;
 
 	public TTaskInterfaceSection2(XMLEditor editor, Composite parent,int index, int style) {
 		super(editor, parent, index, style, "toolTipText");
@@ -38,10 +40,10 @@ public class TTaskInterfaceSection2 extends AbstractNonReptitiveSection{
 	@Override
 	public void fillDetailArea() {
 		// TODO Auto-generated method stub
-		Label lblPortType = toolkit.createLabel(composite_SecTASK_SC , "PPPPortType",
+		Label lblPortType = toolkit.createLabel(detailArea , "PPPPortType",
 				SWT.NONE);
 		lblPortType.setBounds(20, 23, 100, 15);
-		Text txtPortType = toolkit.createText(composite_SecTASK_SC, "", SWT.NONE);
+		Text txtPortType = toolkit.createText(detailArea, "", SWT.NONE);
 		try {
 			txtPortType.setBounds(152, 23, 100, 21);
 
@@ -50,10 +52,10 @@ public class TTaskInterfaceSection2 extends AbstractNonReptitiveSection{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		Label lblOperation = toolkit.createLabel(composite_SecTASK_SC, "Operation",
+		Label lblOperation = toolkit.createLabel(detailArea, "Operation",
 				SWT.NONE);
 		lblOperation.setBounds(252, 23, 100, 15);
-		Text txtOperation = toolkit.createText(composite_SecTASK_SC, "", SWT.NONE);
+		Text txtOperation = toolkit.createText(detailArea, "", SWT.NONE);
 		txtOperation.setBounds(384, 23, 100, 21);
 		//textBoxes.add(1, txtOperation);
 	}
