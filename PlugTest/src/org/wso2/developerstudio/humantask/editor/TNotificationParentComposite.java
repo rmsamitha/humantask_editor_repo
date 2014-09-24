@@ -17,14 +17,16 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 	int [] childObjectIndexes;
 	private TLogicalPeopleGroups logicalPeopleGroups;
 	private int objectIndex;
-	int compositeIndex;
+	private int compositeIndex;
+	int childCompositeIndex;
 	ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	
 	public TNotificationParentComposite(XMLEditor editor,Composite parent,
-			int style,Object modelParent,int objectIndex) throws JAXBException {
+			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
 		super(editor, parent, style,new String[] {"a", "b", "c", "d", "e"});
 		this.logicalPeopleGroups=(TLogicalPeopleGroups)modelParent;
 		this.objectIndex=objectIndex;
+		this.compositeIndex=compositeIndex;
 		childObjectIndexes = new int[5];
 	}
 
@@ -46,18 +48,18 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 				tNot = (TNotificationComposite) childComposites.get(i);
 				tNot.initialize(editor);
 			} else {
-				tNot = new TNotificationComposite(editor, composite, compositeIndex,childObjectIndexes[0], SWT.NONE, this,groups.get(i));
+				tNot = new TNotificationComposite(editor, composite, childCompositeIndex,childObjectIndexes[0], SWT.NONE, this,groups.get(i));
 				tNot.initialize(editor);
-				childComposites.add(compositeIndex, tNot);
-				compositeIndex++;
+				childComposites.add(childCompositeIndex, tNot);
+				childCompositeIndex++;
 				childObjectIndexes[0]++;
 			}
-			tNot.updated = true;
+		//	tNot.updated = true;
 			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			sc3.layout(true, true);
 			//innerSection.layout(true, true);
 			
-			System.out.println("j  value" + compositeIndex);
+			System.out.println("j  value" + childCompositeIndex);
 			
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////
@@ -89,8 +91,8 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 			editor.getRootElement().getLogicalPeopleGroups()
 					.getLogicalPeopleGroup().add(childObjectIndexes[0], tLogicalPeopleGroup);
 			TNotificationComposite tNot = new TNotificationComposite(editor,
-					composite, compositeIndex,childObjectIndexes[0], SWT.NONE, this,tLogicalPeopleGroup);
-			childComposites.add(compositeIndex, tNot);
+					composite, childCompositeIndex,childObjectIndexes[0], SWT.NONE, this,tLogicalPeopleGroup);
+			childComposites.add(childCompositeIndex, tNot);
 			sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			System.out.println("hikz value is " + i);
 			centralUtils.addInstance(tLogicalPeopleGroup);
@@ -125,7 +127,7 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 			e.printStackTrace();
 		}
 		
-		compositeIndex++;
+		childCompositeIndex++;
 	}
 
 	@Override
@@ -189,7 +191,7 @@ public class TNotificationParentComposite extends AbstractParentTagComposite {
 	@Override
 	public void refreshChildren(int childCompositeIndex,int childObjectIndex){
 		childComposites.remove(childCompositeIndex);
-		this.compositeIndex--;
+		this.childCompositeIndex--;
 		this.childObjectIndexes[0]--;
 		for (Composite c : childComposites) {
 			TNotificationComposite d = (TNotificationComposite) c;  //children node type

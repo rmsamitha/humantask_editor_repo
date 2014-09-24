@@ -22,6 +22,8 @@ import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
+import org.wso2.developerstudio.humantask.uimodel.TTasksUI;
 
 public class BaseView extends Composite {
 
@@ -252,17 +254,25 @@ public class BaseView extends Composite {
 		} catch (JAXBException e1) {
 			e1.printStackTrace();
 		}
-		TNotificationParentComposite composite3;
+		TTasksUI composite3;
 		try {
-			TLogicalPeopleGroups tLogicalPeopleGroups = null;
+			/*TLogicalPeopleGroups tLogicalPeopleGroups = null;
 			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
 				tLogicalPeopleGroups= new TLogicalPeopleGroups();
 				editor.getRootElement().setLogicalPeopleGroups(
 						tLogicalPeopleGroups);
 				
+			}*/
+			
+			TTasks tLogicalPeopleGroups = null;
+			if (editor.getRootElement().getTasks() == null) {
+				tLogicalPeopleGroups= new TTasks();
+				editor.getRootElement().setTasks(
+						tLogicalPeopleGroups);
+				
 			}
 			
-			composite3 = new TNotificationParentComposite(editor,secNotifications,SWT.NONE,tLogicalPeopleGroups,0);
+			composite3 = new TTasksUI(editor,secNotifications,SWT.NONE,editor.getRootElement().getTasks(),0,0);
 			secNotifications.setClient(composite3);
 		} catch (JAXBException e1) {
 			e1.printStackTrace();

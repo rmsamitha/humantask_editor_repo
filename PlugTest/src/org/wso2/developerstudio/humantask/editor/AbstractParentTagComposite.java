@@ -19,12 +19,13 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 
 public abstract class AbstractParentTagComposite extends Composite {
 	protected final FormToolkit toolkit;
-	protected ArrayList<Text> textBoxes; 
+	protected ArrayList<Widget> textBoxes; 
 	protected CentralUtils centralUtils;
 	protected Section innerSection;
 	protected int i = 0;
@@ -32,7 +33,7 @@ public abstract class AbstractParentTagComposite extends Composite {
 			int style,String [] dropDownItems) throws JAXBException {
 		super(parent, style);
 		centralUtils=CentralUtils.getInstance(editor);
-		textBoxes=new ArrayList<Text>();
+		textBoxes=new ArrayList<Widget>();
 		toolkit= new FormToolkit(Display.getCurrent());
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

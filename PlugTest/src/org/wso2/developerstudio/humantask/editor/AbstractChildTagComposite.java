@@ -24,13 +24,13 @@ public abstract class AbstractChildTagComposite extends Composite {
 	protected CentralUtils centralUtils;
 	protected ArrayList<Text> textBoxes;
 	protected Composite detailArea;
-	protected int compositeIndex;
+	
 	
 	public AbstractChildTagComposite(final XMLEditor textEditor,
-			Composite parent, final int compositeIndexs, int style,
+			Composite parent, int style,
 			String sectionTitle) {
 		super(parent, style);
-		this.compositeIndex = compositeIndexs;
+		
 		
 		addDisposeListener(new DisposeListener() {
 			public void widgetDisposed(DisposeEvent e) {

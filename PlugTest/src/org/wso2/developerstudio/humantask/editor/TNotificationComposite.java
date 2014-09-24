@@ -13,17 +13,19 @@ import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGro
 
 public class TNotificationComposite extends AbstractChildTagComposite {
 	Composite container;
-	boolean updated;
 	public int objectIndex;
+	protected int compositeIndex;
 	TLogicalPeopleGroup logicalPeopleGroup;
+	
 
 	public TNotificationComposite(XMLEditor editor, Composite parent,
 			int compositeIndex, int objectIndex, int style,
 			Composite container, Object modelParent) {
-		super(editor, parent, compositeIndex, style, "notification group");
+		super(editor, parent, style, "notification group");
 		this.objectIndex = objectIndex;
 		logicalPeopleGroup = (TLogicalPeopleGroup) modelParent;
 		this.container = container;
+		this.compositeIndex =compositeIndex;
 
 		// HTCompositeUtil htCompositeUtil=new HTCompositeUtil();
 		// this.setBounds(htCompositeUtil.getRectangle(objectIndex, 20,110,
@@ -63,7 +65,7 @@ public class TNotificationComposite extends AbstractChildTagComposite {
 		// }
 		try {
 			centralUtils.marshalMe(textEditor);
-			updated = true;
+			
 			// centralUtils.testMarshalMe(textEditor);
 		} catch (JAXBException e) {
 			e.printStackTrace();
