@@ -12,10 +12,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TBoolean;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
-import org.wso2.developerstudio.humantask.editor.AbstractParentTagComposite;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 

@@ -32,7 +32,7 @@ public class BaseView extends Composite {
 	int i = 0;
 	private Text txtNewText;
 	ArrayList<Section> secs = new ArrayList<Section>();
-
+	TTasksUI composite3;
 	/**
 	 * Create the composite.
 	 * 
@@ -254,7 +254,7 @@ public class BaseView extends Composite {
 		} catch (JAXBException e1) {
 			e1.printStackTrace();
 		}
-		TTasksUI composite3;
+		
 		try {
 			/*TLogicalPeopleGroups tLogicalPeopleGroups = null;
 			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
@@ -292,5 +292,9 @@ public class BaseView extends Composite {
 		toolkit.paintBordersFor(secTasks);
 		secTasks.setText("Tasks");
 		//
+	}
+	
+	public void loadModel(){
+		
 	}
 }
