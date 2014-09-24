@@ -271,7 +271,7 @@ public class BaseView extends Composite {
 						tLogicalPeopleGroups);
 				
 			}
-			
+			System.out.println("Array size q :"+editor.getRootElement().getTasks().getTask().size());
 			composite3 = new TTasksUI(editor,secNotifications,SWT.NONE,editor.getRootElement().getTasks(),0,0);
 			secNotifications.setClient(composite3);
 		} catch (JAXBException e1) {

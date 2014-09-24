@@ -33,9 +33,9 @@ public class TTaskUI extends AbstractParentTagSection {
 	public TTaskUI(XMLEditor editor,Composite parent,Composite container,
 			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
 		super(editor, parent, style,new String[] {"Documentation", "Interface", "Priority", "People Assignments", "Delegation","Presentation Elements"});
-		TTasks tasks=(TTasks)modelParent;
+		//TTasks tasks=(TTasks)modelParent;
 		System.out.println(objectIndex);
-		this.task=tasks.getTask().get(objectIndex);
+		this.task=(TTask)modelParent;
 		this.objectIndex=objectIndex;
 		this.compositeIndex=compositeIndex;
 		this.container=container;
@@ -157,7 +157,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 			} else {
 				try {
-					tNot = new TDocumentationUI(editor,composite,childObjectIndexes[0],childCompositeIndex,SWT.NONE,this,task.getDocumentation().get(childObjectIndexes[0]));
+					tNot = new TDocumentationUI(editor,composite,childObjectIndexes[0],childCompositeIndex,SWT.NONE,this,groups.get(childObjectIndexes[0]));
 					tNot.initialize(editor);
 					childComposites.add(childCompositeIndex, tNot);
 					compositeIndex++;

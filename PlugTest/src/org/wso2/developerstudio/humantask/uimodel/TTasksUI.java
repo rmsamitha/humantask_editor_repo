@@ -7,21 +7,16 @@ import javax.xml.bind.JAXBException;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Text;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
-import org.wso2.developerstudio.humantask.editor.AbstractParentTagComposite;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
-import org.wso2.developerstudio.humantask.editor.TNotificationComposite;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TBoolean;
 
 public class TTasksUI extends AbstractParentTagSection {
 	
 	int [] childObjectIndexes;
-	private TTasks tasks;   // Change the type of model object
+	public TTasks tasks;   // Change the type of model object
 	private int objectIndex;
 	private int compositeIndex;
 	int childCompositeIndex;
@@ -31,6 +26,8 @@ public class TTasksUI extends AbstractParentTagSection {
 			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
 		super(editor, parent, style,new String[] {"Task"}); //change the list of items in drop down list
 		this.tasks=(TTasks)modelParent; // change the model object
+		System.out.println("Array size :"+(editor.getRootElement().getTasks().equals(tasks)));
+		System.out.println("Array size p:"+editor.getRootElement().getTasks().equals(modelParent));
 		this.objectIndex=objectIndex;
 		this.compositeIndex=compositeIndex;
 		childObjectIndexes = new int[1]; //change the number of items in dropdown menu
@@ -39,8 +36,6 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void btnUpdateHandleLogic( XMLEditor textEditor)
 			throws JAXBException {
-		
-
 	}
 
 	@Override
@@ -63,12 +58,12 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void refreshLogic(XMLEditor editor,
 			Composite composite, ScrolledComposite sc3) throws JAXBException  {
-		
+		System.out.println("Array size last:"+(editor.getRootElement().getTasks().equals(this.tasks)));
 		
 		/////////////////////////////////////////// This is Item a //////////////////////////////////
 		ArrayList<TTask> groups = new ArrayList<TTask>();
-		if (editor.getRootElement().getTasks() != null) {
-			groups = (ArrayList<TTask>) editor.getRootElement().getTasks().getTask();
+		if (tasks != null) {
+			groups = (ArrayList<TTask>) tasks.getTask();
 			
 		for (int i = 0; i < groups.size(); i++) {
 			TTaskUI tNot;
@@ -77,18 +72,18 @@ public class TTasksUI extends AbstractParentTagSection {
 				tNot = (TTaskUI) childComposites.get(i);
 				tNot.initialize(editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
+				
 					e.printStackTrace();
 				}
 			} else {
 				try {
-					tNot = new TTaskUI(editor,composite,this,SWT.NONE,tasks,childObjectIndexes[0],childCompositeIndex);
+					tNot = new TTaskUI(editor,composite,this,SWT.NONE,groups.get(childObjectIndexes[0]),childObjectIndexes[0],childCompositeIndex);
 					tNot.initialize(editor);
 					childComposites.add(childCompositeIndex, tNot);
 					compositeIndex++;
 					childObjectIndexes[0]++;
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
+					
 					e.printStackTrace();
 				}
 				
@@ -110,20 +105,21 @@ public class TTasksUI extends AbstractParentTagSection {
 	public void newButtonLogic(String selection,
 			ScrolledComposite sc3, XMLEditor editor, Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase("Task")) {
-			if (editor.getRootElement().getTasks() == null) {
+			/*if (editor.getRootElement().getTasks() == null) {
 				TTasks tTasks = new TTasks();
 				editor.getRootElement().setTasks(
 						tTasks);
-			}
+			}*/
 			TTask tTask = new TTask();
 			tTask.setName("");
 			tTask.setActualOwnerRequired(TBoolean.YES);
-			editor.getRootElement().getTasks().getTask().add(childObjectIndexes[0], tTask);
-			TTaskUI tNot = new TTaskUI(editor,composite,this,SWT.NONE,tasks,childObjectIndexes[0],childCompositeIndex);
+			tasks.getTask().add(childObjectIndexes[0], tTask);
+			TTaskUI tNot = new TTaskUI(editor,composite,this,SWT.NONE,tTask,childObjectIndexes[0],childCompositeIndex);
 			childComposites.add(childCompositeIndex, tNot);
 			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 			centralUtils.addInstance(tTask);
 			childObjectIndexes[0]++;
+			System.out.println("Array size last:"+(editor.getRootElement().getTasks().equals(tasks)));
 			
 		}
 		//sc3.layout(true,true);

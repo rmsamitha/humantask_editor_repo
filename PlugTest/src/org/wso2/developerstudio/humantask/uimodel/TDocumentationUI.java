@@ -27,6 +27,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 		documentation = (TDocumentation) modelParent;
 		this.container = container;
 		this.compositeIndex =compositeIndex;
+		setExpanded(true);
 	}
 
 	@Override
