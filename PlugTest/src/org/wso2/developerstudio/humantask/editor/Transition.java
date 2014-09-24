@@ -382,7 +382,7 @@ public class Transition extends Composite {
         		} catch (JAXBException e1) {
         			e1.printStackTrace();
         		}
-        		TTasksUI composite3;
+        		TTaskSection2 composite3;
         		try {
         			/*TLogicalPeopleGroups tLogicalPeopleGroups = null;
         			if (editor.getRootElement().getLogicalPeopleGroups() == null) {
@@ -400,7 +400,8 @@ public class Transition extends Composite {
         				
         			}
         			
-        			composite3 = new TTasksUI(editor,composite_SecTASK_SC,SWT.NONE,editor.getRootElement().getTasks(),0,0);
+        			composite3 = new TTaskSection2
+ (editor,composite_SecTASK_SC,SWT.NONE,editor.getRootElement().getTasks() ,0,0,0);
         			
         		} catch (JAXBException e1) {
         			e1.printStackTrace();

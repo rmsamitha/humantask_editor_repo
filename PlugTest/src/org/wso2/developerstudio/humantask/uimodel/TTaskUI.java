@@ -29,7 +29,7 @@ public class TTaskUI extends AbstractParentTagSection {
 	
 	public TTaskUI(XMLEditor editor,Composite parent,Composite container,
 			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
-		super(editor, parent, style,new String[] {"Documentation", "Interface", "Priority", "People Assignments", "Delegation","Presentation Elements"});
+		super(editor, parent, style,new String[] {"Documentation", "Interface", "Priority", "People Assignments", "Delegation","Presentation Elements"},1);
 		//TTasks tasks=(TTasks)modelParent;
 		System.out.println(objectIndex);
 		this.task=(TTask)modelParent;

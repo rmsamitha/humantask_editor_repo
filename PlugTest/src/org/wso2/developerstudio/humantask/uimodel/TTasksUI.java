@@ -24,7 +24,7 @@ public class TTasksUI extends AbstractParentTagSection {
 	
 	public TTasksUI(XMLEditor editor,Composite parent,
 			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
-		super(editor, parent, style,new String[] {"Task"}); //change the list of items in drop down list
+		super(editor, parent, style,new String[] {"Task"},1); //change the list of items in drop down list
 		this.tasks=(TTasks)modelParent; // change the model object
 		System.out.println("Array size :"+(editor.getRootElement().getTasks().equals(tasks)));
 		System.out.println("Array size p:"+editor.getRootElement().getTasks().equals(modelParent));

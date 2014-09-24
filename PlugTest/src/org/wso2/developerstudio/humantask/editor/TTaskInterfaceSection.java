@@ -15,8 +15,8 @@ public class TTaskInterfaceSection extends AbstractEndTagSection{
 
 	public boolean updated;
 
-	public TTaskInterfaceSection(XMLEditor editor, Composite parent,int index, int style) {
-		super(editor, parent, index, style, "toolTipText");
+	public TTaskInterfaceSection(XMLEditor editor, Composite parent,int index, int style,int depth) {
+		super(editor, parent, index,"toolTipText");
 		setText("Interface");
 		//setSize(500, 300);
 		// TODO Auto-generated constructor stub
@@ -24,14 +24,14 @@ public class TTaskInterfaceSection extends AbstractEndTagSection{
 
 
 	@Override
-	public void btnUpdateHandleLogic(int compositeIndex, XMLEditor textEditor)
+	public void btnUpdateHandleLogic(XMLEditor textEditor)
 			throws JAXBException {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void initialize(int compositeIndex, XMLEditor textEditor)
+	public void initialize( XMLEditor textEditor)
 			throws JAXBException {
 		// TODO Auto-generated method stub
 		
@@ -61,7 +61,7 @@ public class TTaskInterfaceSection extends AbstractEndTagSection{
 	}
 
 	@Override
-	public void btnRemoveHandleLogic(int compositeIndex, XMLEditor textEditor)
+	public void btnRemoveHandleLogic(XMLEditor textEditor)
 			throws JAXBException {
 		// TODO Auto-generated method stub
 		

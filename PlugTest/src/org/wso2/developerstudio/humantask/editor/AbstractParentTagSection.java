@@ -31,7 +31,7 @@ public abstract class AbstractParentTagSection extends Section {
 
 
     public AbstractParentTagSection(final XMLEditor editor, Composite parent,
-            int style, String [] dropDownItems)
+            int style, String [] dropDownItems,int depth)
             throws JAXBException {
         super(parent, Section.TWISTIE | Section.TITLE_BAR);
         centralUtils = CentralUtils.getInstance(editor);

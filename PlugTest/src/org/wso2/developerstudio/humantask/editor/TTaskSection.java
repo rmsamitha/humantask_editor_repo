@@ -24,7 +24,7 @@ public class TTaskSection extends AbstractParentTagSection {
 
 	public TTaskSection(XMLEditor editor, Composite parent, int style,
 			ScrolledComposite rootScrolledComposite) throws JAXBException {
-		super(editor, parent, style, rootScrolledComposite);
+		super(editor, parent, style,new String[]{"a","b","c"},5);
 		setText("Task");
 		
 		this.editor = editor;
@@ -32,7 +32,7 @@ public class TTaskSection extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor, ArrayList<Section> composites,
+	public void refreshLogic(XMLEditor editor, 
 			Composite composite, ScrolledComposite sc3) throws JAXBException {
 		int j = 0;
 		try {
@@ -48,7 +48,7 @@ public class TTaskSection extends AbstractParentTagSection {
 
 		for (int i = 0; i < groups.size(); i++) {
 			TTaskInterfaceSection tNot;
-			if ((composites.size() == groups.size())) {
+			if ((childComposites.size() == groups.size())) {
 				tNot = (TTaskInterfaceSection) composites.get(j);
 				tNot.initialize(j, editor);
 			} else {
@@ -109,10 +109,15 @@ public class TTaskSection extends AbstractParentTagSection {
 		sc3.setExpanded(false);
 		// sc3.setText("hooyee");
 	}
+	/*
+	 * 
+	 * String selection,
+			ScrolledComposite sc3, XMLEditor editor, Composite composite) 
+	 */
 
 	@Override
-	public void newButtonLogic(String selection, int i,
-			ArrayList<Section> composites, ScrolledComposite sc3,
+	public void newButtonLogic(String selection,
+			ScrolledComposite sc3,
 			final XMLEditor editor, final Composite parent) throws JAXBException {
 	//	btnNewgroup.addListener(SWT.Selection, new Listener() {
 
