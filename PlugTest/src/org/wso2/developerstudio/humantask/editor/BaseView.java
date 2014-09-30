@@ -23,6 +23,7 @@ import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroups;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
+import org.wso2.developerstudio.humantask.uimodel.TTaskUI;
 import org.wso2.developerstudio.humantask.uimodel.TTasksUI;
 
 public class BaseView extends Composite {
@@ -33,6 +34,7 @@ public class BaseView extends Composite {
 	private Text txtNewText;
 	ArrayList<Section> secs = new ArrayList<Section>();
 	TTasksUI composite3;
+	TTasks tLogicalPeopleGroups = null;
 	/**
 	 * Create the composite.
 	 * 
@@ -264,7 +266,7 @@ public class BaseView extends Composite {
 				
 			}*/
 			
-			TTasks tLogicalPeopleGroups = null;
+			
 			if (editor.getRootElement().getTasks() == null) {
 				tLogicalPeopleGroups= new TTasks();
 				editor.getRootElement().setTasks(
@@ -272,7 +274,7 @@ public class BaseView extends Composite {
 				
 			}
 			System.out.println("Array size q :"+editor.getRootElement().getTasks().getTask().size());
-			composite3 = new TTasksUI(editor,secNotifications,SWT.NONE,editor.getRootElement().getTasks(),0,0);
+			composite3 = new TTasksUI(editor,secNotifications,this,SWT.NONE,editor.getRootElement().getTasks(),0,0);
 			secNotifications.setClient(composite3);
 		} catch (JAXBException e1) {
 			e1.printStackTrace();
@@ -293,8 +295,16 @@ public class BaseView extends Composite {
 		secTasks.setText("Tasks");
 		//
 	}
-	
-	public void loadModel(){
+	public void refreshChildren(int childCompositeIndex, int childObjectIndex) {
 		
+		tLogicalPeopleGroups=null;
+		
+		
+		
+		
+	}
+	public void loadModel(Object model){
+		tLogicalPeopleGroups = (TTasks) model;
+		composite3.loadModel(model);
 	}
 }

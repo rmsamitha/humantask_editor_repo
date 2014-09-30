@@ -42,7 +42,8 @@ public abstract class AbstractEndTagSection extends Section {
 			String sectionTitle) {
         super(parent, Section.TWISTIE | Section.TITLE_BAR);
        
-        setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
+        setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+        
         setText(sectionTitle);
         setExpanded(true);
         textBoxes = new ArrayList<Text>();
@@ -54,7 +55,7 @@ public abstract class AbstractEndTagSection extends Section {
 
        
         setBackground(SWTResourceManager.getColor(0, 51, 0));
-        setTitleBarBackground(new Color(getDisplay(), 0, 200, 12));
+        setTitleBarBackground(new Color(getDisplay(), 228,210,247));
         toolkit.adapt(this);
         toolkit.paintBordersFor(this);
        
@@ -87,11 +88,11 @@ public abstract class AbstractEndTagSection extends Section {
         toolkit.adapt(detailArea);
         toolkit.paintBordersFor(detailArea);
         scrolledComposite_1.setContent(detailArea);
-        scrolledComposite_1.setMinSize(detailArea.computeSize(
-                SWT.DEFAULT, SWT.DEFAULT));
+       // scrolledComposite_1.setMinSize(detailArea.computeSize(
+        //        SWT.DEFAULT, SWT.DEFAULT));
 
         RowLayout rL = new RowLayout();
-        GridLayout gl_composite_SecTASK_SC = new GridLayout(1, false);
+        GridLayout gl_composite_SecTASK_SC = new GridLayout(6, false);
         // gl_composite_SecTASK_SC.
         gl_composite_SecTASK_SC.marginLeft = 5;
         detailArea.setLayout(gl_composite_SecTASK_SC);
@@ -107,8 +108,12 @@ public abstract class AbstractEndTagSection extends Section {
         // scr.setClient(detailArea);
         Composite textClientComposite = toolkit.createComposite(this, SWT.NO_BACKGROUND);
         setTextClient(textClientComposite);
-        FillLayout fl_textClientComposite = new FillLayout(SWT.HORIZONTAL);
-        textClientComposite.setLayout(fl_textClientComposite);
+        RowLayout rl_compositeTextClient = new RowLayout(SWT.HORIZONTAL);
+        rl_compositeTextClient.marginTop = 0;
+        rl_compositeTextClient.marginRight = 0;
+        rl_compositeTextClient.marginLeft = 0;
+        rl_compositeTextClient.marginBottom = 0;
+        textClientComposite.setLayout(rl_compositeTextClient);
 
         Button btnUpdate = toolkit.createButton(textClientComposite, "Update",
                 SWT.CENTER);
@@ -117,7 +122,7 @@ public abstract class AbstractEndTagSection extends Section {
             public void widgetSelected(SelectionEvent e) {
             }
         });
-        btnUpdate.setText("XXUpdate");
+        btnUpdate.setText("Update");
        
         Button btnRemove = new Button(textClientComposite, SWT.NONE);
         toolkit.adapt(btnRemove, true, true);

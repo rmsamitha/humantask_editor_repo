@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroup;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
 import org.wso2.developerstudio.humantask.editor.AbstractChildTagComposite;
 import org.wso2.developerstudio.humantask.editor.AbstractEndTagSection;
 import org.wso2.developerstudio.humantask.editor.TNotificationParentComposite;
@@ -27,6 +28,8 @@ public class TDocumentationUI extends AbstractEndTagSection {
 		documentation = (TDocumentation) modelParent;
 		this.container = container;
 		this.compositeIndex =compositeIndex;
+		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr Docu  Composite Index is :"+compositeIndex);
+		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr Docu Object Index is :"+objectIndex);
 		setExpanded(true);
 	}
 
@@ -47,7 +50,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) container;
-		parentContainer.refreshChildren(compositeIndex, objectIndex);
+		parentContainer.refreshChildren("Documentation",compositeIndex, objectIndex);
 		try {
 			centralUtils.marshalMe(textEditor);
 		} catch (JAXBException e) {
@@ -83,4 +86,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 
 	}
 
+	public void loadModel(Object model){
+		documentation = (TDocumentation) model;
+	}
 }

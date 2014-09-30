@@ -50,6 +50,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 
 	private XMLEditor textEditor;
 	private THumanInteractions rootElement;
+	Transition composite;
 	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class
 			.getName());
 
@@ -84,8 +85,8 @@ public class MultiPageEditor extends MultiPageEditorPart {
 	}
 
 	void createPage1() {
-		//BaseView composite = new BaseView(textEditor, getContainer(), SWT.NONE);
-		Transition composite=new Transition(textEditor, getContainer(), SWT.NONE);
+		//composite = new BaseView(textEditor, getContainer(), SWT.NONE);
+		composite=new Transition(textEditor, getContainer(), SWT.NONE);
 		int pageIndex = addPage(composite);
 		setPageText(pageIndex, HTEditorConstants.UI_EDITOR_TITLE);
 	}
@@ -203,7 +204,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			CentralUtils centralUtils=CentralUtils.getInstance(textEditor);
 			centralUtils.unmarshalMe(textEditor);
 			System.out.print("Unmarshalled");
-			
+			composite.loadModel(textEditor.getRootElement().getTasks());
 			} catch (JAXBException e) {
 				e.printStackTrace();
 			}
