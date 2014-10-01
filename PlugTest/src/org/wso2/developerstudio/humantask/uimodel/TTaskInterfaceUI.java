@@ -17,6 +17,24 @@ public class TTaskInterfaceUI extends AbstractEndTagSection {
 	Composite container;
 	public int objectIndex;
 	protected int compositeIndex;
+	public int getObjectIndex() {
+		System.out.println("Changing before object Index "+objectIndex);
+		return objectIndex;
+	}
+
+	public void setObjectIndex(int objectIndex) {
+		this.objectIndex = objectIndex;
+		System.out.println("Changing object Index "+objectIndex);
+		}
+
+	public int getCompositeIndex() {
+		return compositeIndex;
+	}
+
+	public void setCompositeIndex(int compositeIndex) {
+		this.compositeIndex = compositeIndex;
+	}
+
 	TTaskInterface taskInterface;
 	
 	

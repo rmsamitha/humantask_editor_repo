@@ -19,6 +19,26 @@ import org.wso2.developerstudio.humantask.editor.XMLEditor;
 public class TDocumentationUI extends AbstractEndTagSection {
 	Composite container;
 	public int objectIndex;
+	
+	
+	public int getObjectIndex() {
+		System.out.println("Changing before object Index "+objectIndex);
+		return objectIndex;
+	}
+
+	public void setObjectIndex(int objectIndex) {
+		this.objectIndex = objectIndex;
+		System.out.println("Changing object Index "+objectIndex);
+	}
+
+	public int getCompositeIndex() {
+		return compositeIndex;
+	}
+
+	public void setCompositeIndex(int compositeIndex) {
+		this.compositeIndex = compositeIndex;
+	}
+
 	protected int compositeIndex;
 	TDocumentation documentation;
 	
@@ -52,14 +72,15 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) container;
-		parentContainer.refreshChildren("Documentation",compositeIndex, objectIndex);
 		System.out.println("Removing object index :"+objectIndex);
+		parentContainer.refreshChildren("Documentation",compositeIndex, objectIndex);
 		try {
 			centralUtils.marshalMe(textEditor);
 		} catch (JAXBException e) {
 			e.printStackTrace();
 		}
 		Composite tempCompo = this.getParent();
+		System.out.println("Disposing widget number "+compositeIndex);
 		this.dispose();
 		tempCompo.layout(true, true);
 
@@ -68,9 +89,11 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		System.out.println("Documentation value :"+documentation.getLang());
-		textBoxes.get(0).setText(documentation.getLang());
+		//textBoxes.get(0).setText(documentation.getLang());
+		textBoxes.get(0).setText(objectIndex+"");
 		System.out.println("Documentation value 2 :"+(String)documentation.getContent().get(0));
-		textBoxes.get(1).setText((String)documentation.getContent().get(0));
+		textBoxes.get(1).setText(compositeIndex+"");
+		//textBoxes.get(1).setText((String)documentation.getContent().get(0));
 	}
 
 	@Override

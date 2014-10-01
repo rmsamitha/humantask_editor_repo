@@ -89,13 +89,13 @@ public class TTaskUI extends AbstractParentTagSection {
 			XMLEditor editor, Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase("Documentation")) {
 			TDocumentation tDocumentation = new TDocumentation();
-			tDocumentation.setLang("");
-			tDocumentation.getContent().add(new String("This is the value"));
+			tDocumentation.setLang(childCompositeIndex+"");
+			tDocumentation.getContent().add(new String(childObjectIndexes[0]+""));
 			task.getDocumentation().add(childObjectIndexes[0], tDocumentation);
 			TDocumentationUI tNot = new TDocumentationUI(editor, composite,
 					 childCompositeIndex,childObjectIndexes[0], SWT.NONE, this,
 					tDocumentation);
-			childComposites.add(i, tNot);
+			childComposites.add(childCompositeIndex, tNot);
 			// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
 			// SWT.DEFAULT));
 			System.out.println("hikz value is " + i);
@@ -112,7 +112,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				TTaskInterfaceUI tNot = new TTaskInterfaceUI(editor, composite,
 						 childCompositeIndex,childObjectIndexes[1], SWT.NONE,
 						this, tTaskInterface);
-				childComposites.add(i, tNot);
+				childComposites.add(childCompositeIndex, tNot);
 				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
 				// SWT.DEFAULT));
 				System.out.println("hikz value is " + i);
@@ -240,32 +240,38 @@ public class TTaskUI extends AbstractParentTagSection {
 	public void refreshChildren(String itemName, int childCompositeIndex,
 			int childObjectIndex) {
 		System.out.println("Number of CC"+childComposites.size());
-		
+		System.out.println("Removing object index taskui outer:"+childObjectIndex);
 		if (itemName.equalsIgnoreCase("Documentation")) {
 			this.childObjectIndexes[0]--;
+			System.out.println("Removing object index taskui:"+childObjectIndex);
 			task.getDocumentation().remove(childObjectIndex);
 			for (Composite c : childComposites) {
+				
 				if (c instanceof TDocumentationUI) {
+					System.out.print("Giya");
 					TDocumentationUI d = (TDocumentationUI) c;
-					System.out.println(" Doc Before Removed Object index :"+d.objectIndex);
-					System.out.println(" Doc Before Removed composite index :"+d.compositeIndex);
+					
+					//System.out.println(" Doc Before Removed Object index :"+d.objectIndex);
+					//System.out.println(" Doc Before Removed composite index :"+d.compositeIndex);
 					if (d.compositeIndex > childCompositeIndex) {
-						d.compositeIndex--;
+						d.setCompositeIndex(d.getCompositeIndex()-1);
 					}
 					if (d.objectIndex > childObjectIndex) {
-						d.objectIndex--;
+						d.setObjectIndex(d.getObjectIndex()-1);
 					}
-					System.out.println(" Doc After Removed Object index :"+d.objectIndex);
-					System.out.println(" Doc After Removed composite index :"+d.compositeIndex);
+					//System.out.println(" Doc After Removed Object index :"+d.objectIndex);
+					//System.out.println(" Doc After Removed composite index :"+d.compositeIndex);
 				} else if (c instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI d = (TTaskInterfaceUI) c;
-					System.out.println(" NT Before Removed Object index :"+d.objectIndex);
-					System.out.println(" NT Before Removed composite index :"+d.compositeIndex);
+					//System.out.println(" NT Before Removed Object index :"+d.objectIndex);
+					//System.out.println(" NT Before Removed composite index :"+d.compositeIndex);
 					if (d.compositeIndex > childCompositeIndex) {
-						d.compositeIndex--;
+						d.setCompositeIndex(d.getCompositeIndex()-1);
 					}
-					System.out.println(" Nt After Removed Object index :"+d.objectIndex);
-					System.out.println(" Nt After Removed composite index :"+d.compositeIndex);
+					//System.out.println(" Nt After Removed Object index :"+d.objectIndex);
+					//System.out.println(" Nt After Removed composite index :"+d.compositeIndex);
+				}else{
+					System.out.println("hoooooooooooooooooooooooooooooooooooooooooooooo some owl");
 				}
 				
 			}
@@ -274,30 +280,23 @@ public class TTaskUI extends AbstractParentTagSection {
 			task.setInterface(null);
 			for (Composite c : childComposites) {
 				if (c instanceof TDocumentationUI) {
-					TDocumentationUI d = (TDocumentationUI) c;
+				TDocumentationUI d = (TDocumentationUI) c;
 					if (d.compositeIndex > childCompositeIndex) {
-						d.compositeIndex--;
+						d.setCompositeIndex(d.getCompositeIndex()-1);
 					}
-					System.out.println(" Doc After Removed Object index :"+d.objectIndex);
-					System.out.println(" Doc After Removed composite index :"+d.compositeIndex);
-				} else if (c instanceof TTaskInterfaceUI) {
+					} else if (c instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI d = (TTaskInterfaceUI) c;
 					if (d.compositeIndex > childCompositeIndex) {
-						d.compositeIndex--;
+						d.setCompositeIndex(d.getCompositeIndex()-1);
+					}					
+					}else{
 					}
-					if (d.objectIndex > childObjectIndex) {
-						d.objectIndex--;
-					}
-					System.out.println(" Nt After Removed Object index :"+d.objectIndex);
-					System.out.println(" Nt After Removed composite index :"+d.compositeIndex);
-				}
 
 			}
 		}
 		childComposites.remove(childCompositeIndex);
 		this.childCompositeIndex--;
-		System.out.println("--------------TRemove Finished -------------------------");
-		System.out.println("Number of CC"+childComposites.size());
+
 	}
 
 	public void loadModel(Object model) {
