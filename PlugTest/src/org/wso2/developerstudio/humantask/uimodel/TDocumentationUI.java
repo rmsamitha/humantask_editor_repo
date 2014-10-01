@@ -3,6 +3,8 @@ package org.wso2.developerstudio.humantask.uimodel;
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
@@ -51,6 +53,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) container;
 		parentContainer.refreshChildren("Documentation",compositeIndex, objectIndex);
+		System.out.println("Removing object index :"+objectIndex);
 		try {
 			centralUtils.marshalMe(textEditor);
 		} catch (JAXBException e) {
@@ -72,16 +75,20 @@ public class TDocumentationUI extends AbstractEndTagSection {
 
 	@Override
 	public void fillDetailArea() {
-		Label lblName = toolkit.createLabel(detailArea, "Lang", SWT.NONE);
-		lblName.setBounds(20, 23, 100, 15);
-		Text txtLang = toolkit.createText(detailArea, "", SWT.NONE);
-		txtLang.setBounds(152, 23, 100, 21);
+		Composite innerZComp=toolkit.createComposite(detailArea);
+		innerZComp.setLayout(new GridLayout(4,true));
+		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
+                1, 1));
+		Label lblName = toolkit.createLabel(innerZComp, "Language", SWT.NONE);
+		//lblName.setBounds(20, 23, 100, 15);
+		Text txtLang = toolkit.createText(innerZComp, "", SWT.NONE);
+		//txtLang.setBounds(152, 23, 100, 21);
 		textBoxes.add(0, txtLang);
-		Label lblReference = toolkit.createLabel(detailArea, "Value",
+		Label lblReference = toolkit.createLabel(innerZComp, "Value",
 				SWT.NONE);
-		lblReference.setBounds(252, 23, 100, 15);
-		Text txtValue= toolkit.createText(detailArea, "", SWT.NONE);
-		txtValue.setBounds(384, 23, 100, 21);
+		//lblReference.setBounds(252, 23, 100, 15);
+		Text txtValue= toolkit.createText(innerZComp, "", SWT.NONE);
+		//txtValue.setBounds(384, 23, 100, 21);
 		textBoxes.add(1, txtValue);
 
 	}

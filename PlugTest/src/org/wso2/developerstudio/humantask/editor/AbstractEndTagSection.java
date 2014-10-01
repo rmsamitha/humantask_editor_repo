@@ -9,6 +9,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -19,8 +21,11 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
+import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.FormData;
@@ -47,6 +52,7 @@ public abstract class AbstractEndTagSection extends Section {
         setText(sectionTitle);
         setExpanded(true);
         textBoxes = new ArrayList<Text>();
+        setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
         addDisposeListener(new DisposeListener() {
             public void widgetDisposed(DisposeEvent e) {
                 toolkit.dispose();
@@ -105,17 +111,29 @@ public abstract class AbstractEndTagSection extends Section {
             // TODO Auto-generated catch block
             e2.printStackTrace();
         }
+        
+        
+        ToolBar toolBarTitle = new ToolBar(this, SWT.FLAT | SWT.RIGHT | SWT.SHADOW_OUT);
+        setTextClient(toolBarTitle);
+        ToolItem btnUpdate = new ToolItem(toolBarTitle, SWT.NONE);
+        btnUpdate.setToolTipText("Update XML");
+        btnUpdate.setImage(ResourceManager.getPluginImage("PlugTest", "icons/rsz_rsz_software_update.png"));
+
+        ToolItem btnRemove = new ToolItem(toolBarTitle, SWT.CHECK);
+        btnRemove.setToolTipText("Remove");
+        btnRemove.setImage(ResourceManager.getPluginImage("PlugTest", "icons/rsz_rsz_1rsz_112.png"));
+
         // scr.setClient(detailArea);
-        Composite textClientComposite = toolkit.createComposite(this, SWT.NO_BACKGROUND);
+       /* Composite textClientComposite = toolkit.createComposite(this, SWT.NO_BACKGROUND);
         setTextClient(textClientComposite);
         RowLayout rl_compositeTextClient = new RowLayout(SWT.HORIZONTAL);
         rl_compositeTextClient.marginTop = 0;
         rl_compositeTextClient.marginRight = 0;
         rl_compositeTextClient.marginLeft = 0;
         rl_compositeTextClient.marginBottom = 0;
-        textClientComposite.setLayout(rl_compositeTextClient);
+        textClientComposite.setLayout(rl_compositeTextClient);*/
 
-        Button btnUpdate = toolkit.createButton(textClientComposite, "Update",
+     /*   Button btnUpdate = toolkit.createButton(textClientComposite, "Update",
                 SWT.CENTER);
         btnUpdate.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -126,7 +144,7 @@ public abstract class AbstractEndTagSection extends Section {
        
         Button btnRemove = new Button(textClientComposite, SWT.NONE);
         toolkit.adapt(btnRemove, true, true);
-        btnRemove.setText("Remove");
+        btnRemove.setText("Remove");*/
        
         btnRemove.addListener(SWT.Selection, new Listener() {
             @Override
@@ -164,5 +182,14 @@ public abstract class AbstractEndTagSection extends Section {
 
 	public abstract void fillDetailArea();
 
-   
+	public void drawBorder(final Composite composite) {
+		composite.addPaintListener(new PaintListener() {
+			@Override
+			public void paintControl(PaintEvent e) {
+				e.gc.setForeground(SWTResourceManager.getColor(SWT.COLOR_BLACK));
+				e.gc.drawLine(0, 0, composite.getParent().getBounds().width, 0);
+			}
+
+		});
+	}
 }

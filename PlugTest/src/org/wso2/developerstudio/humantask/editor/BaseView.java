@@ -303,7 +303,7 @@ public class BaseView extends Composite {
 		
 		
 	}
-	public void loadModel(Object model){
+	public void loadModel(Object model) throws JAXBException{
 		tLogicalPeopleGroups = (TTasks) model;
 		composite3.loadModel(model);
 	}

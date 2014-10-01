@@ -18,6 +18,8 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
@@ -58,7 +60,9 @@ public abstract class AbstractParentTagSection extends Section {
 		toolkit = new FormToolkit(Display.getCurrent());
 		setLayout(new GridLayout(1, false));
 		toolkit.adapt(this);
-		setLayoutData(new GridData(GridData.FILL_BOTH));
+		/*setLayoutData(new GridData(GridData.FILL_BOTH));*/
+		setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
+                1, 1));
 		toolkit.paintBordersFor(this);
 		setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
 		this.setTitleBarBackground(SWTResourceManager
@@ -105,7 +109,7 @@ public abstract class AbstractParentTagSection extends Section {
 
 		// Shell compositeTextClient= new Shell();
 
-		Composite compositeTextClient = new Composite(this, SWT.NONE);
+		/*Composite compositeTextClient = new Composite(this, SWT.NONE);
 		compositeTextClient.setBackgroundMode(SWT.INHERIT_FORCE);
 		toolkit.adapt(compositeTextClient);
 		toolkit.paintBordersFor(compositeTextClient);
@@ -115,17 +119,71 @@ public abstract class AbstractParentTagSection extends Section {
 		rl_compositeTextClient.marginRight = 0;
 		rl_compositeTextClient.marginLeft = 0;
 		rl_compositeTextClient.marginBottom = 0;
-		compositeTextClient.setLayout(rl_compositeTextClient);
+		compositeTextClient.setLayout(rl_compositeTextClient);*/
+		
+		
+		//////////
+		   ToolBar toolBarTitle = new ToolBar(this, SWT.FLAT | SWT.RIGHT);
 
-	/*	final Combo combo = new Combo(compositeTextClient, SWT.NONE);
-		combo.setLayoutData(new RowData(100, 25));
-		combo.setFont(SWTResourceManager.getFont("Ubuntu", 9, SWT.NORMAL));
-		toolkit.adapt(combo);
-		toolkit.paintBordersFor(combo);
-		combo.setItems(dropDownItems);
-		combo.select(0);*/
-		final Button btnNewgroup = new Button(compositeTextClient, SWT.NONE);
-	
+	        setTextClient(toolBarTitle);
+
+	        ToolItem btnNewgroup = new ToolItem(toolBarTitle, SWT.NONE);
+	        btnNewgroup.setToolTipText("Add Child Element");
+	        btnNewgroup.setWidth(27);
+	        btnNewgroup.setImage(ResourceManager.getPluginImage("PlugTest", "icons/rsz_rsz_1412072977_plus_add_blueedited.png"));
+
+	        ToolItem btnUpdate = new ToolItem(toolBarTitle, SWT.NONE);
+	        btnUpdate.setToolTipText("Update XML");
+	        btnUpdate.setImage(ResourceManager.getPluginImage("PlugTest", "icons/rsz_rsz_software_update.png"));
+
+	        ToolItem btnRemove = new ToolItem(toolBarTitle, SWT.CHECK);
+	        btnRemove.setToolTipText("Remove");
+	        btnRemove.setImage(ResourceManager.getPluginImage("PlugTest", "icons/rsz_rsz_1rsz_112.png"));
+
+
+	        final Shell shell = new Shell(this.getDisplay());
+
+	        final Menu menu = new Menu(shell, SWT.POP_UP);
+
+	        ArrayList<MenuItem> menuItemArrayList = new ArrayList<MenuItem>();
+	        for (int x = 0; x < dropDownItems.length; x++) {
+	            menuItemArrayList.add(new MenuItem(menu, SWT.NONE));
+	            menuItemArrayList.get(x).setText(dropDownItems[x]);
+	            final String v = dropDownItems[x];
+
+	            menuItemArrayList.get(x).addListener(SWT.Selection, new Listener() {
+	                public void handleEvent(Event event) {
+	                    System.out.println("item selected: RADIO item");
+	                    try {
+	                        newButtonLogic(v, scDetailarea, editor,
+	                                compositeDetailArea);
+	                    } catch (JAXBException e) {
+	                        e.printStackTrace();
+	                    }
+	                }
+	            });
+
+	        }
+
+	        btnNewgroup.addListener(SWT.Selection, new Listener() {
+
+	            @Override
+	            public void handleEvent(Event event) {
+	                menu.setVisible(true);
+	            }
+	        });
+		
+		///////////////////
+
+		/*
+		 * final Combo combo = new Combo(compositeTextClient, SWT.NONE);
+		 * combo.setLayoutData(new RowData(100, 25));
+		 * combo.setFont(SWTResourceManager.getFont("Ubuntu", 9, SWT.NORMAL));
+		 * toolkit.adapt(combo); toolkit.paintBordersFor(combo);
+		 * combo.setItems(dropDownItems); combo.select(0);
+		 */
+		/*final Button btnNewgroup = new Button(compositeTextClient, SWT.NONE);
+
 		btnNewgroup.setToolTipText("Add Child Element");
 		btnNewgroup.setLayoutData(new RowData(24, 24));
 		btnNewgroup.setImage(ResourceManager.getPluginImage("PlugTest",
@@ -133,56 +191,56 @@ public abstract class AbstractParentTagSection extends Section {
 		// btnNewgroup.setImage(ResourceManager.getPluginImage("PlugTest",
 		// "icons/rsz_software_update.jpg"));
 
-		toolkit.adapt(btnNewgroup, true, true);
+		toolkit.adapt(btnNewgroup, true, true);*/
 
-		final Menu menu = new Menu(btnNewgroup);
+		/*final Menu menu = new Menu(btnNewgroup);
 		btnNewgroup.setMenu(menu);
-	/*	MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
-		mntmNewItem.setText("New Item");
-		MenuItem mntmNewItem2 = new MenuItem(menu, SWT.NONE);
-		mntmNewItem2.setText("New Item2");
 		
-		menu.setVisible(true);*/
-		
-		ArrayList<MenuItem> menuItemArrayList= new ArrayList<MenuItem>();
-		for(int x=0; x<dropDownItems.length; x++){
+		 * MenuItem mntmNewItem = new MenuItem(menu, SWT.NONE);
+		 * mntmNewItem.setText("New Item"); MenuItem mntmNewItem2 = new
+		 * MenuItem(menu, SWT.NONE); mntmNewItem2.setText("New Item2");
+		 * 
+		 * menu.setVisible(true);
+		 */
+
+		/*ArrayList<MenuItem> menuItemArrayList = new ArrayList<MenuItem>();
+		for (int x = 0; x < dropDownItems.length; x++) {
 			menuItemArrayList.add(new MenuItem(menu, SWT.NONE));
 			menuItemArrayList.get(x).setText(dropDownItems[x]);
-			final String v=dropDownItems[x];
-			
+			final String v = dropDownItems[x];
+
 			menuItemArrayList.get(x).addListener(SWT.Selection, new Listener() {
-			      public void handleEvent(Event event) {
-			        System.out.println("item selected: RADIO item");
-			        try {
-						newButtonLogic(v, scDetailarea, editor, compositeDetailArea);
+				public void handleEvent(Event event) {
+					System.out.println("item selected: RADIO item");
+					try {
+						newButtonLogic(v, scDetailarea, editor,
+								compositeDetailArea);
 					} catch (JAXBException e) {
 						e.printStackTrace();
 					}
-			      }
-			    });
-			
-			
-		}
-		
-		
-		btnNewgroup.addListener(SWT.Selection, new Listener() {
-			
+				}
+			});
+
+		}*/
+
+		/*btnNewgroup.addListener(SWT.Selection, new Listener() {
+
 			@Override
 			public void handleEvent(Event event) {
 				menu.setVisible(true);
 			}
-		});
-		
-	//	dropDownItems
-	//	menu.add
-		/*
-		 * Button btnRefresh = new Button(compositeTextClient, SWT.NONE);
-		 * toolkit.adapt(btnRefresh, true, true); btnRefresh.setText("Refresh");
-		 */
+		});*/
 
-		Button btnUpdate = new Button(compositeTextClient, SWT.NONE);
+		// dropDownItems
+		// menu.add
+
+		/*Button btnRefresh = new Button(compositeTextClient, SWT.NONE);
+		toolkit.adapt(btnRefresh, true, true);
+		btnRefresh.setText("Refresh");*/
+
+		/*Button btnUpdate = new Button(compositeTextClient, SWT.NONE);
 		btnUpdate.setLayoutData(new RowData(24, 24));
-	//	btnUpdate.s
+		// btnUpdate.s
 		btnUpdate.setToolTipText("Update");
 		btnUpdate.setImage(ResourceManager.getPluginImage("PlugTest",
 				"icons/rsz_software_update.png"));
@@ -193,7 +251,7 @@ public abstract class AbstractParentTagSection extends Section {
 		btnRemove.setToolTipText("Remove");
 		btnRemove.setImage(ResourceManager.getPluginImage("PlugTest",
 				"icons/rsz_1rsz_112.png"));
-		toolkit.adapt(btnRemove, true, true);
+		toolkit.adapt(btnRemove, true, true);*/
 
 		// Label lblNewLabel = toolkit.createLabel(compositeTextClient, "",
 		// SWT.NONE);
@@ -229,41 +287,45 @@ public abstract class AbstractParentTagSection extends Section {
 		 * btnRemoveHandleLogic(editor); } catch (JAXBException e2) {
 		 * e2.printStackTrace(); } } });
 		 */
-		/*
-		 * btnRefresh.addListener(SWT.Selection, new Listener() {
-		 * 
-		 * @Override public void handleEvent(Event event) { try {
-		 * refreshLogic(editor, compositeDetailArea, scDetailarea); } catch
-		 * (JAXBException e) { e.printStackTrace(); } } });
-		 */
-		
-		
-	/*	btnNewgroup.addListener(SWT.Selection, new Listener() {
+
+		/*btnRefresh.addListener(SWT.Selection, new Listener() {
 
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					String s = combo.getItem(combo.getSelectionIndex());
-					newButtonLogic(s, scDetailarea, editor, compositeDetailArea);
+					refreshLogic(editor);
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
-
 			}
-
 		});*/
-		
-		
-		
+
 		/*
-		 * btnRemove.addListener(SWT.Selection, new Listener() {
+		 * btnNewgroup.addListener(SWT.Selection, new Listener() {
 		 * 
-		 * @Override public void handleEvent(Event event) { try {
-		 * btnRemoveHandleLogic(editor); } catch (JAXBException e) {
-		 * e.printStackTrace(); } }
+		 * @Override public void handleEvent(Event event) { try { String s =
+		 * combo.getItem(combo.getSelectionIndex()); newButtonLogic(s,
+		 * scDetailarea, editor, compositeDetailArea); } catch (JAXBException e)
+		 * { e.printStackTrace(); }
+		 * 
+		 * }
 		 * 
 		 * });
 		 */
+
+		btnRemove.addListener(SWT.Selection, new Listener() {
+
+			@Override
+			public void handleEvent(Event event) {
+				try {
+					btnRemoveHandleLogic(editor);
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
+
+		});
+
 		btnUpdate.addListener(SWT.Selection, new Listener() {
 
 			@Override
@@ -284,8 +346,7 @@ public abstract class AbstractParentTagSection extends Section {
 	public abstract void btnRemoveHandleLogic(XMLEditor textEditor)
 			throws JAXBException;
 
-	public abstract void refreshLogic(XMLEditor editor, Composite composite,
-			ScrolledComposite sc3) throws JAXBException;
+	public abstract void refreshLogic(XMLEditor editor) throws JAXBException;
 
 	public abstract void initialize(XMLEditor textEditor) throws JAXBException;
 

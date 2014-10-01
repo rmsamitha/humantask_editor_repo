@@ -23,6 +23,7 @@ public class TTasksUI extends AbstractParentTagSection {
 	private int compositeIndex;
 	int childCompositeIndex;
 	protected Composite container;
+	XMLEditor editor;
 	ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	
 	public TTasksUI(XMLEditor editor,Composite parent,Composite container,
@@ -32,6 +33,7 @@ public class TTasksUI extends AbstractParentTagSection {
 		this.objectIndex=objectIndex;
 		this.compositeIndex=compositeIndex;
 		this.container=container;
+		this.editor=editor;
 		childObjectIndexes = new int[1]; //change the number of items in dropdown menu
 		setExpanded(true);
 		
@@ -63,8 +65,7 @@ public class TTasksUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor,
-			Composite composite, ScrolledComposite sc3) throws JAXBException  {
+	public void refreshLogic(XMLEditor editor) throws JAXBException  {
 		/////////////////////////////////////////// This is Item a //////////////////////////////////
 		ArrayList<TTask> groups = new ArrayList<TTask>();
 		if (tasks != null) {
@@ -82,7 +83,7 @@ public class TTasksUI extends AbstractParentTagSection {
 				}
 			} else {
 				try {
-					tNot = new TTaskUI(editor,composite,this,SWT.NONE,groups.get(childObjectIndexes[0]),childObjectIndexes[0],childCompositeIndex);
+					tNot = new TTaskUI(editor,compositeDetailArea,this,SWT.NONE,groups.get(childObjectIndexes[0]),childObjectIndexes[0],childCompositeIndex);
 					tNot.initialize(editor);
 					childComposites.add(childCompositeIndex, tNot);
 					childCompositeIndex++;
@@ -170,11 +171,12 @@ public class TTasksUI extends AbstractParentTagSection {
 		}
 		
 	}
-	public void loadModel(Object model){
+	public void loadModel(Object model) throws JAXBException{
 		tasks = (TTasks) model;
 		for (Composite c : childComposites) {
 			TTaskUI d = (TTaskUI) c;  //children node type
 			d.loadModel(tasks.getTask().get(d.objectIndex));
+			d.refreshLogic(editor);
 			this.layout();
 		}
 	}

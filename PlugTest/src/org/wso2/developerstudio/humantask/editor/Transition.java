@@ -56,6 +56,7 @@ public class Transition extends Composite {
     Composite here;
     TTasks tLogicalPeopleGroups;
     boolean pressed;
+    XMLEditor textEditor;
     int compositeCount;
 //    ArrayList<Section> secs = new ArrayList<Section>();
     final ArrayList<TLogicalPeopleGroupComposite2> LPGArrayList = new ArrayList<TLogicalPeopleGroupComposite2>();
@@ -72,6 +73,7 @@ public class Transition extends Composite {
     public Transition(final XMLEditor editor, final Composite parent, int style) {
         super(parent, SWT.BORDER);
         setBackground(SWTResourceManager.getColor(SWT.COLOR_DARK_MAGENTA));
+        this.textEditor=editor;
         addDisposeListener(new DisposeListener() {
             public void widgetDisposed(DisposeEvent e) {
                 toolkit.dispose();
@@ -211,10 +213,11 @@ public class Transition extends Composite {
         });
 
         // /111
-        Section secTasks = toolkit.createSection(c2, Section.TWISTIE
+        /*Section secTasks = toolkit.createSection(c2, Section.TWISTIE
                 | Section.TITLE_BAR);
         secTasks.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
                 1, 1));
+        //secTasks.setLayoutData(new GridData(GridData.FILL_BOTH));
        // secTasks.setTitleBarBackground(new Color(getDisplay(), 121,77,171));
         RowLayout secTaskRL = new RowLayout();
         secTaskRL.type = SWT.VERTICAL;
@@ -242,8 +245,8 @@ public class Transition extends Composite {
         toolkit.paintBordersFor(composite_SecTASK_SC);
         scrolledComposite_1.setContent(composite_SecTASK_SC);
         composite_SecTASK_SC.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-        /*scrolledComposite_1.setMinSize(composite_SecTASK_SC.computeSize(
-                SWT.DEFAULT, SWT.DEFAULT));*/
+        scrolledComposite_1.setMinSize(composite_SecTASK_SC.computeSize(
+                SWT.DEFAULT, SWT.DEFAULT));
 
         RowLayout rL = new RowLayout();
         GridLayout gl_composite_SecTASK_SC = new GridLayout(1, true);
@@ -252,7 +255,7 @@ public class Transition extends Composite {
      //   composite_SecTASK_SC.setLayout(gl_composite_SecTASK_SC);
        // composite_SecTASK_SC.setLayout(new GridLayout(1,true));
 
-        /*
+        
          * Composite testingTDocElement2=new
          * TDocumentationComposite(composite_SecTASK_SC, SWT.NONE); GridData
          * gd_testingTDocElement2 = new GridData(SWT.LEFT, SWT.CENTER, false,
@@ -267,14 +270,14 @@ public class Transition extends Composite {
          * gd_testingTDocElement1 = new GridData(SWT.LEFT, SWT.CENTER, false,
          * false, 1, 1); gd_testingTDocElement1.heightHint = 40;
          * testingTDocElement1.setLayoutData(gd_testingTDocElement1);
-         */
+         
 
         Button btnAddTask = new Button(secTasks, SWT.NONE);
         toolkit.adapt(btnAddTask, true, true);
         secTasks.setTextClient(btnAddTask);
         secTasks.layout();
         btnAddTask.setText("+");
-      
+      */
 
         // /Adding class composite<<<
 
@@ -403,10 +406,10 @@ public class Transition extends Composite {
 
         toolkit.paintBordersFor(secNotifications);
         
-        btnAddTask.addListener(SWT.Selection, new Listener() {
+      /*  btnAddTask.addListener(SWT.Selection, new Listener() {
 
             @Override
-            public void handleEvent(Event event) {
+            public void handleEvent(Event event) {*/
             	pressed=true;
             	if(compositeCount<1){
             	try {
@@ -433,14 +436,14 @@ public class Transition extends Composite {
         				
         			}
         			
-        			composite3 = new TTasksUI(editor,composite_SecTASK_SC,here,SWT.NONE,editor.getRootElement().getTasks(),0,0);
+        			composite3 = new TTasksUI(editor,c2,here,SWT.NONE,editor.getRootElement().getTasks(),0,0);
         			compositeCount++;
         		} catch (JAXBException e1) {
         			e1.printStackTrace();
         		}
             	}
-        }
-        });
+       /* }
+        });*/
 
         // scc2.setExpanded(false);
         // scc2.setSize(400, 800);
@@ -465,10 +468,11 @@ public class Transition extends Composite {
 		
 		
 	}
-	public void loadModel(Object model){
+	public void loadModel(Object model) throws JAXBException{
 		tLogicalPeopleGroups = (TTasks) model;
 		if(pressed){
 		composite3.loadModel(model);
+		composite3.refreshLogic(textEditor);
 		}
 	}
 
