@@ -205,6 +205,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			centralUtils.unmarshalMe(textEditor);
 			System.out.print("Unmarshalled");
 			composite.loadModel(textEditor.getRootElement().getTasks());
+			centralUtils.redraw();
 			} catch (JAXBException e) {
 				e.printStackTrace();
 			}

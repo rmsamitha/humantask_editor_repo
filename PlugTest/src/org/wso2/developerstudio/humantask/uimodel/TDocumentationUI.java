@@ -3,6 +3,8 @@ package org.wso2.developerstudio.humantask.uimodel;
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -17,9 +19,9 @@ import org.wso2.developerstudio.humantask.editor.TNotificationParentComposite;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 
 public class TDocumentationUI extends AbstractEndTagSection {
-	Composite container;
+	Composite container,tparent;
 	public int objectIndex;
-	
+
 	
 	public int getObjectIndex() {
 		System.out.println("Changing before object Index "+objectIndex);
@@ -45,7 +47,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	public TDocumentationUI(XMLEditor editor, Composite parent,
 			int compositeIndex, int objectIndex, int style,
 			Composite container, Object modelParent) {
-		super(editor, parent, style, "Documentation");
+		super(editor, parent,container, style, "Documentation");
 		this.objectIndex = objectIndex;
 		documentation = (TDocumentation) modelParent;
 		this.container = container;
@@ -53,6 +55,8 @@ public class TDocumentationUI extends AbstractEndTagSection {
 		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr Docu  Composite Index is :"+compositeIndex);
 		System.out.println("rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr Docu Object Index is :"+objectIndex);
 		setExpanded(true);
+		this.tparent=this.getParent();
+		
 	}
 
 	@Override

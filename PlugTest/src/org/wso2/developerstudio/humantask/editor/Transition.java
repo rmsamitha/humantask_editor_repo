@@ -172,45 +172,13 @@ public class Transition extends Composite {
         secLPGS.layout();
         btnAddLPG.setText("Event+");
 
-        btnAddLPG.addListener(SWT.Selection, new Listener() {
-            int LPGindex = 0;
-
-            @Override
-            public void handleEvent(Event event) {
-             /*   LPGArrayList.add(LPGindex, new TLogicalPeopleGroupComposite2(
-                        LPGindex, comp_sc_SecLPGS, SWT.NONE));
-                System.out
-                        .println("button clicked and added LogicalPeopleGroup"
-                                + c2.computeSize(SWT.DEFAULT, SWT.DEFAULT));*/
-                sc2.setMinSize(c2.computeSize(SWT.DEFAULT, SWT.DEFAULT).x - 30,
-                        c2.computeSize(SWT.DEFAULT, SWT.DEFAULT).y + 5);
-                c2.layout();
-                LPGindex++;
-
-                /*
-                 * Composite testingTDocElement22=new
-                 * TLogicalPeopleGroupComposite2(0,comp_sc_SecLPGS, SWT.NONE);
-                 * System
-                 * .out.println("a "+comp_sc_SecLPGS.computeSize(SWT.DEFAULT,
-                 * SWT.DEFAULT));
-                 *
-                 * Composite testingTDocElement11=new
-                 * TLogicalPeopleGroupComposite2(1,comp_sc_SecLPGS, SWT.NONE);
-                 * System
-                 * .out.println("b"+comp_sc_SecLPGS.computeSize(SWT.DEFAULT,
-                 * SWT.DEFAULT));
-                 *
-                 * Composite testingTDocElement33=new
-                 * TLogicalPeopleGroupComposite2(2,comp_sc_SecLPGS, SWT.NONE);
-                 * System
-                 * .out.println("c"+comp_sc_SecLPGS.computeSize(SWT.DEFAULT,
-                 * SWT.DEFAULT));
-                 *
-                 * System.out.println("is disposed 3rd one:"+testingTDocElement33
-                 * .isDisposed());
-                 */
-            }
-        });
+        try {
+			CentralUtils cu=CentralUtils.getInstance(editor);
+			cu.setBasicUI(sc2, c2);
+		} catch (JAXBException e2) {
+			// TODO Auto-generated catch block
+			e2.printStackTrace();
+		}
 
         // /111
         /*Section secTasks = toolkit.createSection(c2, Section.TWISTIE
@@ -470,9 +438,10 @@ public class Transition extends Composite {
 	}
 	public void loadModel(Object model) throws JAXBException{
 		tLogicalPeopleGroups = (TTasks) model;
+		
 		if(pressed){
-		composite3.loadModel(model);
 		composite3.refreshLogic(textEditor);
+		composite3.loadModel(model);
 		}
 	}
 

@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
 import org.eclipse.ui.forms.events.HyperlinkAdapter;
 import org.eclipse.ui.forms.events.HyperlinkEvent;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -49,18 +50,19 @@ public abstract class AbstractParentTagSection extends Section {
 	protected CentralUtils centralUtils;
 	protected Section innerSection;
 	protected int i = 0;
+	protected Composite container;
 	protected Composite compositeDetailArea;
 
-	public AbstractParentTagSection(final XMLEditor editor, Composite parent,
+	public AbstractParentTagSection(final XMLEditor editor, Composite parent,Composite container,
 			int style, final String[] dropDownItems, String name)
 			throws JAXBException {
 		super(parent, Section.TWISTIE | Section.TITLE_BAR);
 		centralUtils = CentralUtils.getInstance(editor);
 		textBoxes = new ArrayList<Widget>();
 		toolkit = new FormToolkit(Display.getCurrent());
+		this.container=container;
 		setLayout(new GridLayout(1, false));
 		toolkit.adapt(this);
-		/*setLayoutData(new GridData(GridData.FILL_BOTH));*/
 		setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
                 1, 1));
 		toolkit.paintBordersFor(this);
@@ -157,6 +159,7 @@ public abstract class AbstractParentTagSection extends Section {
 	                    try {
 	                        newButtonLogic(v, scDetailarea, editor,
 	                                compositeDetailArea);
+	                        centralUtils.redraw();
 	                    } catch (JAXBException e) {
 	                        e.printStackTrace();
 	                    }
@@ -319,6 +322,7 @@ public abstract class AbstractParentTagSection extends Section {
 			public void handleEvent(Event event) {
 				try {
 					btnRemoveHandleLogic(editor);
+					centralUtils.redraw();
 				} catch (JAXBException e) {
 					e.printStackTrace();
 				}
@@ -339,7 +343,20 @@ public abstract class AbstractParentTagSection extends Section {
 		});
 
 	}
-
+	   @Override
+	    public void addDisposeListener(DisposeListener listener) {
+	        // TODO Auto-generated method stub
+	       
+	        super.addDisposeListener(new DisposeListener() {
+	           
+	            @Override
+	            public void widgetDisposed(DisposeEvent e) {
+	                System.out.println("isss disposed");       
+	                ((ExpandableComposite) container).setExpanded(true);
+	               System.out.println("isss yes");       
+	            }
+	        });
+	    }
 	public abstract void btnUpdateHandleLogic(XMLEditor textEditor)
 			throws JAXBException;
 

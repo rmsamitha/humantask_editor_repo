@@ -24,8 +24,9 @@ public class TTaskInterfaceUI extends AbstractEndTagSection {
 
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
-		System.out.println("Changing object Index "+objectIndex);
-		}
+	
+		
+	}
 
 	public int getCompositeIndex() {
 		return compositeIndex;
@@ -41,7 +42,7 @@ public class TTaskInterfaceUI extends AbstractEndTagSection {
 	public TTaskInterfaceUI(XMLEditor editor, Composite parent,
 			int compositeIndex, int objectIndex, int style,
 			Composite container, Object modelParent) {
-		super(editor, parent, style, "Interface");
+		super(editor, parent,container, style, "Interface");
 		this.objectIndex = objectIndex;
 		taskInterface = (TTaskInterface) modelParent;
 		this.container = container;

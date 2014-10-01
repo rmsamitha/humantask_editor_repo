@@ -20,6 +20,9 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.jdt.core.dom.ThisExpression;
 import org.eclipse.jface.text.IDocument;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.ScrolledComposite;
+import org.eclipse.swt.widgets.Composite;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.THumanInteractions;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TLogicalPeopleGroup;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotification;
@@ -33,6 +36,8 @@ public class CentralUtils {
 	private static JAXBContext jaxbContext;
 	private IDocument iDocument;
 	private ModelManager modelManager;
+	private Composite baseContainer;
+	private ScrolledComposite scrolledComposite;
 
 	public static CentralUtils getInstance(XMLEditor textEditor)
 			throws JAXBException {
@@ -146,5 +151,16 @@ public class CentralUtils {
 
 		return document;
 	}
+	
+	////////////////////////UI Utils////////////////////////////////
+	public void setBasicUI(ScrolledComposite scrolledComposite,Composite baseConatiner){
+		this.scrolledComposite=scrolledComposite;
+		this.baseContainer=baseConatiner;
+	}
+	public void redraw(){
+		/*scrolledComposite.setMinSize(baseContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT).x - 30,
+				baseContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT).y + 5);*/
+		scrolledComposite.setMinSize(baseContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+	};
 
 }

@@ -23,6 +23,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wb.swt.ResourceManager;
@@ -40,10 +41,10 @@ public abstract class AbstractEndTagSection extends Section {
 	protected final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
 	protected CentralUtils centralUtils;
 	protected ArrayList<Text> textBoxes;
-	protected Composite detailArea;
+	protected Composite detailArea,zcontainer;
 
     public AbstractEndTagSection(final XMLEditor textEditor,
-			Composite parent, int style,
+			Composite parent,Composite container, int style,
 			String sectionTitle) {
         super(parent, Section.TWISTIE | Section.TITLE_BAR);
        
@@ -52,6 +53,7 @@ public abstract class AbstractEndTagSection extends Section {
         setText(sectionTitle);
         setExpanded(true);
         textBoxes = new ArrayList<Text>();
+        zcontainer=container;
         setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
         addDisposeListener(new DisposeListener() {
             public void widgetDisposed(DisposeEvent e) {
@@ -151,6 +153,7 @@ public abstract class AbstractEndTagSection extends Section {
             public void handleEvent(Event event) {
                 try {
                     btnRemoveHandleLogic(textEditor);
+                    centralUtils.redraw();
                 } catch (JAXBException e) {
                     e.printStackTrace();
                 }
@@ -169,6 +172,20 @@ public abstract class AbstractEndTagSection extends Section {
 
         });
 
+    }
+    @Override
+    public void addDisposeListener(DisposeListener listener) {
+        // TODO Auto-generated method stub
+       
+        super.addDisposeListener(new DisposeListener() {
+           
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                System.out.println("isss disposed");       
+                ((ExpandableComposite) zcontainer).setExpanded(true);
+               System.out.println("isss yes");       
+            }
+        });
     }
 
     public abstract void btnUpdateHandleLogic(XMLEditor textEditor)
