@@ -34,9 +34,8 @@ public class TTasksUI extends AbstractParentTagSection {
 		this.compositeIndex=compositeIndex;
 		this.container=container;
 		this.editor=editor;
-		childObjectIndexes = new int[1]; //change the number of items in dropdown menu
+		childObjectIndexes = new int[1];
 		setExpanded(true);
-	//this.setSize(this.getParent().computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	} 
 
 	@Override
@@ -47,8 +46,6 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void btnRemoveHandleLogic( XMLEditor textEditor)
 			throws JAXBException {
-		/*textEditor.getRootElement().setTasks(null);
-		tasks=null;*/
 		BaseView baseView=(BaseView)container;
 		baseView.refreshChildren(compositeIndex, objectIndex);
 		

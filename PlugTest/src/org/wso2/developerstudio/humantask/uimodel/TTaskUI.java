@@ -15,6 +15,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TBoolean;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
@@ -116,6 +117,19 @@ public class TTaskUI extends AbstractParentTagSection {
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
 			}
+		} else if (selection.equalsIgnoreCase("Priority")) {
+			if (childObjectIndexes[2] < 1) {
+				TPriorityExpr tPriorityExpr = new TPriorityExpr();
+				tPriorityExpr.setExpressionLanguage("");
+				tPriorityExpr.getContent().add(0,"");
+				task.setPriority(tPriorityExpr);
+				TPriorityExprUI tNot = new TPriorityExprUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
+						this, tPriorityExpr);
+				childComposites.add(childCompositeIndex, tNot);
+				childObjectIndexes[2]++;
+				childCompositeIndex++;
+			}
 		}
 
 		// sc3.layout(true,true);
@@ -156,10 +170,8 @@ public class TTaskUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
-		System.out.println("This is TTask refresh");
+	public void refreshLogic(XMLEditor editor) throws JAXBException { /////////////////////////Start from this/////////////////////
 		ArrayList<TDocumentation> documentationGroup = new ArrayList<TDocumentation>();
-		System.out.println("This is TTask");	
 		documentationGroup = (ArrayList<TDocumentation>) task
 				.getDocumentation();
 		for (int j = 0; j < childComposites.size(); j++) {
@@ -188,7 +200,17 @@ public class TTaskUI extends AbstractParentTagSection {
 						refreshed = false;
 					}
 				}
-			} else {
+			} else if (childComposites.get(j) instanceof TPriorityExprUI) {
+				if (task.getPriority() != null) {
+					TPriorityExprUI tNot;
+					if (((childObjectIndexes[2]) == 1)) {
+						tNot = (TPriorityExprUI) childComposites.get(j);
+						tNot.initialize(editor);
+					} else {
+						refreshed = false;
+					}
+				}
+			}else {
 				System.out.println("Not that thing");
 			}
 		}
@@ -227,6 +249,23 @@ public class TTaskUI extends AbstractParentTagSection {
 					e.printStackTrace();
 				}
 			}
+			
+			if (task.getPriority() != null) {
+				TPriorityExprUI tNot;
+				TPriorityExpr priorityObject = (TPriorityExpr) task
+						.getPriority();
+				try {
+					tNot = new TPriorityExprUI(editor, compositeDetailArea,
+							childCompositeIndex, childObjectIndexes[2],
+							SWT.NONE, this, priorityObject);
+					tNot.initialize(editor);
+					childComposites.add(childCompositeIndex, tNot);
+					childCompositeIndex++;
+					childObjectIndexes[2]++;
+				} catch (JAXBException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 
 	}
@@ -259,6 +298,12 @@ public class TTaskUI extends AbstractParentTagSection {
 						d.setCompositeIndex(d.getCompositeIndex() - 1);
 					}
 
+				} else if (c instanceof TPriorityExprUI) {
+					TPriorityExprUI d = (TPriorityExprUI) c;
+					if (d.compositeIndex > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+
 				} else {
 					
 				}
@@ -275,6 +320,35 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				} else if (c instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI d = (TTaskInterfaceUI) c;
+					if (d.compositeIndex > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+				} else if (c instanceof TPriorityExprUI) {
+					TPriorityExprUI d = (TPriorityExprUI) c;
+					if (d.compositeIndex > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+
+				} else {
+				}
+
+			}
+		}else if (itemName.equalsIgnoreCase("Priority")) {
+			this.childObjectIndexes[2]--;
+			task.setInterface(null);
+			for (Composite c : childComposites) {
+				if (c instanceof TDocumentationUI) {
+					TDocumentationUI d = (TDocumentationUI) c;
+					if (d.compositeIndex > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+				} else if (c instanceof TTaskInterfaceUI) {
+					TTaskInterfaceUI d = (TTaskInterfaceUI) c;
+					if (d.compositeIndex > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+				} else if (c instanceof TPriorityExprUI) {
+					TPriorityExprUI d = (TPriorityExprUI) c;
 					if (d.compositeIndex > childCompositeIndex) {
 						d.setCompositeIndex(d.getCompositeIndex() - 1);
 					}
@@ -297,6 +371,9 @@ public class TTaskUI extends AbstractParentTagSection {
 			} else if (c instanceof TTaskInterfaceUI) {
 				TTaskInterfaceUI d = (TTaskInterfaceUI) c; // children node type
 				d.loadModel(task.getInterface());
+			} else if (c instanceof TPriorityExprUI) {
+				TPriorityExprUI d = (TPriorityExprUI) c; // children node type
+				d.loadModel(task.getPriority());
 			}
 		}
 	}
