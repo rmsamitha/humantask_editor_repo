@@ -84,7 +84,7 @@ public class TTaskInterfaceUI extends AbstractEndTagSection {
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		textBoxes.get(0).setText(taskInterface.getPortType().getLocalPart().toString());
+		//textBoxes.get(0).setText(taskInterface.getPortType().getLocalPart().toString());
 		textBoxes.get(1).setText(taskInterface.getOperation());
 
 	}

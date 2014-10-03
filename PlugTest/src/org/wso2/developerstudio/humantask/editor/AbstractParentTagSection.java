@@ -352,7 +352,7 @@ public abstract class AbstractParentTagSection extends Section {
 	            @Override
 	            public void widgetDisposed(DisposeEvent e) {
 	                System.out.println("isss disposed");       
-	                ((ExpandableComposite) container).setExpanded(true);
+	                //((ExpandableComposite) container).setExpanded(true);
 	               System.out.println("isss yes");       
 	            }
 	        });

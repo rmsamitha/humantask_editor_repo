@@ -66,19 +66,24 @@ public class TTasksUI extends AbstractParentTagSection {
 		System.out.println("THis is TTAsks");
 		ArrayList<TTask> groups = new ArrayList<TTask>();
 		if (tasks != null) {
+			for(Composite c:childComposites){
+				c.dispose();
+				System.out.println("Disposed");
+				}
+				childComposites.clear();
+				System.out.println("XC Size is :"+childComposites.size());
+				
+				
+				childCompositeIndex=0;
+				for (int j = 0; j < childObjectIndexes.length; j++) {
+					childObjectIndexes[j]=0;
+				}
+			
 			groups = (ArrayList<TTask>) tasks.getTask();
 			
 		for (int i = 0; i < groups.size(); i++) {
 			TTaskUI tNot;
-			if ((childComposites.size() == groups.size())) {
-				try {
-				tNot = (TTaskUI) childComposites.get(i);
-				tNot.initialize(editor);
-				} catch (JAXBException e) {
-				
-					e.printStackTrace();
-				}
-			} else {
+			
 				try {
 					tNot = new TTaskUI(editor,compositeDetailArea,this,SWT.NONE,groups.get(childObjectIndexes[0]),childObjectIndexes[0],childCompositeIndex);
 					tNot.initialize(editor);
@@ -90,7 +95,7 @@ public class TTasksUI extends AbstractParentTagSection {
 					e.printStackTrace();
 				}
 				
-			}
+			
 			
 			//tNot.updated = true;
 			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -173,9 +178,9 @@ public class TTasksUI extends AbstractParentTagSection {
 		for (Composite c : childComposites) {
 			System.out.println("This is the testing");
 			TTaskUI d = (TTaskUI) c;  //children node type
+			d.task=tasks.getTask().get(d.objectIndex);
 			d.refreshLogic(editor);
 			d.loadModel(tasks.getTask().get(d.objectIndex));
-			
 			this.layout();
 		}
 	}

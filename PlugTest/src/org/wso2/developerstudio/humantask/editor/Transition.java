@@ -440,6 +440,7 @@ public class Transition extends Composite {
 		tLogicalPeopleGroups = (TTasks) model;
 		
 		if(pressed){
+		composite3.tasks=(TTasks)model;
 		composite3.refreshLogic(textEditor);
 		composite3.loadModel(model);
 		}
