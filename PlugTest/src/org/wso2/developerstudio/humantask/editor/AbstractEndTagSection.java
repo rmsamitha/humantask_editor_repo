@@ -181,9 +181,9 @@ public abstract class AbstractEndTagSection extends Section {
            
             @Override
             public void widgetDisposed(DisposeEvent e) {
-                System.out.println("isss disposed");       
+               /* System.out.println("isss disposed");       
                 ((ExpandableComposite) zcontainer).setExpanded(true);
-               System.out.println("isss yes");       
+               System.out.println("isss yes"); */      
             }
         });
     }
