@@ -93,11 +93,11 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		System.out.println("Documentation value :"+documentation.getLang());
-		//textBoxes.get(0).setText(documentation.getLang());
-		textBoxes.get(0).setText(objectIndex+"");
+		textBoxes.get(0).setText(documentation.getLang());
+		//textBoxes.get(0).setText(objectIndex+"");
 		System.out.println("Documentation value 2 :"+(String)documentation.getContent().get(0));
-		textBoxes.get(1).setText(compositeIndex+"");
-		//textBoxes.get(1).setText((String)documentation.getContent().get(0));
+		//textBoxes.get(1).setText(compositeIndex+"");
+		textBoxes.get(1).setText((String)documentation.getContent().get(0));
 	}
 
 	@Override
