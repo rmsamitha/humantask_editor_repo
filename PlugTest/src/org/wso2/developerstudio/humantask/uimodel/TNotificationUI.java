@@ -15,16 +15,20 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TBoolean;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotificationInterface;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPeopleAssignments;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPresentationElements;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotification;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TRenderings;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotifications;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 
-public class TTaskUI extends AbstractParentTagSection {
+public class TNotificationUI extends AbstractParentTagSection {
 	int[] childObjectIndexes;
-	private TTask task; // Change the type of model object
+	private TNotification notification; // Change the type of model object
 	int objectIndex; // this is this elements object index
 	int compositeIndex; // this is this elements composite index
 	int childCompositeIndex;
@@ -33,7 +37,7 @@ public class TTaskUI extends AbstractParentTagSection {
 	ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	boolean refreshed = true;
 
-	public TTaskUI(XMLEditor editor, Composite parent, Composite container,
+	public TNotificationUI(XMLEditor editor, Composite parent, Composite container,
 			int style, Object modelParent, int objectIndex, int compositeIndex)
 			throws JAXBException {
 		super(editor, parent,container, style, new String[] { "Documentation",
@@ -41,7 +45,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				"Presentation Elements" }, "Task");
 		// TTasks tasks=(TTasks)modelParent;
 		System.out.println(objectIndex);
-		this.task = (TTask) modelParent;
+		this.notification = (TNotification) modelParent;
 		this.objectIndex = objectIndex;
 		this.compositeIndex = compositeIndex;
 		this.editor = editor;
@@ -52,9 +56,9 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		task.setName(((Text) textBoxes.get(0)).getText());
-		task.setActualOwnerRequired(TBoolean.fromValue(((Combo) textBoxes
-				.get(1)).getText()));
+		notification.setName(((Text) textBoxes.get(0)).getText());
+	//notification.setActualOwnerRequired(TBoolean.fromValue(((Combo) textBoxes
+		//		.get(1)).getText()));
 		try {
 			centralUtils.marshalMe(textEditor);
 		} catch (JAXBException e) {
@@ -65,8 +69,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TTasksUI tTasksUI = (TTasksUI) container;
-		tTasksUI.refreshChildren("", compositeIndex, objectIndex);
+		TNotificationsUI tNotificationsUI = (TNotificationsUI) container;
+		tNotificationsUI.refreshChildren("", compositeIndex, objectIndex);
 
 		try {
 			centralUtils.marshalMe(textEditor);
@@ -87,7 +91,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			tDocumentation.setLang(childCompositeIndex + "");
 			tDocumentation.getContent().add(
 					new String(childObjectIndexes[0] + ""));
-			task.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			notification.getDocumentation().add(childObjectIndexes[0], tDocumentation);
 			TDocumentationUI tNot = new TDocumentationUI(editor, composite,
 					childCompositeIndex, childObjectIndexes[0], SWT.NONE, this,
 					tDocumentation);
@@ -99,21 +103,18 @@ public class TTaskUI extends AbstractParentTagSection {
 			// centralUtils.addInstance(tTask);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection.equalsIgnoreCase("Interface")) {
+		} else if (selection.equalsIgnoreCase("Interface")) {  //min ocurs=1 max=1
 			if (childObjectIndexes[1] < 1) {
-				TTaskInterface tTaskInterface = new TTaskInterface();
-				tTaskInterface.setPortType(new QName(""));
-				tTaskInterface.setOperation("");
-				task.setInterface(tTaskInterface);
-				TTaskInterfaceUI tNot = new TTaskInterfaceUI(editor, composite,
+				TNotificationInterface tNotificationInterface = new TNotificationInterface();
+				tNotificationInterface.setPortType(new QName(""));
+				tNotificationInterface.setOperation("");
+				notification.setInterface(tNotificationInterface);
+				TNotificationInterfaceUI tNot = new TNotificationInterfaceUI(editor, composite,
 						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
-						this, tTaskInterface);
+						this, tNotificationInterface);
 				childComposites.add(childCompositeIndex, tNot);
-				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
-				// SWT.DEFAULT));
 				System.out.println("hikz value is " + i);
 				System.out.println("Number of CC" + childComposites.size());
-				// centralUtils.addInstance(tTask);
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
 			}
@@ -122,7 +123,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				TPriorityExpr tPriorityExpr = new TPriorityExpr();
 				tPriorityExpr.setExpressionLanguage("");
 				tPriorityExpr.getContent().add(0,"");
-				task.setPriority(tPriorityExpr);
+				notification.setPriority(tPriorityExpr);
 				TPriorityExprUI tNot = new TPriorityExprUI(editor, composite,
 						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
 						this, tPriorityExpr);
@@ -130,7 +131,47 @@ public class TTaskUI extends AbstractParentTagSection {
 				childObjectIndexes[2]++;
 				childCompositeIndex++;
 			}
+		}else if (selection.equalsIgnoreCase("PeopleAssignments")) { //min ocurs=1 max=1
+			if (childObjectIndexes[3] < 1) {
+				TPeopleAssignments tPeopleAssignments = new TPeopleAssignments();
+			//	tPeopleAssignments.
+			
+				notification.setPeopleAssignments(tPeopleAssignments);
+				TPeopleAssignmentsUI tNot = new TPeopleAssignmentsUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
+						this, tPeopleAssignments);
+				childComposites.add(childCompositeIndex, tNot);
+				childObjectIndexes[3]++;
+				childCompositeIndex++;
+			}
+		}else if (selection.equalsIgnoreCase("PresentationElements")) {// //min ocurs=1 max=1
+			if (childObjectIndexes[4] < 1) {
+				TPresentationElements tPresentationElements = new TPresentationElements();
+			//	tPeopleAssignments.
+			
+				notification.setPresentationElements(tPresentationElements);
+				TPresentationElementsUI tNot = new TPresentationElementsUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
+						this, tPresentationElements);
+				childComposites.add(childCompositeIndex, tNot);
+				childObjectIndexes[4]++;
+				childCompositeIndex++;
+			}
+		}else if (selection.equalsIgnoreCase("Renderings")) {
+			if (childObjectIndexes[5] < 1) {
+				TRenderings tRenderings = new TRenderings();
+			//	tPeopleAssignments.
+			
+				notification.setRenderings(tRenderings);
+				TRenderingsUI tNot = new TRenderingsUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
+						this, tRenderings);
+				childComposites.add(childCompositeIndex, tNot);
+				childObjectIndexes[5]++;
+				childCompositeIndex++;
+			}
 		}
+		
 
 		// sc3.layout(true,true);
 		try {
@@ -143,7 +184,7 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-		Composite innerZComp =new Composite(composite,SWT.NONE);
+		Composite innerZComp = toolkit.createComposite(composite);
 		innerZComp.setLayout(new GridLayout(4, true));
 		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
 				false, 1, 1));
@@ -166,13 +207,13 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		((Text) textBoxes.get(0)).setText(task.getName());
+		((Text) textBoxes.get(0)).setText(notification.getName());
 	}
 
 	@Override
 	public void refreshLogic(XMLEditor editor) throws JAXBException { /////////////////////////Start from this/////////////////////
 		ArrayList<TDocumentation> documentationGroup = new ArrayList<TDocumentation>();
-		documentationGroup = (ArrayList<TDocumentation>) task
+		documentationGroup = (ArrayList<TDocumentation>) notification
 				.getDocumentation();
 		for (int j = 0; j < childComposites.size(); j++) {
 			if (childComposites.get(j) instanceof TDocumentationUI) {
@@ -191,7 +232,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				}
 			} else if (childComposites.get(j) instanceof TTaskInterfaceUI) {
-				if (task.getInterface() != null) {
+				if (notification.getInterface() != null) {
 					TTaskInterfaceUI tNot;
 					if (((childObjectIndexes[1]) == 1)) {
 						tNot = (TTaskInterfaceUI) childComposites.get(j);
@@ -201,7 +242,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				}
 			} else if (childComposites.get(j) instanceof TPriorityExprUI) {
-				if (task.getPriority() != null) {
+				if (notification.getPriority() != null) {
 					TPriorityExprUI tNot;
 					if (((childObjectIndexes[2]) == 1)) {
 						tNot = (TPriorityExprUI) childComposites.get(j);
@@ -233,9 +274,9 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 			}
 
-			if (task.getInterface() != null) {
+			if (notification.getInterface() != null) {
 				TTaskInterfaceUI tNot;
-				TTaskInterface interfaceObject = (TTaskInterface) task
+				TTaskInterface interfaceObject = (TTaskInterface) notification
 						.getInterface();
 				try {
 					tNot = new TTaskInterfaceUI(editor, compositeDetailArea,
@@ -250,9 +291,9 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 			}
 			
-			if (task.getPriority() != null) {
+			if (notification.getPriority() != null) {
 				TPriorityExprUI tNot;
-				TPriorityExpr priorityObject = (TPriorityExpr) task
+				TPriorityExpr priorityObject = (TPriorityExpr) notification
 						.getPriority();
 				try {
 					tNot = new TPriorityExprUI(editor, compositeDetailArea,
@@ -280,7 +321,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			this.childObjectIndexes[0]--;
 			System.out.println("Removing object index taskui:"
 					+ childObjectIndex);
-			task.getDocumentation().remove(childObjectIndex);
+			notification.getDocumentation().remove(childObjectIndex);
 			for (Composite c : childComposites) {
 
 				if (c instanceof TDocumentationUI) {
@@ -311,7 +352,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 		} else if (itemName.equalsIgnoreCase("Interface")) {
 			this.childObjectIndexes[1]--;
-			task.setInterface(null);
+			notification.setInterface(null);
 			for (Composite c : childComposites) {
 				if (c instanceof TDocumentationUI) {
 					TDocumentationUI d = (TDocumentationUI) c;
@@ -335,7 +376,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 		}else if (itemName.equalsIgnoreCase("Priority")) {
 			this.childObjectIndexes[2]--;
-			task.setInterface(null);
+			notification.setInterface(null);
 			for (Composite c : childComposites) {
 				if (c instanceof TDocumentationUI) {
 					TDocumentationUI d = (TDocumentationUI) c;
@@ -363,17 +404,17 @@ public class TTaskUI extends AbstractParentTagSection {
 	}
 
 	public void loadModel(Object model) {
-		task = (TTask) model;
+		notification = (TNotification) model;
 		for (Composite c : childComposites) {
 			if (c instanceof TDocumentationUI) {
 				TDocumentationUI d = (TDocumentationUI) c; // children node type
-				d.loadModel(task.getDocumentation().get(d.objectIndex));
+				d.loadModel(notification.getDocumentation().get(d.objectIndex));
 			} else if (c instanceof TTaskInterfaceUI) {
 				TTaskInterfaceUI d = (TTaskInterfaceUI) c; // children node type
-				d.loadModel(task.getInterface());
+				d.loadModel(notification.getInterface());
 			} else if (c instanceof TPriorityExprUI) {
 				TPriorityExprUI d = (TPriorityExprUI) c; // children node type
-				d.loadModel(task.getPriority());
+				d.loadModel(notification.getPriority());
 			}
 		}
 	}
