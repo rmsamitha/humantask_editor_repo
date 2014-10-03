@@ -252,7 +252,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				System.out.println("Not that thing");
 			}
 		}*/
-		System.out.println("Not that thing");
+		
 		if (childComposites.size() == 0) {
 			for (int i = 0; i < documentationGroup.size(); i++) {
 				TDocumentationUI tNot;
