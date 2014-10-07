@@ -121,6 +121,7 @@ public class TTasksUI extends AbstractParentTagSection {
 				tTaskUI.setObjectIndex(tTaskUI.getObjectIndex() - 1);
 			}
 		}
+		
 	}
 
 	public void loadModel(Object model) throws JAXBException {
@@ -134,5 +135,5 @@ public class TTasksUI extends AbstractParentTagSection {
 			this.layout();
 		}
 	}
-
+	
 }

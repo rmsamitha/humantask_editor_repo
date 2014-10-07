@@ -13,10 +13,7 @@
             categoryId="PlugTest.commands.category"
             id="PlugTest.commands.sampleCommand">
       </command>
-      <command defaultHandler="PlugTest.XMLWriter.handler.ConvertHandler"
-      id="PlugTest.XMLWriter.convert" name="Convert">
-    </command>
-   </extension>
+    </extension>
    <extension
          point="org.eclipse.ui.bindings">
       <key

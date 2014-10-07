@@ -93,9 +93,9 @@ public class TTaskUI extends AbstractParentTagSection {
 				tTaskInterface.setPortType(new QName(""));
 				tTaskInterface.setOperation("");
 				task.setInterface(tTaskInterface);
-				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(
-						editor, composite, childCompositeIndex,
-						childObjectIndexes[1], SWT.NONE, this, tTaskInterface);
+				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, composite, this, SWT.NONE,
+						tTaskInterface, childObjectIndexes[1],
+						childCompositeIndex);
 				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
@@ -187,9 +187,9 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (task.getInterface() != null) {
 				TTaskInterface interfaceObject = (TTaskInterface) task
 						.getInterface();
-				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(
-						editor, detailArea, childCompositeIndex,
-						childObjectIndexes[1], SWT.NONE, this, interfaceObject);
+				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, detailArea, this, SWT.NONE,
+						interfaceObject, childObjectIndexes[1],
+						childCompositeIndex);
 				tTaskInterfaceUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
 				childCompositeIndex++;
@@ -244,7 +244,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				} else if (compositeInstance instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.compositeIndex > childCompositeIndex) {
+					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
 								.getCompositeIndex() - 1);
 					}
@@ -281,7 +281,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				} else if (compositeInstance instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.compositeIndex > childCompositeIndex) {
+					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
 								.getCompositeIndex() - 1);
 					}
@@ -316,7 +316,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				} else if (compositeInstance instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.compositeIndex > childCompositeIndex) {
+					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
 								.getCompositeIndex() - 1);
 					}
@@ -350,7 +350,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 				} else if (compositeInstance instanceof TTaskInterfaceUI) {
 					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.compositeIndex > childCompositeIndex) {
+					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
 								.getCompositeIndex() - 1);
 					}
@@ -387,6 +387,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tDocumentationUI.objectIndex));
 			} else if (compositeInstance instanceof TTaskInterfaceUI) {
 				TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance; 
+				tTaskInterfaceUI.refreshLogic(textEditor);
 				tTaskInterfaceUI.loadModel(task.getInterface());
 			} else if (compositeInstance instanceof TPriorityExprUI) {
 				TPriorityExprUI tPriorityUI = (TPriorityExprUI) compositeInstance; 
