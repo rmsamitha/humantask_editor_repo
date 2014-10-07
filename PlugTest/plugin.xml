@@ -18,13 +18,6 @@
     </command>
    </extension>
    <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            commandId="PlugTest.commands.sampleCommand"
-            class="PlugTest.handlers.SampleHandler">
-      </handler>
-   </extension>
-   <extension
          point="org.eclipse.ui.bindings">
       <key
             commandId="PlugTest.commands.sampleCommand"
@@ -76,14 +69,6 @@
             id="PlugTest.editors.MultiPageEditor"
             name="Sample Multi-page Editor">
       </editor>
-      <editor
-            class="org.wso2.developerstudio.humantask.editor.MyEditor"
-            contributorClass="org.eclipse.ui.texteditor.BasicTextEditorActionContributor"
-            extensions="my"
-            icon="icons/sample.gif"
-            id="PlugTest.editors.MyEditor"
-            name="Sample MyEditor">
-      </editor>
-   </extension>
+</extension>
 
 </plugin>

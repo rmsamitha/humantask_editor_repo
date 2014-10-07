@@ -1,7 +1,7 @@
 package org.wso2.developerstudio.humantask.editor;
 
 import org.eclipse.ui.editors.text.TextEditor;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.THumanInteractions;
+import org.wso2.developerstudio.humantask.models.THumanInteractions;
 
 public class XMLEditor extends TextEditor {
 

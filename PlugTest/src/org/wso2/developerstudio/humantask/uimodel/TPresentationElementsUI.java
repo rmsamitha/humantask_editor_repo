@@ -3,57 +3,35 @@ package org.wso2.developerstudio.humantask.uimodel;
 import java.util.ArrayList;
 
 import javax.xml.bind.JAXBException;
-import javax.xml.namespace.QName;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPresentationElements;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPresentationParameters;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TText;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
+import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
+import org.wso2.developerstudio.humantask.models.TPresentationElements;
+import org.wso2.developerstudio.humantask.models.TPresentationParameters;
+import org.wso2.developerstudio.humantask.models.TText;
 
 public class TPresentationElementsUI extends AbstractParentTagSection {
-	int [] childObjectIndexes;
-	public TPresentationElements presentationElements;   // Change the type of model object
+	private int [] childObjectIndexes;
+	public TPresentationElements presentationElements;
 	private int objectIndex;
 	private int compositeIndex;
-	public int getObjectIndex() {
-		return objectIndex;
-	}
-
-	public void setObjectIndex(int objectIndex) {
-		this.objectIndex = objectIndex;
-	}
-
-	public int getCompositeIndex() {
-		return compositeIndex;
-	}
-
-	public void setCompositeIndex(int compositeIndex) {
-		this.compositeIndex = compositeIndex;
-	}
-
-	int childCompositeIndex;
-	protected Composite container;
-	XMLEditor editor;
-	ArrayList<Composite> childComposites = new ArrayList<Composite>();
+	private int childCompositeIndex;
+	private Composite parentTagContainer;
+	private XMLEditor textEditor;
+	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	
-	public TPresentationElementsUI(XMLEditor editor,Composite parent,Composite container,
+	public TPresentationElementsUI(XMLEditor textEditor,Composite parentComposite,Composite parentTagContainer,
 			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
-		super(editor, parent,container,style,new String[] {"Name","Presentation Parameters","Subject","Description"},"Presentation Elements"); //change the list of items in drop down list
-		this.presentationElements=(TPresentationElements)modelParent; // change the model object
-		this.objectIndex=objectIndex;
+		super(textEditor, parentComposite,parentTagContainer,style,new String[] {HTEditorConstants.NAME_TAG_TITLE,HTEditorConstants.PRESENTATION_ELEMENTS_TITLE,HTEditorConstants.SUBJECT_TITLE,HTEditorConstants.DESCRIPTION_TITLE},HTEditorConstants.PRESENTATION_ELEMENTS_TITLE);
+		this.presentationElements=(TPresentationElements)modelParent;
 		this.compositeIndex=compositeIndex;
-		this.container=container;
-		this.editor=editor;
-		childObjectIndexes = new int[4];
+		this.parentTagContainer=parentTagContainer;
+		this.textEditor=textEditor;
+		this.childObjectIndexes = new int[4];
 		setExpanded(true);
 	}
 
@@ -63,113 +41,74 @@ public class TPresentationElementsUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TTaskUI taskUI=(TTaskUI)container;
-		taskUI.refreshChildren("PresentationElements", compositeIndex, objectIndex);
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		Composite tempCompo=this.getParent();
+		TTaskUI taskUI=(TTaskUI)parentTagContainer;
+		taskUI.refreshChildren(HTEditorConstants.PRESENTATION_ELEMENTS_TITLE, compositeIndex, objectIndex);
+		centralUtils.marshalMe(textEditor);
+		Composite parentComposite = this.getParent();
 		this.dispose();
-		tempCompo.layout(true,true);
+		parentComposite.layout(true, true);
 	}
 
 	@Override
 	public void refreshLogic(XMLEditor editor) throws JAXBException {
-		for(Composite c:childComposites){
-			c.dispose();
-			System.out.println("Disposed");
+		for(Composite composite:childComposites){
+				composite.dispose();
 			}
+		for (int childObjectIndexesElementIndex = 0; childObjectIndexesElementIndex < childObjectIndexes.length; childObjectIndexesElementIndex++) {
+			childObjectIndexes[childObjectIndexesElementIndex]=0;
+		}
 			childComposites.clear();
-			System.out.println("XC Size is :"+childComposites.size());
-			
-			
 			childCompositeIndex=0;
-			for (int j = 0; j < childObjectIndexes.length; j++) {
-				childObjectIndexes[j]=0;
-			}
 			
 			ArrayList<TText> tNameGroup = new ArrayList<TText>();
 			tNameGroup = (ArrayList<TText>) presentationElements.getName();
-			for (int i = 0; i < tNameGroup.size(); i++) {
-				TNameUI tNot;
-				
-					try {
-						 tNot = new TNameUI(editor, compositeDetailArea,
+			for (int tNameGroupIndex = 0; tNameGroupIndex < tNameGroup.size(); tNameGroupIndex++) {
+				 TNameUI tNameUI;
+				 tNameUI = new TNameUI(editor, detailArea,
 								childCompositeIndex, childObjectIndexes[0], SWT.NONE, this,
 								tNameGroup.get(childObjectIndexes[0]));
-						tNot.initialize(editor);
-						childComposites.add(childCompositeIndex, tNot);
+						tNameUI.initialize(editor);
+						childComposites.add(childCompositeIndex, tNameUI);
 						childCompositeIndex++;
 						childObjectIndexes[0]++;
-					} catch (JAXBException e) {
-						
-						e.printStackTrace();
-					}
-					
-				
-				
-				//tNot.updated = true;
-				//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-				//sc3.layout(true, true);
-				//innerSection.layout(true, true);
-				
 			}
 			
 			if (presentationElements.getPresentationParameters() != null) {
-				TPresentationParametersUI tNot;
+				TPresentationParametersUI tPresentationParametersUI;
 				TPresentationParameters presentationParametersObject = (TPresentationParameters) presentationElements.getPresentationParameters();
-						
-				try {
-					tNot = new TPresentationParametersUI(editor,compositeDetailArea,this,SWT.NONE,presentationParametersObject,childObjectIndexes[1],childCompositeIndex);
-					tNot.initialize(editor);
-					childComposites.add(childCompositeIndex, tNot);
+				tPresentationParametersUI = new TPresentationParametersUI(editor,detailArea,this,SWT.NONE,presentationParametersObject,childObjectIndexes[1],childCompositeIndex);
+				tPresentationParametersUI.initialize(editor);
+					childComposites.add(childCompositeIndex, tPresentationParametersUI);
 					childCompositeIndex++;
 					childObjectIndexes[1]++;
-				} catch (JAXBException e) {
-					e.printStackTrace();
-				}
 			}
 		}
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		// TODO Auto-generated method stub
-
-	}
+		}
 
 	@Override
 	public void newButtonLogic(String selection, ScrolledComposite sc3,
 			XMLEditor editor, Composite composite) throws JAXBException {
-		if (selection.equalsIgnoreCase("Name")) {
+		if (selection.equalsIgnoreCase(HTEditorConstants.NAME_TAG_TITLE)) {
 			TText tName = new TText();
 			tName.setLang("");
 			tName.getContent().add(new String(""));
 			presentationElements.getName().add(childObjectIndexes[0], tName);
-			TNameUI tNot = new TNameUI(editor, composite,
+			TNameUI tNameUI = new TNameUI(editor, composite,
 					childCompositeIndex, childObjectIndexes[0], SWT.NONE, this,
 					tName);
-			childComposites.add(childCompositeIndex, tNot);
-			// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
-			// SWT.DEFAULT));
-			System.out.println("hikz value is " + i);
-			System.out.println("Number of CC" + childComposites.size());
-			// centralUtils.addInstance(tTask);
+			childComposites.add(childCompositeIndex, tNameUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection.equalsIgnoreCase("Presentation Parameters")) {
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.PRESENTATION_PARAMETERS_TITLE)) {
 			if (childObjectIndexes[1] < 1) {
 				TPresentationParameters tPresentationParameters = new TPresentationParameters();
 				tPresentationParameters.setExpressionLanguage("");
-				presentationElements.setPresentationParameters(tPresentationParameters);;
-				TPresentationParametersUI tNot = new TPresentationParametersUI(editor,compositeDetailArea,this,SWT.NONE,tPresentationParameters,childObjectIndexes[1],childCompositeIndex);
-				childComposites.add(childCompositeIndex, tNot);
-				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
-				// SWT.DEFAULT));
-				System.out.println("hikz value is " + i);
-				System.out.println("Number of CC" + childComposites.size());
-				// centralUtils.addInstance(tTask);
+				presentationElements.setPresentationParameters(tPresentationParameters);
+				TPresentationParametersUI tPresentationParametersUI = new TPresentationParametersUI(editor,detailArea,this,SWT.NONE,tPresentationParameters,childObjectIndexes[1],childCompositeIndex);
+				childComposites.add(childCompositeIndex, tPresentationParametersUI);
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
 			}
@@ -189,47 +128,75 @@ public class TPresentationElementsUI extends AbstractParentTagSection {
 			}
 		}*/
 
-		// sc3.layout(true,true);
-		try {
-			centralUtils.marshalMe(editor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-
+		centralUtils.marshalMe(editor);
 	}
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex,
 			int childObjectIndex) {
-		if (itemName.equalsIgnoreCase("Name")) {
+		if (itemName.equalsIgnoreCase(HTEditorConstants.NAME_TAG_TITLE)) {
 			this.childObjectIndexes[0]--;
-			System.out.println("Removing object index taskui:"
-					+ childObjectIndex);
 			presentationElements.getName().remove(childObjectIndex);
-			for (Composite c : childComposites) {
+			for (Composite compositeInstance : childComposites) {
 
-				if (c instanceof TNameUI) {
+				if (compositeInstance instanceof TNameUI) {
 					
-					TNameUI d = (TNameUI) c;
-					if (d.compositeIndex > childCompositeIndex) {
-						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					TNameUI tNameUI = (TNameUI) compositeInstance;
+					if (tNameUI.compositeIndex > childCompositeIndex) {
+						tNameUI.setCompositeIndex(tNameUI.getCompositeIndex() - 1);
 					}
-					if (d.objectIndex > childObjectIndex) {
-						d.setObjectIndex(d.getObjectIndex() - 1);
+					if (tNameUI.objectIndex > childObjectIndex) {
+						tNameUI.setObjectIndex(tNameUI.getObjectIndex() - 1);
 					}
-				}/* else if (c instanceof TTaskInterfaceUI) {
-					TTaskInterfaceUI d = (TTaskInterfaceUI) c;
+				} else if (compositeInstance instanceof TPresentationParametersUI) {
+					TPresentationParametersUI tPresentationParametersUI = (TPresentationParametersUI) compositeInstance;
+					if (tPresentationParametersUI.getCompositeIndex() > childCompositeIndex) {
+						tPresentationParametersUI.setCompositeIndex(tPresentationParametersUI.getCompositeIndex() - 1);
+					}
+
+				} /*else if (c instanceof TPriorityExprUI) {
+					TPriorityExprUI d = (TPriorityExprUI) c;
 					if (d.compositeIndex > childCompositeIndex) {
 						d.setCompositeIndex(d.getCompositeIndex() - 1);
 					}
 
-				} else if (c instanceof TPriorityExprUI) {
+				}else if (c instanceof TPresentationElementsUI) {
+					TPresentationElementsUI d = (TPresentationElementsUI) c;
+					if (d.getCompositeIndex() > childCompositeIndex) {
+						d.setCompositeIndex(d.getCompositeIndex() - 1);
+					}
+
+				}*/ else {
+					
+				}
+
+			}
+		}else if (itemName.equalsIgnoreCase(HTEditorConstants.PRESENTATION_PARAMETERS_TITLE)) {
+			this.childObjectIndexes[1]--;
+			presentationElements.getName().remove(childObjectIndex);
+			for (Composite compositeInstance : childComposites) {
+
+				if (compositeInstance instanceof TNameUI) {
+					
+					TNameUI tNameUI = (TNameUI) compositeInstance;
+					if (tNameUI.compositeIndex > childCompositeIndex) {
+						tNameUI.setCompositeIndex(tNameUI.getCompositeIndex() - 1);
+					}
+				} else if (compositeInstance instanceof TPresentationParametersUI) {
+					TPresentationParametersUI tPresentationParametersUI = (TPresentationParametersUI) compositeInstance;
+					if (tPresentationParametersUI.getCompositeIndex() > childCompositeIndex) {
+						tPresentationParametersUI.setCompositeIndex(tPresentationParametersUI.getCompositeIndex() - 1);
+					}
+
+					if (tPresentationParametersUI.getObjectIndex() > childObjectIndex) {
+						tPresentationParametersUI.setObjectIndex(tPresentationParametersUI.getObjectIndex() - 1);
+					}
+
+				} /*else if (c instanceof TPriorityExprUI) {
 					TPriorityExprUI d = (TPriorityExprUI) c;
 					if (d.compositeIndex > childCompositeIndex) {
 						d.setCompositeIndex(d.getCompositeIndex() - 1);
@@ -250,20 +217,38 @@ public class TPresentationElementsUI extends AbstractParentTagSection {
 
 	}
 	
-	public void loadModel(Object model) {
-		presentationElements = (TPresentationElements) model;
-		for (Composite c : childComposites) {
-			if (c instanceof TNameUI) {
-				TNameUI d = (TNameUI) c; // children node type
-				d.loadModel(presentationElements.getName().get(d.objectIndex));
-			}/* else if (c instanceof TTaskInterfaceUI) {
-				TTaskInterfaceUI d = (TTaskInterfaceUI) c; // children node type
-				d.loadModel(task.getInterface());
-			} else if (c instanceof TPriorityExprUI) {
+	public void loadModel(Object objectModel) throws JAXBException {
+		presentationElements = (TPresentationElements) objectModel;
+		for (Composite compositeInstance : childComposites) {
+			if (compositeInstance instanceof TNameUI) {
+				TNameUI tNameUI = (TNameUI) compositeInstance; // children node type
+				tNameUI.loadModel(presentationElements.getName().get(tNameUI.objectIndex));
+			} else if (compositeInstance instanceof TPresentationParametersUI) {
+				TPresentationParametersUI tPresentationParametersUI = (TPresentationParametersUI) compositeInstance;
+				tPresentationParametersUI.presentationParameters=presentationElements.getPresentationParameters();// children node type
+				tPresentationParametersUI.refreshLogic(textEditor);
+				tPresentationParametersUI.loadModel(presentationElements.getPresentationParameters());
+			} /*else if (c instanceof TPriorityExprUI) {
 				TPriorityExprUI d = (TPriorityExprUI) c; // children node type
 				d.loadModel(task.getPriority());
 			}*/
 		}
+	}
+
+	public int getObjectIndex() {
+		return objectIndex;
+	}
+
+	public void setObjectIndex(int objectIndex) {
+		this.objectIndex = objectIndex;
+	}
+
+	public int getCompositeIndex() {
+		return compositeIndex;
+	}
+
+	public void setCompositeIndex(int compositeIndex) {
+		this.compositeIndex = compositeIndex;
 	}
 
 }

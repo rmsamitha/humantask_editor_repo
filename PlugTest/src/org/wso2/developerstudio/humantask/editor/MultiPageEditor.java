@@ -1,24 +1,8 @@
 package org.wso2.developerstudio.humantask.editor;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.logging.Logger;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.Transformer;
-
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.IResource;
@@ -34,38 +18,30 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.ErrorDialog;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.*;
+import org.eclipse.ui.IEditorInput;
+import org.eclipse.ui.IEditorPart;
+import org.eclipse.ui.IEditorSite;
+import org.eclipse.ui.IFileEditorInput;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.eclipse.ui.ide.IDE;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.THumanInteractions;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class MultiPageEditor extends MultiPageEditorPart {
 
 	private XMLEditor textEditor;
-	private THumanInteractions rootElement;
-	Transition composite;
+	private Transition baseUI;
+
 	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class
 			.getName());
 
 	public MultiPageEditor() {
 		super();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
-		setRootElement(new THumanInteractions());
-	}
 
-	public THumanInteractions getRootElement() {
-		return rootElement;
-	}
-
-	public void setRootElement(THumanInteractions rootElement) {
-		this.rootElement = rootElement;
 	}
 
 	protected void createPages() {
@@ -85,81 +61,21 @@ public class MultiPageEditor extends MultiPageEditorPart {
 	}
 
 	void createPage1() {
-		//composite = new BaseView(textEditor, getContainer(), SWT.NONE);
-		composite=new Transition(textEditor, getContainer(), SWT.NONE);
-		int pageIndex = addPage(composite);
+		// composite = new BaseView(textEditor, getContainer(), SWT.NONE);
+		baseUI = new Transition(textEditor, getContainer(), SWT.NONE);
+		int pageIndex = addPage(baseUI);
 		setPageText(pageIndex, HTEditorConstants.UI_EDITOR_TITLE);
 	}
 
-	public THumanInteractions getRootObject() throws JAXBException {
-		IDocument textEditorDocument = textEditor.getDocumentProvider()
-				.getDocument(textEditor.getEditorInput());
-		String textEditorText = textEditorDocument.get();
-		JAXBContext jaxbContext = JAXBContext
-				.newInstance(HTEditorConstants.HT_DEFAULT_NAMESPACE);
-		Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-		return loadXML(new StringReader(textEditorText), unmarshaller);
-	}
-
-	public THumanInteractions loadXML(Reader editorTextReader,
-			Unmarshaller unmarshaller) throws JAXBException {
-		Object modelObject = unmarshaller.unmarshal(editorTextReader);
-		if (rootElement == null) {
-			rootElement = ((JAXBElement<THumanInteractions>) modelObject)
-					.getValue();
-		}
-		return rootElement;
-	}
-
-	public String docToString(Document doc) throws TransformerException {
-		DOMSource domSource = new DOMSource(doc);
-		StringWriter writer = new StringWriter();
-		StreamResult result = new StreamResult(writer);
-		TransformerFactory tf = TransformerFactory.newInstance();
-		Transformer transformer;
-		transformer = tf.newTransformer();
-		transformer.transform(domSource, result);
-
-		return writer.toString();
-	}
-
-	public Document xmlRead(String xmlText)
-			throws ParserConfigurationException, SAXException, IOException {
-		Document document = null;
-		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory
-				.newInstance();
-		DocumentBuilder documentBuilder = documentBuilderFactory
-				.newDocumentBuilder();
-		InputSource inputSource = new InputSource(new StringReader(xmlText));
-		document = documentBuilder.parse(inputSource);
-		document.getDocumentElement().normalize();
-		System.out.print(document);
-
-		return document;
-	}
-
-	/**
-	 * The <code>MultiPageEditorPart</code> implementation of this
-	 * <code>IWorkbenchPart</code> method disposes all nested editors.
-	 * Subclasses may extend.
-	 */
 	public void dispose() {
 		ResourcesPlugin.getWorkspace().removeResourceChangeListener(listener);
 		super.dispose();
 	}
 
-	/**
-	 * Saves the multi-page editor's document.
-	 */
 	public void doSave(IProgressMonitor monitor) {
 		getEditor(0).doSave(monitor);
 	}
 
-	/**
-	 * Saves the multi-page editor's document as another file. Also updates the
-	 * text for page 0's tab, and updates this multi-page editor's input to
-	 * correspond to the nested editor's.
-	 */
 	public void doSaveAs() {
 		IEditorPart editor = getEditor(0);
 		editor.doSaveAs();
@@ -167,18 +83,11 @@ public class MultiPageEditor extends MultiPageEditorPart {
 		setInput(editor.getEditorInput());
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on IEditorPart
-	 */
 	public void gotoMarker(IMarker marker) {
 		setActivePage(0);
 		IDE.gotoMarker(getEditor(0), marker);
 	}
 
-	/**
-	 * The <code>MultiPageEditorExample</code> implementation of this method
-	 * checks that the input is an instance of <code>IFileEditorInput</code>.
-	 */
 	public void init(IEditorSite site, IEditorInput editorInput)
 			throws PartInitException {
 		if (!(editorInput instanceof IFileEditorInput))
@@ -187,32 +96,25 @@ public class MultiPageEditor extends MultiPageEditorPart {
 		super.init(site, editorInput);
 	}
 
-	/*
-	 * (non-Javadoc) Method declared on IEditorPart.
-	 */
 	public boolean isSaveAsAllowed() {
 		return true;
 	}
 
-	/**
-	 * Calculates the contents of page 2 when the it is activated.
-	 */
 	protected void pageChange(int newPageIndex) {
 		super.pageChange(newPageIndex);
 		if (newPageIndex == 1) {
 			try {
-			CentralUtils centralUtils=CentralUtils.getInstance(textEditor);
-			centralUtils.unmarshalMe(textEditor);
-			System.out.print("Unmarshalled");
-			composite.loadModel(textEditor.getRootElement().getTasks());
-			centralUtils.redraw();
+				CentralUtils centralUtils = CentralUtils
+						.getInstance(textEditor);
+				centralUtils.unmarshalMe(textEditor);
+				baseUI.loadModel(textEditor.getRootElement().getTasks());
+				centralUtils.redraw();
 			} catch (JAXBException e) {
-				e.printStackTrace();
+				LOG.info(e.getMessage());
 			}
 		}
 	}
-	
-	// ////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 	IResourceChangeListener listener = new IResourceChangeListener() {
 		public void printDelta(IResourceDelta d, String indent) {
 
@@ -274,6 +176,4 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			}
 		}
 	};
-
-	// ///////////////////////////////////////////////////////////////////////////////////////////////////////
 }

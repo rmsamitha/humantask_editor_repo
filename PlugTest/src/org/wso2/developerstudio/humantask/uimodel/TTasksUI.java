@@ -6,185 +6,133 @@ import javax.xml.bind.JAXBException;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
-import org.wso2.developerstudio.humantask.editor.BaseView;
+import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
+import org.wso2.developerstudio.humantask.editor.Transition;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TBoolean;
+import org.wso2.developerstudio.humantask.models.TBoolean;
+import org.wso2.developerstudio.humantask.models.TTask;
+import org.wso2.developerstudio.humantask.models.TTasks;
 
 public class TTasksUI extends AbstractParentTagSection {
-	
-	int [] childObjectIndexes;
-	public TTasks tasks;   // Change the type of model object
+
+	private int[] childObjectIndexes;
+	public TTasks tasks;
 	private int objectIndex;
 	private int compositeIndex;
-	int childCompositeIndex;
-	protected Composite container;
-	XMLEditor editor;
-	ArrayList<Composite> childComposites = new ArrayList<Composite>();
-	
-	public TTasksUI(XMLEditor editor,Composite parent,Composite container,
-			int style,Object modelParent,int objectIndex,int compositeIndex) throws JAXBException {
-		super(editor, parent,container,style,new String[] {"Task"},"Tasks"); //change the list of items in drop down list
-		this.tasks=(TTasks)modelParent; // change the model object
-		this.objectIndex=objectIndex;
-		this.compositeIndex=compositeIndex;
-		this.container=container;
-		this.editor=editor;
-		childObjectIndexes = new int[1];
+	private int childCompositeIndex;
+	private Composite parentTagContainer;
+	private XMLEditor textEditor;
+	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
+
+	public TTasksUI(XMLEditor textEditor, Composite parentComposite,
+			Composite parentTagContainer, int styleBit, Object modelParent,
+			int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit,
+				new String[] { HTEditorConstants.TASK_TITLE },
+				HTEditorConstants.TASKS_TITLE);
+		this.tasks = (TTasks) modelParent;
+		this.objectIndex = objectIndex;
+		this.compositeIndex = compositeIndex;
+		this.parentTagContainer = parentTagContainer;
+		this.textEditor = textEditor;
+		this.childObjectIndexes = new int[1];
 		setExpanded(true);
-	} 
-
-	@Override
-	public void btnUpdateHandleLogic( XMLEditor textEditor)
-			throws JAXBException {
 	}
 
 	@Override
-	public void btnRemoveHandleLogic( XMLEditor textEditor)
-			throws JAXBException {
-		BaseView baseView=(BaseView)container;
-		baseView.refreshChildren(compositeIndex, objectIndex);
-		
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		Composite tempCompo=this.getParent();
+	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	}
+
+	@Override
+	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+		Transition transition = (Transition) parentTagContainer;
+		transition.refreshChildren(compositeIndex, objectIndex);
+		centralUtils.marshalMe(textEditor);
+		Composite parentComposite = this.getParent();
 		this.dispose();
-		tempCompo.layout(true,true);
-
+		parentComposite.layout(true, true);
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException  {
-		/////////////////////////////////////////// This is Item a //////////////////////////////////
-		System.out.println("THis is TTAsks");
-		ArrayList<TTask> groups = new ArrayList<TTask>();
+	public void refreshLogic(XMLEditor editor) throws JAXBException {
 		if (tasks != null) {
-			for(Composite c:childComposites){
-				c.dispose();
-				System.out.println("Disposed");
-				}
-				childComposites.clear();
-				System.out.println("XC Size is :"+childComposites.size());
-				
-				
-				childCompositeIndex=0;
-				for (int j = 0; j < childObjectIndexes.length; j++) {
-					childObjectIndexes[j]=0;
-				}
-			
-			groups = (ArrayList<TTask>) tasks.getTask();
-			
-		for (int i = 0; i < groups.size(); i++) {
-			TTaskUI tNot;
-			
-				try {
-					tNot = new TTaskUI(editor,compositeDetailArea,this,SWT.NONE,groups.get(childObjectIndexes[0]),childObjectIndexes[0],childCompositeIndex);
-					tNot.initialize(editor);
-					childComposites.add(childCompositeIndex, tNot);
-					childCompositeIndex++;
-					childObjectIndexes[0]++;
-				} catch (JAXBException e) {
-					
-					e.printStackTrace();
-				}
-				
-			
-			
-			//tNot.updated = true;
-			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-			//sc3.layout(true, true);
-			//innerSection.layout(true, true);
-			
-		}
-		////////////////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("refresh l value is " + childCompositeIndex);
-		}
+			for (Composite composite : childComposites) {
+				composite.dispose();
+			}
+			for (int childObjectIndexesElementIndex = 0; childObjectIndexesElementIndex < childObjectIndexes.length; childObjectIndexesElementIndex++) {
+				childObjectIndexes[childObjectIndexesElementIndex] = 0;
+			}
+			childComposites.clear();
+			childCompositeIndex = 0;
 
+			ArrayList<TTask> taskGroup = (ArrayList<TTask>) tasks.getTask();
+			for (int i = 0; i < taskGroup.size(); i++) {
+				TTaskUI tTaskUI = new TTaskUI(editor, detailArea, this,
+						SWT.NONE, taskGroup.get(childObjectIndexes[0]),
+						childObjectIndexes[0], childCompositeIndex);
+				tTaskUI.initialize(editor);
+				childComposites.add(childCompositeIndex, tTaskUI);
+				childCompositeIndex++;
+				childObjectIndexes[0]++;
+			}
+		}
 	}
 
 	@Override
-	public void newButtonLogic(String selection,
-			ScrolledComposite sc3, XMLEditor editor, Composite composite) throws JAXBException {
-		if (selection.equalsIgnoreCase("Task")) {
-			/*if (editor.getRootElement().getTasks() == null) {
-				TTasks tTasks = new TTasks();
-				editor.getRootElement().setTasks(
-						tTasks);
-			}*/
-			System.out.println("Child Index new :"+childCompositeIndex);
+	public void newButtonLogic(String selection, ScrolledComposite sc3,
+			XMLEditor editor, Composite composite) throws JAXBException {
+		if (selection.equalsIgnoreCase(HTEditorConstants.TASK_TITLE)) {
 			TTask tTask = new TTask();
 			tTask.setName("");
 			tTask.setActualOwnerRequired(TBoolean.YES);
 			tasks.getTask().add(childObjectIndexes[0], tTask);
-			TTaskUI tNot = new TTaskUI(editor,composite,this,SWT.NONE,tTask,childObjectIndexes[0],childCompositeIndex);
-			childComposites.add(childCompositeIndex, tNot);
-			//sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-			centralUtils.addInstance(tTask);
+			TTaskUI tTaskUI = new TTaskUI(editor, composite, this, SWT.NONE,
+					tTask, childObjectIndexes[0], childCompositeIndex);
+			childComposites.add(childCompositeIndex, tTaskUI);
 			childObjectIndexes[0]++;
-			System.out.println("Array size last:"+(editor.getRootElement().getTasks().equals(tasks)));
 			childCompositeIndex++;
 		}
-		//sc3.layout(true,true);
-		try {
-			centralUtils.marshalMe(editor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		
-		
-
+		centralUtils.marshalMe(editor);
 	}
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-	
-		//compositeDetailArea.setLayout(new GridLayout(1, false));
 	}
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		
 	}
 
 	@Override
-	public void refreshChildren(String itemName,int childCompositeIndex, int childObjectIndex) {
-		System.out.println("Child Index :"+childCompositeIndex);
+	public void refreshChildren(String itemName, int childCompositeIndex,
+			int childObjectIndex) {
 		childComposites.remove(childCompositeIndex);
 		tasks.getTask().remove(objectIndex);
 		this.childCompositeIndex--;
 		this.childObjectIndexes[0]--;
-		for (Composite c : childComposites) {
-			TTaskUI d = (TTaskUI) c;  //children node type
-			if (d.compositeIndex > childCompositeIndex) {
-				d.compositeIndex--;
+		for (Composite compositeInstance : childComposites) {
+			TTaskUI tTaskUI = (TTaskUI) compositeInstance;
+			if (tTaskUI.getCompositeIndex() > childCompositeIndex) {
+				tTaskUI.setCompositeIndex(tTaskUI.getCompositeIndex() - 1);
 			}
-			if (d.objectIndex >= childObjectIndex) {
-				d.objectIndex--;
+			if (tTaskUI.getObjectIndex() >= childObjectIndex) {
+				tTaskUI.setObjectIndex(tTaskUI.getObjectIndex() - 1);
 			}
 		}
-		
 	}
-	public void loadModel(Object model) throws JAXBException{
+
+	public void loadModel(Object model) throws JAXBException {
 		tasks = (TTasks) model;
 		System.out.println(childComposites.size());
-		for (Composite c : childComposites) {
-			System.out.println("This is the testing");
-			TTaskUI d = (TTaskUI) c;  //children node type
-			d.task=tasks.getTask().get(d.objectIndex);
-			d.refreshLogic(editor);
-			d.loadModel(tasks.getTask().get(d.objectIndex));
+		for (Composite compositeInstance : childComposites) {
+			TTaskUI tTaskUI = (TTaskUI) compositeInstance;
+			tTaskUI.task = tasks.getTask().get(tTaskUI.getObjectIndex());
+			tTaskUI.refreshLogic(textEditor);
+			tTaskUI.loadModel(tasks.getTask().get(tTaskUI.getObjectIndex()));
 			this.layout();
 		}
 	}
-	
-	
 
 }

@@ -7,18 +7,69 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
-
-import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
+import org.wso2.developerstudio.humantask.editor.AbstractEndTagSection;
+import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
+import org.wso2.developerstudio.humantask.models.TDocumentation;
+import org.wso2.developerstudio.humantask.models.TPriorityExpr;
+import org.wso2.developerstudio.humantask.models.TTaskInterface;
+import org.wso2.developerstudio.humantask.models.TText;
 
-public class TPriorityExprUI extends AbstractParentTagSection {
-	Composite container;
-	public int objectIndex;
+public class TPriorityExprUI extends AbstractEndTagSection {
+	private Composite parentTagContainer;
+	private TPriorityExpr tPriorityExpr;
 	protected int compositeIndex;
-	TPriorityExpr tPriorityExpr;
+	protected int objectIndex;
+	
+	public TPriorityExprUI(XMLEditor textEditor, Composite parentComposite,
+			int compositeIndex, int objectIndex, int styleBit,
+			Composite parentTagContainer, Object modelParent) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit, HTEditorConstants.PRIORITY_TITLE);
+		this.objectIndex = objectIndex;
+		this.tPriorityExpr = (TPriorityExpr) modelParent;
+		this.parentTagContainer = parentTagContainer;
+		this.compositeIndex =compositeIndex;
+		setExpanded(true); 
+	}
+
+	@Override
+	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+		tPriorityExpr.setExpressionLanguage(((Text) textBoxesList.get(0)).getText());
+		tPriorityExpr.getContent().remove(0);
+		tPriorityExpr.getContent().add(0,((Text) textBoxesList.get(1)).getText());
+		centralUtils.marshalMe(textEditor);
+	}
+
+	@Override
+	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+		TTaskUI parentContainer = (TTaskUI) parentTagContainer;
+		parentContainer.refreshChildren(HTEditorConstants.PRIORITY_TITLE,compositeIndex, objectIndex);
+		centralUtils.marshalMe(textEditor);
+		Composite parentComposite = this.getParent();
+		this.dispose();
+		parentComposite.layout(true, true);
+	}
+
+	@Override
+	public void initialize(XMLEditor textEditor) throws JAXBException {
+		((Text) textBoxesList.get(0)).setText(tPriorityExpr.getExpressionLanguage());
+		((Text) textBoxesList.get(1)).setText((String)tPriorityExpr.getContent().get(0));
+	}
+
+	@Override
+	public void fillDetailArea() {
+		Label lblExprLang= formToolkit.createLabel(detailArea, "Expression Language", SWT.NONE);
+		Text txtExprLang = formToolkit.createText(detailArea, "", SWT.NONE);
+		textBoxesList.add(0, txtExprLang);
+		Label lblValue = formToolkit.createLabel(detailArea, "Value",
+				SWT.NONE);
+		Text txtValue= formToolkit.createText(detailArea, "", SWT.NONE);
+		textBoxesList.add(1, txtValue);
+	}
+
+	public void loadModel(Object model){
+		tPriorityExpr = (TPriorityExpr) model;
+	}
 	
 	public int getObjectIndex() {
 		return objectIndex;
@@ -26,8 +77,6 @@ public class TPriorityExprUI extends AbstractParentTagSection {
 
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
-	
-		
 	}
 
 	public int getCompositeIndex() {
@@ -36,71 +85,5 @@ public class TPriorityExprUI extends AbstractParentTagSection {
 
 	public void setCompositeIndex(int compositeIndex) {
 		this.compositeIndex = compositeIndex;
-	}
-
-	public TPriorityExprUI(XMLEditor editor, Composite parent,
-			int compositeIndex, int objectIndex, int style,
-			Composite container, Object modelParent) {
-		super(editor, parent, container, style, "Priority");
-		this.objectIndex = objectIndex;
-		tPriorityExpr = (TPriorityExpr) modelParent;
-		this.container = container;
-		this.compositeIndex =compositeIndex;
-		setExpanded(true);
-	}
-
-	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		tPriorityExpr.setExpressionLanguage(textBoxes.get(0).getText());
-		tPriorityExpr.getContent().remove(0);
-		tPriorityExpr.getContent().add(0,textBoxes.get(1).getText());
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-
-	}
-
-	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TNotificationUI parentContainer = (TNotificationUI) container;
-		parentContainer.refreshChildren("Priority",compositeIndex, objectIndex);
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-		Composite tempCompo = this.getParent();
-		this.dispose();
-		tempCompo.layout(true, true);
-
-	}
-
-	@Override
-	public void initialize(XMLEditor textEditor) throws JAXBException {
-		textBoxes.get(0).setText(tPriorityExpr.getExpressionLanguage());
-		textBoxes.get(1).setText((String)tPriorityExpr.getContent().get(0));
-
-	}
-
-	@Override
-	public void fillDetailArea() {
-		Label lblExprLang= toolkit.createLabel(detailArea, "Expression Language", SWT.NONE);
-		lblExprLang.setBounds(20, 23, 100, 15);
-		Text txtExprLang = toolkit.createText(detailArea, "", SWT.NONE);
-		txtExprLang.setBounds(152, 23, 100, 21);
-		textBoxes.add(0, txtExprLang);
-		Label lblValue = toolkit.createLabel(detailArea, "Value",
-				SWT.NONE);
-		lblValue.setBounds(252, 23, 100, 15);
-		Text txtValue= toolkit.createText(detailArea, "", SWT.NONE);
-		txtValue.setBounds(384, 23, 100, 21);
-		textBoxes.add(1, txtValue);
-
-	}
-
-	public void loadModel(Object model){
-		tPriorityExpr = (TPriorityExpr) model;
 	}
 }
