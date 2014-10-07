@@ -19,7 +19,6 @@ import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPresentationElem
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTasks;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 
@@ -135,7 +134,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[3] < 1) {
 				TPresentationElements tPresentationElements = new TPresentationElements();
 				task.setPresentationElements(tPresentationElements);;
-				TPresentationElementsUI tNot = new TPresentationElementsUI(editor,composite,this,SWT.NONE,tPresentationElements,childObjectIndexes[0],childCompositeIndex);;
+				TPresentationElementsUI tNot = new TPresentationElementsUI(editor,composite,this,SWT.NONE,tPresentationElements,childObjectIndexes[0],childCompositeIndex);
 				childComposites.add(childCompositeIndex, tNot);
 				childObjectIndexes[3]++;
 				childCompositeIndex++;
@@ -197,61 +196,6 @@ public class TTaskUI extends AbstractParentTagSection {
 			for (int j = 0; j < childObjectIndexes.length; j++) {
 				childObjectIndexes[j]=0;
 			}
-		/*for (int j = 0; j < childComposites.size(); j++) {
-			if (childComposites.get(j) instanceof TDocumentationUI) {
-				for (int i = 0; i < documentationGroup.size(); i++) {
-					TDocumentationUI tNot;
-					if (((childObjectIndexes[0]) == documentationGroup.size())) {
-						try {
-							tNot = (TDocumentationUI) childComposites.get(j);
-							tNot.initialize(editor);
-						} catch (JAXBException e) {
-							e.printStackTrace();
-						}
-					} else {
-						refreshed = false;
-
-					}
-				}
-			} else if (childComposites.get(j) instanceof TTaskInterfaceUI) {
-				if (task.getInterface() != null) {
-					TTaskInterfaceUI tNot;
-					if (((childObjectIndexes[1]) == 1)) {
-						tNot = (TTaskInterfaceUI) childComposites.get(j);
-						tNot.initialize(editor);
-					} else {
-						refreshed = false;
-					}
-				}
-			} else if (childComposites.get(j) instanceof TPriorityExprUI) {
-				if (task.getPriority() != null) {
-					TPriorityExprUI tNot;
-					if (((childObjectIndexes[2]) == 1)) {
-						tNot = (TPriorityExprUI) childComposites.get(j);
-						tNot.initialize(editor);
-					} else {
-						refreshed = false;
-					}
-				}
-			}else if (childComposites.get(j) instanceof TPresentationElementsUI) {
-				if (task.getPresentationElements() != null) {
-					TPresentationElementsUI tNot;
-					if (((childObjectIndexes[3]) == 1)) {
-						tNot = (TPresentationElementsUI) childComposites.get(j);
-						tNot.initialize(editor);
-					} else {
-						if (itemName.equalsIgnoreCase("Documentation")) {
-							this.childObjectIndexes[0]--;
-							System.out.println("Removing object index taskui:"
-									+ childObjectIndex);
-							task.getDocumentation().remove(childObjectIndex);
-							for (Compo		refreshed = false;
-					}
-				}
-			}else {
-				System.out.println("Not that thing");
-			}
-		}*/
 		
 		if (childComposites.size() == 0) {
 			for (int i = 0; i < documentationGroup.size(); i++) {

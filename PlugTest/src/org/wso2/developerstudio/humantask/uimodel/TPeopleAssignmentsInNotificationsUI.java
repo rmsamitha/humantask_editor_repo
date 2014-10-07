@@ -13,13 +13,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotificationInterface;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TGenericHumanRoleAssignment;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPeopleAssignments;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPeopleAssignments;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPotentialOwnerAssignment;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 
-public class TNotificationInterfaceUI extends AbstractParentTagSection {
+public class TPeopleAssignmentsInNotificationsUI extends AbstractParentTagSection {
 	int[] childObjectIndexes;
-	public TNotificationInterface notificationInterface; // Change the type of model object
+	public TPeopleAssignments peopleAssignments; // Change the type of model object
 	int objectIndex; // this is this elements object index
 	int compositeIndex; // this is this elements composite index
 	int childCompositeIndex;
@@ -28,13 +31,13 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	boolean refreshed = true;
 
-	public TNotificationInterfaceUI(XMLEditor editor, Composite parent, Composite container,
+	public TPeopleAssignmentsInNotificationsUI(XMLEditor editor, Composite parent, Composite container,
 			int style, Object modelParent, int objectIndex, int compositeIndex)
 			throws JAXBException {
 		super(editor, parent,container, style, new String[] { "Documentation" }, "Interface");
 		// TTasks tasks=(TTasks)modelParent;
 		System.out.println(objectIndex);
-		this.notificationInterface = (TNotificationInterface) modelParent;
+		this.peopleAssignments = (TPeopleAssignments) modelParent;
 		this.objectIndex = objectIndex;
 		this.compositeIndex = compositeIndex;
 		this.editor = editor;
@@ -45,15 +48,7 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		notificationInterface.setOperation(((Text) textBoxes.get(0)).getText());
-		notificationInterface.setPortType(
-				new QName(	((Text) textBoxes.get(0)).getText()	));
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
-
+	
 	}
 
 	@Override
@@ -80,7 +75,7 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 			tDocumentation.setLang(childCompositeIndex + "");
 			tDocumentation.getContent().add(
 					new String(childObjectIndexes[0] + ""));
-			notificationInterface.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			peopleAssignments.getDocumentation().add(childObjectIndexes[0], tDocumentation);
 			TDocumentationUI tNot = new TDocumentationUI(editor, composite,
 					childCompositeIndex, childObjectIndexes[0], SWT.NONE, this,
 					tDocumentation);
@@ -89,10 +84,81 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 			// SWT.DEFAULT));
 			System.out.println("hikz value is " + i);
 			System.out.println("Number of CC" + childComposites.size());
-			// centralUtils.addInstance(TNotificationInterface);
+			// centralUtils.addInstance(TPeopleAssignments);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} 
+		}  else if (selection.equalsIgnoreCase("potentialOwners")) {
+			if (childObjectIndexes[1] < 1) {
+				TPotentialOwnerAssignment tPotentialOwnerAssignment = new TPotentialOwnerAssignment();
+			
+			//	peopleAssignments.setInterface(tPotentialOwnerAssignment);
+				TPotentialOwnerAssignmentUI tNot = new TPotentialOwnerAssignmentUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tPotentialOwnerAssignment);
+				childComposites.add(childCompositeIndex, tNot);
+				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
+				// SWT.DEFAULT));
+				System.out.println("hikz value is " + i);
+				System.out.println("Number of CC" + childComposites.size());
+				// centralUtils.addInstance(tTask);
+				childObjectIndexes[1]++;
+				childCompositeIndex++;
+			}
+		}else if (selection.equalsIgnoreCase("excludedOwners")) {
+			if (childObjectIndexes[1] < 1) {
+				TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TPotentialOwnerAssignment();
+			
+			//	peopleAssignments.setInterface(tPotentialOwnerAssignment);
+				TPotentialOwnerAssignmentUI tNot = new TPotentialOwnerAssignmentUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tPotentialOwnerAssignment);
+				childComposites.add(childCompositeIndex, tNot);
+				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
+				// SWT.DEFAULT));
+				System.out.println("hikz value is " + i);
+				System.out.println("Number of CC" + childComposites.size());
+				// centralUtils.addInstance(tTask);
+				childObjectIndexes[1]++;
+				childCompositeIndex++;
+			}
+		}else if (selection.equalsIgnoreCase("potentialOwners")) {
+			if (childObjectIndexes[1] < 1) {
+				TPotentialOwnerAssignment tPotentialOwnerAssignment = new TPotentialOwnerAssignment();
+			
+			//	peopleAssignments.setInterface(tPotentialOwnerAssignment);
+				TPotentialOwnerAssignmentUI tNot = new TPotentialOwnerAssignmentUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tPotentialOwnerAssignment);
+				childComposites.add(childCompositeIndex, tNot);
+				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
+				// SWT.DEFAULT));
+				System.out.println("hikz value is " + i);
+				System.out.println("Number of CC" + childComposites.size());
+				// centralUtils.addInstance(tTask);
+				childObjectIndexes[1]++;
+				childCompositeIndex++;
+			}
+		}
+		else if (selection.equalsIgnoreCase("potentialOwners")) {
+			if (childObjectIndexes[1] < 1) {
+				TPotentialOwnerAssignment tPotentialOwnerAssignment = new TPotentialOwnerAssignment();
+			
+			//	peopleAssignments.setInterface(tPotentialOwnerAssignment);
+				TPotentialOwnerAssignmentUI tNot = new TPotentialOwnerAssignmentUI(editor, composite,
+						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tPotentialOwnerAssignment);
+				childComposites.add(childCompositeIndex, tNot);
+				// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
+				// SWT.DEFAULT));
+				System.out.println("hikz value is " + i);
+				System.out.println("Number of CC" + childComposites.size());
+				// centralUtils.addInstance(tTask);
+				childObjectIndexes[1]++;
+				childCompositeIndex++;
+			}
+		}
+
+
 
 		// sc3.layout(true,true);
 		try {
@@ -130,15 +196,15 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		((Text) textBoxes.get(0)).setText(notificationInterface.getPortType().getLocalPart());
-		((Text) textBoxes.get(1)).setText(notificationInterface.getOperation());
+		((Text) textBoxes.get(0)).setText(peopleAssignments.getPortType().getLocalPart());
+		((Text) textBoxes.get(1)).setText(peopleAssignments.getOperation());
 
 	}
 
 	@Override
 	public void refreshLogic(XMLEditor editor) throws JAXBException { /////////////////////////Start from this/////////////////////
 		ArrayList<TDocumentation> documentationGroup = new ArrayList<TDocumentation>();
-		documentationGroup = (ArrayList<TDocumentation>) notificationInterface
+		documentationGroup = (ArrayList<TDocumentation>) peopleAssignments
 				.getDocumentation();
 		
 		for(Composite c:childComposites){
@@ -189,7 +255,7 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 			this.childObjectIndexes[0]--;
 			System.out.println("Removing object index taskui:"
 					+ childObjectIndex);
-			notificationInterface.getDocumentation().remove(childObjectIndex);
+			peopleAssignments.getDocumentation().remove(childObjectIndex);
 			for (Composite c : childComposites) {
 
 				if (c instanceof TDocumentationUI) {
@@ -213,11 +279,11 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	}
 
 	public void loadModel(Object model) throws JAXBException {
-		notificationInterface = (TNotificationInterface) model;
+		peopleAssignments = (TPeopleAssignments) model;
 		for (Composite c : childComposites) {
 			if (c instanceof TDocumentationUI) {
 				TDocumentationUI d = (TDocumentationUI) c; // children node type
-				d.loadModel(notificationInterface.getDocumentation().get(d.objectIndex));
+				d.loadModel(peopleAssignments.getDocumentation().get(d.objectIndex));
 			} 
 		}
 	}

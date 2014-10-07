@@ -10,11 +10,10 @@ import org.eclipse.swt.widgets.Text;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TPriorityExpr;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTaskInterface;
-
-import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
+import org.wso2.developerstudio.humantask.editor.AbstractEndTagSection;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 
-public class TPriorityExprUI extends AbstractParentTagSection {
+public class TPriorityExprUI_Notifications extends AbstractEndTagSection {
 	Composite container;
 	public int objectIndex;
 	protected int compositeIndex;
@@ -38,7 +37,7 @@ public class TPriorityExprUI extends AbstractParentTagSection {
 		this.compositeIndex = compositeIndex;
 	}
 
-	public TPriorityExprUI(XMLEditor editor, Composite parent,
+	public TPriorityExprUI_Notifications(XMLEditor editor, Composite parent,
 			int compositeIndex, int objectIndex, int style,
 			Composite container, Object modelParent) {
 		super(editor, parent, container, style, "Priority");
@@ -64,7 +63,7 @@ public class TPriorityExprUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TNotificationUI parentContainer = (TNotificationUI) container;
+		TTaskUI parentContainer = (TTaskUI) container;
 		parentContainer.refreshChildren("Priority",compositeIndex, objectIndex);
 		try {
 			centralUtils.marshalMe(textEditor);

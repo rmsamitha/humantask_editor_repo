@@ -8,6 +8,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
+import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.THumanInteractions;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotification;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotifications;
 import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TTask;
@@ -119,7 +120,6 @@ public class TNotificationsUI extends AbstractParentTagSection {
 			System.out.println("Child Index new :"+childCompositeIndex);
 			TNotification tNotification = new TNotification();
 			tNotification.setName("");
-			
 			notifications.getNotification().add(childObjectIndexes[0], tNotification);
 			TNotificationUI tNot = new TNotificationUI(editor,composite,this,SWT.NONE,tNotification,childObjectIndexes[0],childCompositeIndex);
 			childComposites.add(childCompositeIndex, tNot);
@@ -170,6 +170,8 @@ public class TNotificationsUI extends AbstractParentTagSection {
 		
 	}
 	public void loadModel(Object model) throws JAXBException{
+		
+	//	THumanInteractions tHumanInteractions = (THumanInteractions) model;
 		notifications = (TNotifications) model;
 		System.out.println(childComposites.size());
 		for (Composite c : childComposites) {
@@ -181,6 +183,24 @@ public class TNotificationsUI extends AbstractParentTagSection {
 			this.layout();
 		}
 	}
+	/*
+	 * 
+	 	public void loadModel(Object model) throws JAXBException {
+		THumanInteractions tHumanInteractions = (THumanInteractions) model;
+
+		if (pressed) {
+			composite3.tasks = tHumanInteractions.getTasks();
+			composite3.refreshLogic(textEditor);
+			composite3.loadModel( tHumanInteractions.getTasks());
+			
+			
+			secNotifications.notifications=tHumanInteractions.getNotifications();			
+			secNotifications.refreshLogic(textEditor);
+			secNotifications.loadModel(tHumanInteractions.getNotifications());
+		}
+	}
+	 * 
+	 */
 	
 	
 

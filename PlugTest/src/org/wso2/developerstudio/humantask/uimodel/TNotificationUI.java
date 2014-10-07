@@ -1,10 +1,12 @@
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 
+import org.eclipse.core.internal.runtime.Log;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.layout.GridData;
@@ -42,7 +44,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 			throws JAXBException {
 		super(editor, parent,container, style, new String[] { "Documentation",
 				"Interface", "Priority", "People Assignments", "Delegation",
-				"Presentation Elements" }, "Task");
+				"Presentation Elements" }, "Notification");
 		// TTasks tasks=(TTasks)modelParent;
 		System.out.println(objectIndex);
 		this.notification = (TNotification) modelParent;
@@ -110,13 +112,15 @@ public class TNotificationUI extends AbstractParentTagSection {
 				tNotificationInterface.setOperation("");
 				notification.setInterface(tNotificationInterface);
 				TNotificationInterfaceUI tNot = new TNotificationInterfaceUI(editor, composite,
-						childCompositeIndex, childObjectIndexes[1], SWT.NONE,
-						this, tNotificationInterface);
+						this, SWT.NONE,tNotificationInterface,childObjectIndexes[0],childCompositeIndex);
+			//	(editor,composite,this,SWT.NONE,tPresentationElements,childObjectIndexes[0],childCompositeIndex
 				childComposites.add(childCompositeIndex, tNot);
 				System.out.println("hikz value is " + i);
 				System.out.println("Number of CC" + childComposites.size());
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
+				
+				
 			}
 		} else if (selection.equalsIgnoreCase("Priority")) {
 			if (childObjectIndexes[2] < 1) {
@@ -124,7 +128,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 				tPriorityExpr.setExpressionLanguage("");
 				tPriorityExpr.getContent().add(0,"");
 				notification.setPriority(tPriorityExpr);
-				TPriorityExprUI tNot = new TPriorityExprUI(editor, composite,
+				TPriorityExprUI_Notifications tNot = new TPriorityExprUI_Notifications(editor, composite,
 						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
 						this, tPriorityExpr);
 				childComposites.add(childCompositeIndex, tNot);
@@ -137,7 +141,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 			//	tPeopleAssignments.
 			
 				notification.setPeopleAssignments(tPeopleAssignments);
-				TPeopleAssignmentsUI tNot = new TPeopleAssignmentsUI(editor, composite,
+				TPeopleAssignmentsInNotificationsUI tNot = new TPeopleAssignmentsInNotificationsUI(editor, composite,
 						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
 						this, tPeopleAssignments);
 				childComposites.add(childCompositeIndex, tNot);
@@ -150,7 +154,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 			//	tPeopleAssignments.
 			
 				notification.setPresentationElements(tPresentationElements);
-				TPresentationElementsUI tNot = new TPresentationElementsUI(editor, composite,
+				TPresentationElementsInNotificationsUI tNot = new TPresentationElementsInNotificationsUI(editor, composite,
 						childCompositeIndex, childObjectIndexes[2], SWT.NONE,
 						this, tPresentationElements);
 				childComposites.add(childCompositeIndex, tNot);
