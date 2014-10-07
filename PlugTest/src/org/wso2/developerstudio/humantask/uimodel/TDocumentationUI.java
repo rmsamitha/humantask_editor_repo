@@ -3,11 +3,16 @@ package org.wso2.developerstudio.humantask.uimodel;
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.wb.swt.SWTResourceManager;
 import org.wso2.developerstudio.humantask.editor.AbstractEndTagSection;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
@@ -28,7 +33,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 		documentation = (TDocumentation) objectModel;
 		this.parentTagContainer = parentTagContainer;
 		this.compositeIndex =compositeIndex;
-		setExpanded(true);
+		//setExpanded(true);
 	}
 
 	@Override
@@ -60,16 +65,54 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	@Override
 	public void fillDetailArea() {
 		Composite detailAreaInnerComposite=formToolkit.createComposite(detailArea);
-		detailAreaInnerComposite.setLayout(new GridLayout(4,true));
+		detailAreaInnerComposite.setLayout(new GridLayout(1,true));
 		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false,
                 1, 1));
-		Label lblName = formToolkit.createLabel(detailAreaInnerComposite, "Language", SWT.NONE);
+		/*Label lblName = formToolkit.createLabel(detailAreaInnerComposite, "Language", SWT.NONE);
 		Text txtLanguage = formToolkit.createText(detailAreaInnerComposite, "", SWT.NONE);
 		textBoxesList.add(0, txtLanguage);
 		Label lblReference = formToolkit.createLabel(detailAreaInnerComposite, "Value",
 				SWT.NONE);
 		Text txtValue= formToolkit.createText(detailAreaInnerComposite, "", SWT.NONE);
-		textBoxesList.add(1, txtValue);
+		textBoxesList.add(1, txtValue);*/
+		Table table = new Table(detailArea, SWT.BORDER | SWT.MULTI);
+        table.setLinesVisible(true);
+        for (int i = 0; i < 4; i++) {
+          TableColumn column = new TableColumn(table, SWT.NONE);
+          column.setWidth(100);
+        }
+      
+        TableItem x1= new TableItem(table, SWT.NONE);
+          TableEditor editorw = new TableEditor(table);
+         
+            Label lblName =new Label(table, SWT.NONE);
+            lblName.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+            lblName.setText("Language");           
+            editorw.grabHorizontal = true;
+            editorw.setEditor(lblName, x1, 0);
+         
+          editorw = new TableEditor(table);
+          Text txtLang = new Text(table, SWT.BORDER);
+            //txtLang.setBounds(152, 23, 100, 21);
+            textBoxesList.add(0, txtLang);
+            editorw.grabHorizontal = true;
+            editorw.setEditor(txtLang, x1, 1);
+         
+          editorw = new TableEditor(table);
+          Label lblReference = new Label(table,
+                    SWT.NONE);
+            lblReference.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+            lblReference.setText("Value");
+            editorw.grabHorizontal = true;
+            editorw.setEditor(lblReference, x1, 2);
+           
+            editorw = new TableEditor(table);
+            Text txtValue= new Text(table, SWT.BORDER);
+            textBoxesList.add(1, txtValue);
+            editorw.grabHorizontal = true;
+            editorw.setEditor(txtValue, x1, 3);
+           
+            table.setLinesVisible(true);
 
 	}
 

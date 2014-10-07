@@ -43,7 +43,7 @@ public abstract class AbstractEndTagSection extends Section {
         formToolkit= new FormToolkit(Display.getCurrent());
         setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
         setText(sectionTitle);
-        setExpanded(true);
+        setExpanded(false);
         textBoxesList = new ArrayList<Widget>();
         this.parentTagContainer=parentTagContainer;
         setData(FormToolkit.KEY_DRAW_BORDER, FormToolkit.TREE_BORDER);
@@ -78,7 +78,7 @@ public abstract class AbstractEndTagSection extends Section {
         formToolkit.adapt(detailArea);
         formToolkit.paintBordersFor(detailArea);
         sectionParentScrolledComposite.setContent(detailArea);
-        GridLayout detailAreaGridLayout = new GridLayout(6, false);
+        GridLayout detailAreaGridLayout = new GridLayout(1, false);
         detailAreaGridLayout.marginLeft = 5;
         detailArea.setLayout(detailAreaGridLayout);
         try {

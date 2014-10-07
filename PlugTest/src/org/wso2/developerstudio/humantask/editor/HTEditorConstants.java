@@ -42,7 +42,7 @@ public class HTEditorConstants {
 	
 	public static final String PRIORITY_TITLE = "Priority";
 
-	public static final String INTERFACE_TITLE = "Inuterface";
+	public static final String INTERFACE_TITLE = "Interface";
 
 	public static final String TASKS_TITLE = "Tasks";
 
