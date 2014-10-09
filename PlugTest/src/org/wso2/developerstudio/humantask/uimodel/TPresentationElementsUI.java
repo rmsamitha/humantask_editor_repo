@@ -51,7 +51,7 @@ public class TPresentationElementsUI extends AbstractParentTagSection {
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TTaskUI taskUI = (TTaskUI) parentTagContainer;
+		AbstractParentTagSection taskUI = (AbstractParentTagSection) parentTagContainer;
 		taskUI.refreshChildren(HTEditorConstants.PRESENTATION_ELEMENTS_TITLE,
 				compositeIndex, objectIndex);
 		centralUtils.marshalMe(textEditor);

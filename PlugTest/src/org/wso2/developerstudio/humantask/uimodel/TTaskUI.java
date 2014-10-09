@@ -121,7 +121,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				;
 				TPresentationElementsUI tPresentationElementsUI = new TPresentationElementsUI(
 						editor, composite, this, SWT.NONE,
-						tPresentationElements, childObjectIndexes[0],
+						tPresentationElements, childObjectIndexes[3],
 						childCompositeIndex);
 				;
 				childComposites.add(childCompositeIndex,
@@ -213,7 +213,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						.getPresentationElements();
 				TPresentationElementsUI tPreserntationElementsUI = new TPresentationElementsUI(
 						editor, detailArea, this, SWT.NONE,
-						tPresentationElementsObject, childObjectIndexes[0],
+						tPresentationElementsObject, childObjectIndexes[3],
 						childCompositeIndex);
 				tPreserntationElementsUI.initialize(editor);
 				childComposites.add(childCompositeIndex,

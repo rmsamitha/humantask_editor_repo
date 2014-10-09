@@ -19,13 +19,17 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.wso2.developerstudio.humantask.models.TNotifications;
 import org.wso2.developerstudio.humantask.models.TTasks;
+import org.wso2.developerstudio.humantask.uimodel.TNotificationsUI;
 import org.wso2.developerstudio.humantask.uimodel.TTasksUI;
 
 public class Transition extends Composite {
 	private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
 	private TTasksUI taskUI;
+	private TNotificationsUI notificationsUI;
 	private TTasks tasks;
+	private TNotifications notifications;
 	private XMLEditor textEditor;
 	private int compositeCount;
 	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class
@@ -100,18 +104,6 @@ public class Transition extends Composite {
 		} catch (JAXBException e) {
 			LOG.info(e.getMessage());
 		}
-
-		Section notificationsSection = toolkit.createSection(baseContainer, Section.TWISTIE
-				| Section.TITLE_BAR);
-		GridData notificationsSectionGridData = new GridData(SWT.FILL, SWT.CENTER, true,
-				false, 1, 1);
-
-		notificationsSection.setLayoutData(notificationsSectionGridData);
-		toolkit.paintBordersFor(notificationsSection);
-		notificationsSection.setText(HTEditorConstants.NOTIFICATION_TITLE);
-		notificationsSection.setExpanded(true);
-		toolkit.paintBordersFor(notificationsSection);
-		
 		if (compositeCount < 1) {
 			try {
 				CentralUtils centralUtils = CentralUtils.getInstance(textEditor);
@@ -119,10 +111,15 @@ public class Transition extends Composite {
 				if (textEditor.getRootElement().getTasks() == null) {
 					tasks = new TTasks();
 					textEditor.getRootElement().setTasks(tasks);
+				}else if (textEditor.getRootElement().getNotifications() == null) {
+					notifications = new TNotifications();
+					textEditor.getRootElement().setNotifications(notifications);
 				}
 				taskUI = new TTasksUI(textEditor, baseContainer, this, SWT.NONE, textEditor
 						.getRootElement().getTasks(), 0, 0);
 				compositeCount++;
+				notificationsUI = new TNotificationsUI(textEditor, baseContainer, this, SWT.NONE, textEditor
+						.getRootElement().getNotifications(), 0, 0);
 			} catch (JAXBException e) {
 				LOG.info(e.getMessage());
 			}
@@ -130,15 +127,23 @@ public class Transition extends Composite {
 
 	}
 
-	public void refreshChildren(int childCompositeIndex, int childObjectIndex) {
-			tasks = null;
-	}
+	public void refreshChildren(String title,int childCompositeIndex, int childObjectIndex) {
+			if(title.equals(HTEditorConstants.TASKS_TITLE)){
+				tasks = null;
+			}else if(title.equals(HTEditorConstants.NOTIFICATIONS_TITLE)){
+				notifications = null;
+			}
+		}
 
-	public void loadModel(Object model) throws JAXBException {
+	public void loadModel(Object model,Object model2) throws JAXBException {
 		tasks = (TTasks) model;
 		taskUI.tasks = (TTasks) model;
 		taskUI.refreshLogic(textEditor);
 		taskUI.loadModel(model);
+		notifications = (TNotifications) model2;
+		notificationsUI.notifications = (TNotifications) model2;
+		notificationsUI.refreshLogic(textEditor);
+		notificationsUI.loadModel(model2);
 		
 	}
 

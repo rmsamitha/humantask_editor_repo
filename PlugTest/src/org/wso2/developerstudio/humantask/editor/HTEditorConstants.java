@@ -24,7 +24,7 @@ public class HTEditorConstants {
 
 	public static final String LOGICAL_PEOPLE_GROUPS_TITLE = "Logical People Groups";
 
-	public static final String NOTIFICATION_TITLE = "Notifications";
+	public static final String NOTIFICATION_TITLE = "Notification";
 
 	public static final String DOCUMENTATION_TITLE = "Documentation";
 	
@@ -48,7 +48,6 @@ public class HTEditorConstants {
 
 	public static final String TASK_TITLE = "Task";
 
-	
-
+	public static final String NOTIFICATIONS_TITLE = "Notifications";
 
 }

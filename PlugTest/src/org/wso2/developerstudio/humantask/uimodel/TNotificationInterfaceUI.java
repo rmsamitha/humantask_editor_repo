@@ -12,60 +12,52 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TDocumentation;
-import org.oasis_open.docs.ns.bpel4people.ws_humantask._200803.TNotificationInterface;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
+import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
+import org.wso2.developerstudio.humantask.models.TDocumentation;
+import org.wso2.developerstudio.humantask.models.TNotificationInterface;
+import org.wso2.developerstudio.humantask.models.TTaskInterface;
 
 public class TNotificationInterfaceUI extends AbstractParentTagSection {
-	int[] childObjectIndexes;
-	public TNotificationInterface notificationInterface; // Change the type of model object
-	int objectIndex; // this is this elements object index
-	int compositeIndex; // this is this elements composite index
-	int childCompositeIndex;
-	Composite container;
-	XMLEditor editor;
-	ArrayList<Composite> childComposites = new ArrayList<Composite>();
-	boolean refreshed = true;
+	private int[] childObjectIndexes;
+	public TNotificationInterface notificationInterface;
+	private int objectIndex;
+	private int compositeIndex;
+	private int childCompositeIndex;
+	private Composite parentTagContainer;
+	private XMLEditor textEditor;
+	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
 
-	public TNotificationInterfaceUI(XMLEditor editor, Composite parent, Composite container,
-			int style, Object modelParent, int objectIndex, int compositeIndex)
-			throws JAXBException {
-		super(editor, parent,container, style, new String[] { "Documentation" }, "Interface");
-		// TTasks tasks=(TTasks)modelParent;
-		System.out.println(objectIndex);
-		this.notificationInterface = (TNotificationInterface) modelParent;
-		this.objectIndex = objectIndex;
-		this.compositeIndex = compositeIndex;
-		this.editor = editor;
-		this.container = container;
-		childObjectIndexes = new int[1];
+
+	public TNotificationInterfaceUI(XMLEditor textEditor, Composite parentComposite,
+			Composite parentTagContainer, int styleBit, Object objectModel,
+			int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit,
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
+				HTEditorConstants.INTERFACE_TITLE);
+		this.notificationInterface = (TNotificationInterface) objectModel;
+		this.setObjectIndex(objectIndex);
+		this.setCompositeIndex(compositeIndex);
+		this.textEditor = textEditor;
+		this.parentTagContainer = parentTagContainer;
+		this.childObjectIndexes = new int[1];
 		setExpanded(true);
 	}
 
 	@Override
 	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		notificationInterface.setOperation(((Text) textBoxes.get(0)).getText());
+		notificationInterface.setOperation(((Text) textBoxesList.get(0)).getText());
 		notificationInterface.setPortType(
-				new QName(	((Text) textBoxes.get(0)).getText()	));
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
+				new QName(	((Text) textBoxesList.get(0)).getText()	));
+		centralUtils.marshalMe(textEditor);
 		}
-
-	}
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TNotificationUI tNotificationUI = (TNotificationUI) container;
+		TNotificationUI tNotificationUI = (TNotificationUI) parentTagContainer;
 		tNotificationUI.refreshChildren("", compositeIndex, objectIndex);
-
-		try {
-			centralUtils.marshalMe(textEditor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
+		centralUtils.marshalMe(textEditor);
 		Composite tempCompo = this.getParent();
 		this.dispose();
 		tempCompo.layout(true, true);
@@ -75,106 +67,76 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	@Override
 	public void newButtonLogic(String selection, ScrolledComposite sc3,
 			XMLEditor editor, Composite composite) throws JAXBException {
-		if (selection.equalsIgnoreCase("Documentation")) {
+		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
-			tDocumentation.setLang(childCompositeIndex + "");
-			tDocumentation.getContent().add(
-					new String(childObjectIndexes[0] + ""));
-			notificationInterface.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tNot = new TDocumentationUI(editor, composite,
-					childCompositeIndex, childObjectIndexes[0], SWT.NONE, this,
+			tDocumentation.setLang("");
+			tDocumentation.getContent().add(new String(""));
+			notificationInterface.getDocumentation().add(childObjectIndexes[0],
 					tDocumentation);
-			childComposites.add(childCompositeIndex, tNot);
-			// sc3.setMinSize(innerSection.computeSize(SWT.DEFAULT,
-			// SWT.DEFAULT));
-			System.out.println("hikz value is " + i);
-			System.out.println("Number of CC" + childComposites.size());
-			// centralUtils.addInstance(TNotificationInterface);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
+					composite, childCompositeIndex, childObjectIndexes[0],
+					SWT.NONE, this, tDocumentation);
+			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} 
-
-		// sc3.layout(true,true);
-		try {
-			centralUtils.marshalMe(editor);
-		} catch (JAXBException e) {
-			e.printStackTrace();
 		}
-
+		centralUtils.marshalMe(editor);
+	
 	}
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-		Composite innerZComp =new Composite(composite,SWT.NONE);
-		innerZComp.setLayout(new GridLayout(4, true));
-		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-				false, 1, 1));
-		Label lblName = toolkit.createLabel(innerZComp, "PortType", SWT.NONE);
-		// lblName.setBounds(20, 23, 100, 15);
-		Text txtName = toolkit.createText(innerZComp, "", SWT.BORDER);
-		// txtName.setBounds(152, 23, 100, 21);
-		// txtName.setLayoutData(new GridData();
-		textBoxes.add(0, txtName);
-		Label lblReference = toolkit.createLabel(innerZComp,
+		Composite detailAreaInnerComposite = formToolkit
+				.createComposite(detailArea);
+		detailAreaInnerComposite.setLayout(new GridLayout(4, true));
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
+				SWT.CENTER, true, false, 1, 1));
+		Label lblPortType = formToolkit.createLabel(detailAreaInnerComposite,
+				"PortType", SWT.NONE);
+		lblPortType.setBounds(20, 23, 100, 15);
+		Text txtPortType = formToolkit.createText(detailAreaInnerComposite, "",
+				SWT.NONE);
+		txtPortType.setBounds(152, 23, 100, 21);
+		textBoxesList.add(0, txtPortType);
+		Label lblOperation = formToolkit.createLabel(detailAreaInnerComposite,
 				"Operation", SWT.NONE);
-		Text txtName2 = toolkit.createText(innerZComp, "", SWT.BORDER);
-		// txtName.setBounds(152, 23, 100, 21);
-		// txtName.setLayoutData(new GridData();
-		textBoxes.add(1, txtName2);
-		// lblReference.setBounds(252, 23, 100, 15);
-		
-		// combo.setBounds(384, 23, 100, 21);
-	
-
+		lblOperation.setBounds(252, 23, 100, 15);
+		Text txtOperation = formToolkit.createText(detailAreaInnerComposite,
+				"", SWT.NONE);
+		txtOperation.setBounds(384, 23, 100, 21);
+		textBoxesList.add(1, txtOperation);
 	}
 
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		((Text) textBoxes.get(0)).setText(notificationInterface.getPortType().getLocalPart());
-		((Text) textBoxes.get(1)).setText(notificationInterface.getOperation());
-
+		// textBoxes.get(0).setText(taskInterface.getPortType().getLocalPart().toString());
+	((Text) textBoxesList.get(1)).setText(notificationInterface.getOperation());
+			
 	}
 
 	@Override
 	public void refreshLogic(XMLEditor editor) throws JAXBException { /////////////////////////Start from this/////////////////////
-		ArrayList<TDocumentation> documentationGroup = new ArrayList<TDocumentation>();
-		documentationGroup = (ArrayList<TDocumentation>) notificationInterface
+		for (Composite composite : childComposites) {
+			composite.dispose();
+		}
+		for (int childObjectIndexesElementIndex = 0; childObjectIndexesElementIndex < childObjectIndexes.length; childObjectIndexesElementIndex++) {
+			childObjectIndexes[childObjectIndexesElementIndex] = 0;
+		}
+		childComposites.clear();
+		childCompositeIndex = 0;
+
+		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) notificationInterface
 				.getDocumentation();
-		
-		for(Composite c:childComposites){
-			c.dispose();
-			System.out.println("Disposed");
-			}
-			childComposites.clear();
-			System.out.println("XC Size is :"+childComposites.size());
-			
-			
-			childCompositeIndex=0;
-			for (int j = 0; j < childObjectIndexes.length; j++) {
-				childObjectIndexes[j]=0;
-			}
-	
-		
-		if (childComposites.size() == 0) {
-			for (int i = 0; i < documentationGroup.size(); i++) {
-				TDocumentationUI tNot;
-
-				try {
-					tNot = new TDocumentationUI(editor, compositeDetailArea,
-							childCompositeIndex, childObjectIndexes[0],
-							SWT.NONE, this,
-							documentationGroup.get(childObjectIndexes[0]));
-					tNot.initialize(editor);
-					childComposites.add(childCompositeIndex, tNot);
-					childCompositeIndex++;
-					childObjectIndexes[0]++;
-				} catch (JAXBException e) {
-					e.printStackTrace();
-
-				}
-			}	
-			
-			
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+				.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
+					detailArea, childCompositeIndex, childObjectIndexes[0],
+					SWT.NONE, this,
+					documentationGroup.get(childObjectIndexes[0]));
+			tDocumentationUI.initialize(editor);
+			childComposites.add(childCompositeIndex, tDocumentationUI);
+			childCompositeIndex++;
+			childObjectIndexes[0]++;
 		}
 
 	}
@@ -182,31 +144,27 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex,
 			int childObjectIndex) {
-		System.out.println("Number of CC" + childComposites.size());
-		System.out.println("Removing object index taskui outer:"
-				+ childObjectIndex);
-		if (itemName.equalsIgnoreCase("Documentation")) {
+		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
-			System.out.println("Removing object index taskui:"
-					+ childObjectIndex);
 			notificationInterface.getDocumentation().remove(childObjectIndex);
-			for (Composite c : childComposites) {
+			for (Composite compositeInstance : childComposites) {
 
-				if (c instanceof TDocumentationUI) {
-					System.out.print("Giya");
-					TDocumentationUI d = (TDocumentationUI) c;
-					if (d.compositeIndex > childCompositeIndex) {
-						d.setCompositeIndex(d.getCompositeIndex() - 1);
+				if (compositeInstance instanceof TDocumentationUI) {
+					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
+					if (tDocumentationUI.compositeIndex > childCompositeIndex) {
+						tDocumentationUI.setCompositeIndex(tDocumentationUI
+								.getCompositeIndex() - 1);
 					}
-					if (d.objectIndex > childObjectIndex) {
-						d.setObjectIndex(d.getObjectIndex() - 1);
+					if (tDocumentationUI.objectIndex > childObjectIndex) {
+						tDocumentationUI.setObjectIndex(tDocumentationUI
+								.getObjectIndex() - 1);
 					}
-				
+				} else {
 
-				} 
+				}
 
 			}
-		} 
+		}
 		childComposites.remove(childCompositeIndex);
 		this.childCompositeIndex--;
 
@@ -214,11 +172,28 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 
 	public void loadModel(Object model) throws JAXBException {
 		notificationInterface = (TNotificationInterface) model;
-		for (Composite c : childComposites) {
-			if (c instanceof TDocumentationUI) {
-				TDocumentationUI d = (TDocumentationUI) c; // children node type
-				d.loadModel(notificationInterface.getDocumentation().get(d.objectIndex));
-			} 
+		for (Composite compositeInstance : childComposites) {
+			if (compositeInstance instanceof TDocumentationUI) {
+				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
+				tDocumentationUI.loadModel(notificationInterface.getDocumentation()
+						.get(tDocumentationUI.objectIndex));
+			}
 		}
+	}
+	
+	public int getObjectIndex() {
+		return objectIndex;
+	}
+
+	public void setObjectIndex(int objectIndex) {
+		this.objectIndex = objectIndex;
+	}
+
+	public int getCompositeIndex() {
+		return compositeIndex;
+	}
+
+	public void setCompositeIndex(int compositeIndex) {
+		this.compositeIndex = compositeIndex;
 	}
 }

@@ -48,7 +48,7 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
 		Transition transition = (Transition) parentTagContainer;
-		transition.refreshChildren(compositeIndex, objectIndex);
+		transition.refreshChildren(HTEditorConstants.TASKS_TITLE,compositeIndex, objectIndex);
 		centralUtils.marshalMe(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -111,7 +111,7 @@ public class TTasksUI extends AbstractParentTagSection {
 		childComposites.remove(childCompositeIndex);
 		tasks.getTask().remove(objectIndex);
 		this.childCompositeIndex--;
-		this.childObjectIndexes[0]--;
+		this.childObjectIndexes[0]--; 
 		for (Composite compositeInstance : childComposites) {
 			TTaskUI tTaskUI = (TTaskUI) compositeInstance;
 			if (tTaskUI.getCompositeIndex() > childCompositeIndex) {
@@ -126,7 +126,6 @@ public class TTasksUI extends AbstractParentTagSection {
 
 	public void loadModel(Object model) throws JAXBException {
 		tasks = (TTasks) model;
-		System.out.println(childComposites.size());
 		for (Composite compositeInstance : childComposites) {
 			TTaskUI tTaskUI = (TTaskUI) compositeInstance;
 			tTaskUI.task = tasks.getTask().get(tTaskUI.getObjectIndex());

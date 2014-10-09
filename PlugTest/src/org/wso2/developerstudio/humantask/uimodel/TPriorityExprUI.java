@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.wso2.developerstudio.humantask.editor.AbstractEndTagSection;
+import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.wso2.developerstudio.humantask.models.TDocumentation;
@@ -42,7 +43,7 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		TTaskUI parentContainer = (TTaskUI) parentTagContainer;
+		AbstractParentTagSection parentContainer = (AbstractParentTagSection) parentTagContainer;
 		parentContainer.refreshChildren(HTEditorConstants.PRIORITY_TITLE,compositeIndex, objectIndex);
 		centralUtils.marshalMe(textEditor);
 		Composite parentComposite = this.getParent();
@@ -53,7 +54,7 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		((Text) textBoxesList.get(0)).setText(tPriorityExpr.getExpressionLanguage());
-		((Text) textBoxesList.get(1)).setText((String)tPriorityExpr.getContent().get(0));
+		//((Text) textBoxesList.get(1)).setText((String)tPriorityExpr.getContent().get(0));
 	}
 
 	@Override

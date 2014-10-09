@@ -29,6 +29,8 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
+import org.wso2.developerstudio.humantask.models.TNotifications;
+import org.wso2.developerstudio.humantask.models.TTasks;
 
 public class MultiPageEditor extends MultiPageEditorPart {
 
@@ -107,7 +109,14 @@ public class MultiPageEditor extends MultiPageEditorPart {
 				CentralUtils centralUtils = CentralUtils
 						.getInstance(textEditor);
 				centralUtils.unmarshalMe(textEditor);
-				baseUI.loadModel(textEditor.getRootElement().getTasks());
+				if (textEditor.getRootElement().getTasks() == null) {
+					TTasks tasks = new TTasks();
+					textEditor.getRootElement().setTasks(tasks);
+				}else if (textEditor.getRootElement().getNotifications() == null) {
+					TNotifications notifications = new TNotifications();
+					textEditor.getRootElement().setNotifications(notifications);
+				}
+				baseUI.loadModel(textEditor.getRootElement().getTasks(),textEditor.getRootElement().getNotifications());
 				centralUtils.redraw();
 			} catch (JAXBException e) {
 				LOG.info(e.getMessage());
