@@ -9,12 +9,16 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.widgets.Composite;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
-import org.wso2.developerstudio.humantask.editor.Transition;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.wso2.developerstudio.humantask.models.TBoolean;
 import org.wso2.developerstudio.humantask.models.TTask;
 import org.wso2.developerstudio.humantask.models.TTasks;
 
+/**
+ * The UI class representing the "tasks" xml element in the .ht file
+ * All the functionalities of that element are performed in this class, by
+ * implementing and overriding the abstract super class methods.
+ */
 public class TTasksUI extends AbstractParentTagSection {
 
 	private int[] childObjectIndexes;
@@ -22,10 +26,23 @@ public class TTasksUI extends AbstractParentTagSection {
 	private int objectIndex;
 	private int compositeIndex;
 	private int childCompositeIndex;
-	private Composite parentTagContainer;
+	private Composite parentTagContainer;//the parent Section of this section
 	private XMLEditor textEditor;
 	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
 
+	/**
+	 * Call the super abstract class to set the UI and initialize class's
+	 * attribute variables
+	 * 
+	 * @param textEditor
+	 * @param parentComposite
+	 * @param parentTagContainer
+	 * @param styleBit
+	 * @param objectModel
+	 * @param objectIndex
+	 * @param compositeIndex
+	 * @throws JAXBException
+	 */
 	public TTasksUI(XMLEditor textEditor, Composite parentComposite,
 			Composite parentTagContainer, int styleBit, Object modelParent,
 			int objectIndex, int compositeIndex) throws JAXBException {
@@ -33,8 +50,8 @@ public class TTasksUI extends AbstractParentTagSection {
 				new String[] { HTEditorConstants.TASK_TITLE },
 				HTEditorConstants.TASKS_TITLE);
 		this.tasks = (TTasks) modelParent;
-		this.objectIndex = objectIndex;
-		this.compositeIndex = compositeIndex;
+		this.setObjectIndex(objectIndex);
+		this.setCompositeIndex(compositeIndex);
 		this.parentTagContainer = parentTagContainer;
 		this.textEditor = textEditor;
 		this.childObjectIndexes = new int[1];
@@ -44,17 +61,33 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
 	}
-
+	
+	/**
+	 * Dispose the section when the remove button of section is clicked.
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
 	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
-		Transition transition = (Transition) parentTagContainer;
-		transition.refreshChildren(HTEditorConstants.TASKS_TITLE,compositeIndex, objectIndex);
-		centralUtils.marshalMe(textEditor);
+		AbstractParentTagSection transition = (AbstractParentTagSection) parentTagContainer;
+		transition.refreshChildren(HTEditorConstants.TASKS_TITLE,getCompositeIndex(), getObjectIndex());
+		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
 	}
 
+	/**
+	 * Whenever a tab change occur from text editor to UI editor, this method is
+	 * invoked. It disposes all the child Sections in this section and recreate
+	 * them and call initialize() of each of them to reinitialize their
+	 * attribute values, according to the single model maintained by both the 
+	 * UI editor and text .editor
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
 	public void refreshLogic(XMLEditor editor) throws JAXBException {
 		if (tasks != null) {
@@ -94,22 +127,43 @@ public class TTasksUI extends AbstractParentTagSection {
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
 		}
-		centralUtils.marshalMe(editor);
+		centralUtils.marshal(editor);
 	}
 
 	@Override
 	public void fillDetailArea(Composite composite) {
+		/*
+		 * dispose update button as it is not required to this Section as there
+		 * is no any attribute or xml content in this Section
+		 */
+		btnUpdate.dispose();
 	}
 
+	/**
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur from text editor to the UI editor
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 	}
 
+	/**
+	 * Whenever a child Section of this section is removed by the user, this
+	 * method is invoked to reorganize the order and indexes of the child
+	 * Sections of this section
+	 * 
+	 * @param itemName
+	 * @param childCompositeIndex
+	 * @param childObjectIndex
+	 */
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex,
 			int childObjectIndex) {
 		childComposites.remove(childCompositeIndex);
-		tasks.getTask().remove(objectIndex);
+		tasks.getTask().remove(getObjectIndex());
 		this.childCompositeIndex--;
 		this.childObjectIndexes[0]--; 
 		for (Composite compositeInstance : childComposites) {
@@ -124,6 +178,14 @@ public class TTasksUI extends AbstractParentTagSection {
 		
 	}
 
+	/**
+	 * Load the JAXB model objects into the UI model from the top to bottom of
+	 * the tree structure of the model whenever a tab change occurs from text
+	 * editor to the UI editor.
+	 * 
+	 * @param model
+	 * @throws JAXBException
+	 */
 	public void loadModel(Object model) throws JAXBException {
 		tasks = (TTasks) model;
 		for (Composite compositeInstance : childComposites) {
@@ -133,6 +195,43 @@ public class TTasksUI extends AbstractParentTagSection {
 			tTaskUI.loadModel(tasks.getTask().get(tTaskUI.getObjectIndex()));
 			this.layout();
 		}
+	}
+
+
+	/**
+	 * Returns This section's(composite's) index (index of any type of child
+	 * class objects created in the parent Section) as
+	 * per the order created in this object's parent
+	 * 
+	 * @return This section's(composite's) index
+	 */
+	public int getCompositeIndex() {
+		return compositeIndex;
+	}
+
+	/**
+	 * Set this section's(composite's) index (index of any type of child class
+	 * objects created in the parent Section)
+	 * as per the order created in this object's parent
+	 * 
+	 * @param compositeIndex
+	 */
+	public void setCompositeIndex(int compositeIndex) {
+		this.compositeIndex = compositeIndex;
+	}
+
+	/**
+	 * Returns this Section's object index(index of only this type of class
+	 * objects in the parent) as per the order created in its parent
+	 * 
+	 * @return objectIndex
+	 */
+	public int getObjectIndex() {
+		return objectIndex;
+	}
+
+	public void setObjectIndex(int objectIndex) {
+		this.objectIndex = objectIndex;
 	}
 	
 }

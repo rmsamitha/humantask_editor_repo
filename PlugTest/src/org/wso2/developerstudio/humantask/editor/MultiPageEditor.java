@@ -1,7 +1,5 @@
 package org.wso2.developerstudio.humantask.editor;
 
-import java.util.logging.Logger;
-
 import javax.xml.bind.JAXBException;
 
 import org.eclipse.core.resources.IMarker;
@@ -18,6 +16,7 @@ import org.eclipse.jdt.core.IPackageFragment;
 import org.eclipse.jdt.core.IPackageFragmentRoot;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jface.dialogs.ErrorDialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IEditorInput;
@@ -29,21 +28,15 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.part.MultiPageEditorPart;
-import org.wso2.developerstudio.humantask.models.TNotifications;
-import org.wso2.developerstudio.humantask.models.TTasks;
 
 public class MultiPageEditor extends MultiPageEditorPart {
-
 	private XMLEditor textEditor;
 	private Transition baseUI;
-
-	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class
-			.getName());
+	
 
 	public MultiPageEditor() {
 		super();
 		ResourcesPlugin.getWorkspace().addResourceChangeListener(listener);
-
 	}
 
 	protected void createPages() {
@@ -63,7 +56,6 @@ public class MultiPageEditor extends MultiPageEditorPart {
 	}
 
 	void createPage1() {
-		// composite = new BaseView(textEditor, getContainer(), SWT.NONE);
 		baseUI = new Transition(textEditor, getContainer(), SWT.NONE);
 		int pageIndex = addPage(baseUI);
 		setPageText(pageIndex, HTEditorConstants.UI_EDITOR_TITLE);
@@ -103,29 +95,53 @@ public class MultiPageEditor extends MultiPageEditorPart {
 	}
 
 	protected void pageChange(int newPageIndex) {
-		super.pageChange(newPageIndex);
+
 		if (newPageIndex == 1) {
 			try {
+				
 				CentralUtils centralUtils = CentralUtils
 						.getInstance(textEditor);
-				centralUtils.unmarshalMe(textEditor);
-				if (textEditor.getRootElement().getTasks() == null) {
-					TTasks tasks = new TTasks();
-					textEditor.getRootElement().setTasks(tasks);
-				}else if (textEditor.getRootElement().getNotifications() == null) {
-					TNotifications notifications = new TNotifications();
-					textEditor.getRootElement().setNotifications(notifications);
-				}
-				baseUI.loadModel(textEditor.getRootElement().getTasks(),textEditor.getRootElement().getNotifications());
+				if(!centralUtils.getiDocument().get().trim().equals("") || centralUtils.getiDocument().get()!=null ){
+				centralUtils.unmarshal(textEditor);			
+				baseUI.baseContainer.setVisible(true);
+				baseUI.loadModel(textEditor.getRootElement());
 				centralUtils.redraw();
+				super.pageChange(newPageIndex);
+				}
 			} catch (JAXBException e) {
-				LOG.info(e.getMessage());
+				System.out.println("in catch");
+				if(textEditor.getRootElement() == null){
+				MessageDialog
+				.openError(
+						Display.getDefault().getActiveShell(),
+						HTEditorConstants.XML_PARSE_ERROR,
+						HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+				}
+				if (textEditor.getRootElement() != null) {
+					System.out.println("came in");
+					MessageDialog
+							.openError(
+									Display.getDefault().getActiveShell(),
+									HTEditorConstants.XML_PARSE_ERROR,
+									HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+					textEditor.setRootElement(null);
+					try {
+						baseUI.loadModel(textEditor.getRootElement());//
+						baseUI.baseContainer.setVisible(false);
+						
+					} catch (JAXBException e1) {
+						
+						e.printStackTrace();
+					}
+				}
+				e.printStackTrace();
 			}
 		}
 	}
 
 	IResourceChangeListener listener = new IResourceChangeListener() {
-		public void printDelta(IResourceDelta d, String indent) {
+		@SuppressWarnings("unused")
+		public void printDelta(final IResourceDelta d, final String indent) {
 
 			IResource resource = d.getResource();
 			IJavaElement javaElement = JavaCore.create(resource);
@@ -142,9 +158,6 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			} else {
 				resourceName = resource.getName();
 			}
-
-			System.out.println(indent.concat("Delta " + d.getKind()
-					+ " for resource " + resourceName));
 
 			for (IResourceDelta childDelta : d.getAffectedChildren()) {
 				printDelta(childDelta, indent.concat("\t"));
@@ -171,18 +184,6 @@ public class MultiPageEditor extends MultiPageEditorPart {
 				});
 			}
 
-			if (event.getType() == IResourceChangeEvent.POST_CHANGE) {
-				/*
-				 * try { System.out.println(getObject()); } catch (JAXBException
-				 * e) { }
-				 * 
-				 * 
-				 * IResourceDelta delta = event.getDelta(); // printDelta(delta,
-				 * "");
-				 */
-			} else {
-				// System.out.println("Event type was " + event.getType());
-			}
 		}
 	};
 }

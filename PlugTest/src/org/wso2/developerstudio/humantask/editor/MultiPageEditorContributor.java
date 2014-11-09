@@ -21,23 +21,15 @@ import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 public class MultiPageEditorContributor extends MultiPageEditorActionBarContributor {
 	private IEditorPart activeEditorPart;
 	private Action sampleAction;
-	/**
-	 * Creates a multi-page contributor.
-	 */
+	
 	public MultiPageEditorContributor() {
 		super();
 		createActions();
 	}
-	/**
-	 * Returns the action registed with the given text editor.
-	 * @return IAction or null if editor is null.
-	 */
+	
 	protected IAction getAction(ITextEditor editor, String actionID) {
 		return (editor == null ? null : editor.getAction(actionID));
 	}
-	/* (non-JavaDoc)
-	 * Method declared in AbstractMultiPageEditorActionBarContributor.
-	 */
 
 	public void setActivePage(IEditorPart part) {
 		if (activeEditorPart == part)

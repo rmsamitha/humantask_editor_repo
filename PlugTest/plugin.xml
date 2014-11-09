@@ -61,11 +61,25 @@
             class="org.wso2.developerstudio.humantask.editor.MultiPageEditor"
             
             contributorClass="org.wso2.developerstudio.humantask.editor.MultiPageEditorContributor"
-            extensions="mpe"
+            extensions="ht"
             icon="icons/sample.gif"
             id="PlugTest.editors.MultiPageEditor"
-            name="Sample Multi-page Editor">
-      </editor>
+            name="Human Task Editor">
+      </editor> 
 </extension>
+ <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            name="HumanTask Wizard"
+            id="PluginTrial">
+      </category>
+      <wizard
+            name="HumanTask File"
+            icon="icons/sample.gif"
+            category="PluginTrial"
+            class="org.wso2.developerstudio.humantask.editor.SampleNewWizard"
+            id="plugintrial.wizards.SampleNewWizard">
+      </wizard>
+   </extension>
 
 </plugin>

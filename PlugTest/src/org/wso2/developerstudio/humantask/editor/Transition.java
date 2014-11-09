@@ -13,27 +13,19 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.forms.widgets.FormToolkit;
-import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.wso2.developerstudio.humantask.models.TNotifications;
-import org.wso2.developerstudio.humantask.models.TTasks;
-import org.wso2.developerstudio.humantask.uimodel.TNotificationsUI;
-import org.wso2.developerstudio.humantask.uimodel.TTasksUI;
+import org.wso2.developerstudio.humantask.models.THumanInteractions;
 
 public class Transition extends Composite {
 	private final FormToolkit toolkit = new FormToolkit(Display.getCurrent());
-	private TTasksUI taskUI;
-	private TNotificationsUI notificationsUI;
-	private TTasks tasks;
-	private TNotifications notifications;
+	private THumanInteractions humanInteractions;
+	private THumanInteractionsUI humanInteractionsUI;
 	private XMLEditor textEditor;
-	private int compositeCount;
-	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class
-			.getName());
+	Composite baseContainer;
+	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class.getName());
 
 	public Transition(final XMLEditor textEditor, final Composite parentComposite, int styleBit) {
 		super(parentComposite, SWT.BORDER);
@@ -49,8 +41,9 @@ public class Transition extends Composite {
 		setLayout(new FormLayout());
 		setLayoutData(new GridData(GridData.FILL_BOTH));
 
-		final ScrolledComposite parentScrolledComposite = new ScrolledComposite(this, SWT.BORDER
-				| SWT.V_SCROLL);
+		final ScrolledComposite parentScrolledComposite =
+		                                                  new ScrolledComposite(this, SWT.BORDER |
+		                                                                              SWT.V_SCROLL);
 		parentScrolledComposite.setAlwaysShowScrollBars(true);
 		parentScrolledComposite.setExpandHorizontal(true);
 		parentScrolledComposite.setExpandVertical(true);
@@ -60,91 +53,59 @@ public class Transition extends Composite {
 		parentScrolledCompositeFormLayoutData.top = new FormAttachment(0, 5);
 		parentScrolledCompositeFormLayoutData.left = new FormAttachment(0, 5);
 		parentScrolledComposite.setLayoutData(parentScrolledCompositeFormLayoutData);
-		parentScrolledComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
+		// parentScrolledComposite.setBackground(SWTResourceManager.getColor(SWT.COLOR_GREEN));
 		this.setData(parentScrolledComposite);
 
-		Composite baseContainer = new Composite(parentScrolledComposite, SWT.NONE);
-		baseContainer.setBackground(SWTResourceManager.getColor(0, 51, 102));
+		baseContainer = new Composite(parentScrolledComposite, SWT.NONE);
+		baseContainer.setBackground(SWTResourceManager.getColor(204, 153, 255));
 		parentScrolledComposite.setContent(baseContainer);
 
 		baseContainer.setLayout(new GridLayout(1, true));
-
-		Section logicalPeopleGroupsSection = toolkit.createSection(baseContainer, Section.TWISTIE
-				| Section.TITLE_BAR);
-		GridData logicalPeopleGroupSectionGridData = new GridData(SWT.FILL, SWT.CENTER, true, false,
-				1, 1);
-
-		logicalPeopleGroupsSection.setLayoutData(logicalPeopleGroupSectionGridData);
-		RowLayout logicalPeopleGroupSectionRowLayout = new RowLayout();
-		logicalPeopleGroupSectionRowLayout.type = SWT.VERTICAL;
-		logicalPeopleGroupsSection.setLayout(logicalPeopleGroupSectionRowLayout);
-		toolkit.paintBordersFor(logicalPeopleGroupsSection);
-		logicalPeopleGroupsSection.setText(HTEditorConstants.LOGICAL_PEOPLE_GROUPS_TITLE);
-		logicalPeopleGroupsSection.setExpanded(true);
-
-		ScrolledComposite logicalPeopleGroupsInnerScrolledComposite = new ScrolledComposite(logicalPeopleGroupsSection,
-				SWT.H_SCROLL | SWT.V_SCROLL);
-		logicalPeopleGroupsInnerScrolledComposite.setExpandVertical(true);
-
-		toolkit.adapt(logicalPeopleGroupsInnerScrolledComposite);
-		toolkit.paintBordersFor(logicalPeopleGroupsInnerScrolledComposite);
-		logicalPeopleGroupsSection.setClient(logicalPeopleGroupsInnerScrolledComposite);
-		logicalPeopleGroupsInnerScrolledComposite.setExpandHorizontal(true);
-
-		Composite logicalPeopleGroupsInnerComposite = new Composite(logicalPeopleGroupsInnerScrolledComposite, SWT.NONE);
-		toolkit.adapt(logicalPeopleGroupsInnerComposite);
-		toolkit.paintBordersFor(logicalPeopleGroupsInnerComposite);
-		logicalPeopleGroupsInnerScrolledComposite.setContent(logicalPeopleGroupsInnerComposite);
-		logicalPeopleGroupsInnerComposite.setLayout(new GridLayout(1, false));
-		logicalPeopleGroupsSection.layout();
-
 		try {
 			CentralUtils centralUtils = CentralUtils.getInstance(textEditor);
 			centralUtils.setBasicUI(parentScrolledComposite, baseContainer);
+			centralUtils.unmarshal(textEditor);
 		} catch (JAXBException e) {
 			LOG.info(e.getMessage());
 		}
-		if (compositeCount < 1) {
-			try {
-				CentralUtils centralUtils = CentralUtils.getInstance(textEditor);
-				centralUtils.unmarshalMe(textEditor);
-				if (textEditor.getRootElement().getTasks() == null) {
-					tasks = new TTasks();
-					textEditor.getRootElement().setTasks(tasks);
-				}else if (textEditor.getRootElement().getNotifications() == null) {
-					notifications = new TNotifications();
-					textEditor.getRootElement().setNotifications(notifications);
-				}
-				taskUI = new TTasksUI(textEditor, baseContainer, this, SWT.NONE, textEditor
-						.getRootElement().getTasks(), 0, 0);
-				compositeCount++;
-				notificationsUI = new TNotificationsUI(textEditor, baseContainer, this, SWT.NONE, textEditor
-						.getRootElement().getNotifications(), 0, 0);
-			} catch (JAXBException e) {
-				LOG.info(e.getMessage());
-			}
+
+		if (textEditor.getRootElement() == null) {
+			humanInteractions = new THumanInteractions();
+			textEditor.setRootElement(humanInteractions);
+		}
+		try {
+			humanInteractionsUI =
+			                      new THumanInteractionsUI(textEditor, baseContainer, this,
+			                                               SWT.NONE, textEditor.getRootElement(),
+			                                               0, 0);
+		} catch (JAXBException e1) {
+			LOG.info(e1.getMessage());
 		}
 
 	}
 
-	public void refreshChildren(String title,int childCompositeIndex, int childObjectIndex) {
-			if(title.equals(HTEditorConstants.TASKS_TITLE)){
-				tasks = null;
-			}else if(title.equals(HTEditorConstants.NOTIFICATIONS_TITLE)){
-				notifications = null;
-			}
+	public void refreshLogic(XMLEditor editor) throws JAXBException {
+		System.out.println("in transition refresh logic");
+		if (humanInteractions != null) {
+			humanInteractionsUI.dispose();
+			humanInteractionsUI =
+			                      new THumanInteractionsUI(textEditor, baseContainer, this,
+			                                               SWT.NONE, textEditor.getRootElement(),
+			                                               0, 0);
+			humanInteractionsUI.initialize(editor);
 		}
+	}
 
-	public void loadModel(Object model,Object model2) throws JAXBException {
-		tasks = (TTasks) model;
-		taskUI.tasks = (TTasks) model;
-		taskUI.refreshLogic(textEditor);
-		taskUI.loadModel(model);
-		notifications = (TNotifications) model2;
-		notificationsUI.notifications = (TNotifications) model2;
-		notificationsUI.refreshLogic(textEditor);
-		notificationsUI.loadModel(model2);
-		
+	public void loadModel(Object model) throws JAXBException {
+		humanInteractions = (THumanInteractions) model;
+		humanInteractionsUI.humanInteractions = (THumanInteractions) model;
+
+		humanInteractionsUI.refreshLogic(textEditor);
+		humanInteractionsUI.loadModel(model);
+		System.out.println("initialized called in loadmodel of transition: texteditor val:" +
+		                   textEditor == null);
+		humanInteractionsUI.initialize(textEditor);
+
 	}
 
 }

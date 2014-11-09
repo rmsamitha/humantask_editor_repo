@@ -32,7 +32,7 @@ public class XMLConfiguration extends SourceViewerConfiguration {
 			doubleClickStrategy = new XMLDoubleClickStrategy();
 		return doubleClickStrategy;
 	}
-
+	
 	protected XMLScanner getXMLScanner() {
 		if (scanner == null) {
 			scanner = new XMLScanner(colorManager);
