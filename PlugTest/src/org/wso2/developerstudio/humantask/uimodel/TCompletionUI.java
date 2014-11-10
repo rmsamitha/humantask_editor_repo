@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -44,13 +60,12 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	public TCompletionUI(XMLEditor textEditor, Composite parentComposite,
-			Composite parentTagContainer, int styleBit, Object objectModel,
-			int objectIndex, int compositeIndex) throws JAXBException {
+	                     Composite parentTagContainer, int styleBit, Object objectModel,
+	                     int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-						HTEditorConstants.BOOLEAN_EXPR_TITLE,
-						HTEditorConstants.RESULT_TITLE },
-				HTEditorConstants.COMPLETION_TITLE);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
+		                    HTEditorConstants.BOOLEAN_EXPR_TITLE, HTEditorConstants.RESULT_TITLE },
+		      HTEditorConstants.COMPLETION_TITLE);
 		this.completion = (TCompletion) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -61,7 +76,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 
 	}
 
@@ -72,10 +87,10 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) parentTagContainer;
-		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.COMPLETION_TITLE, getCompositeIndex(),
-				getObjectIndex());
+		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.COMPLETION_TITLE,
+		                                      getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -83,53 +98,64 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
-			completion.getDocumentation().add(childObjectIndexes[0],
-					tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			completion.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.BOOLEAN_EXPR_TITLE)) {
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.BOOLEAN_EXPR_TITLE)) {
 			TBooleanExpr tBooleanExpr = new TBooleanExpr();
 			tBooleanExpr.setExpressionLanguage("");
 			completion.setCondition(tBooleanExpr);
-			TBooleanExprUI tBooleanExprUI = new TBooleanExprUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[1],
-					SWT.NONE, this, tBooleanExpr);
+			TBooleanExprUI tBooleanExprUI =
+			                                new TBooleanExprUI(editor, composite,
+			                                                   childCompositeIndex,
+			                                                   childObjectIndexes[1], SWT.NONE,
+			                                                   this, tBooleanExpr);
 			childComposites.add(childCompositeIndex, tBooleanExprUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
 		} else if (selection.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
 			TResult tResult = new TResult();
 			completion.setResult(tResult);
-			TResultUI tResultUI = new TResultUI(editor, composite, this,
-					SWT.NONE, tResult, childObjectIndexes[2],
-					childCompositeIndex);
+			TResultUI tResultUI =
+			                      new TResultUI(editor, composite, this, SWT.NONE, tResult,
+			                                    childObjectIndexes[2], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tResultUI);
 			childObjectIndexes[2]++;
 			childCompositeIndex++;
 		}
 		centralUtils.marshal(editor);
 	}
-	
 
 	@Override
 	public void fillDetailArea(Composite composite) {
 		/*
-		  * dispose update button as it is not required to this Section as there is no 
-		  * any attribute or xml content in this Section
-		  */
-		btnUpdate.dispose(); 
+		 * dispose update button as it is not required to this Section as there
+		 * is no
+		 * any attribute or xml content in this Section
+		 */
+		btnUpdate.dispose();
 	}
 
 	@Override
@@ -141,14 +167,14 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 
 		for (Composite composite : childComposites) {
 			composite.dispose();
@@ -160,14 +186,18 @@ public class TCompletionUI extends AbstractParentTagSection {
 		childCompositeIndex = 0;
 
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) completion
-					.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-					.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI = new TDocumentationUI(
-						editor, detailArea, childCompositeIndex,
-						childObjectIndexes[0], SWT.NONE, this,
-						documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup =
+			                                               (ArrayList<TDocumentation>) completion.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI =
+				                                    new TDocumentationUI(
+				                                                         editor,
+				                                                         detailArea,
+				                                                         childCompositeIndex,
+				                                                         childObjectIndexes[0],
+				                                                         SWT.NONE,
+				                                                         this,
+				                                                         documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -175,11 +205,12 @@ public class TCompletionUI extends AbstractParentTagSection {
 			}
 
 			if (completion.getCondition() != null) {
-				TBooleanExpr booleanExprObject = (TBooleanExpr) completion
-						.getCondition();
-				TBooleanExprUI tBooleanExprUI =new TBooleanExprUI(editor,
-						detailArea, childCompositeIndex, childObjectIndexes[1],
-						SWT.NONE, this, booleanExprObject);
+				TBooleanExpr booleanExprObject = completion.getCondition();
+				TBooleanExprUI tBooleanExprUI =
+				                                new TBooleanExprUI(editor, detailArea,
+				                                                   childCompositeIndex,
+				                                                   childObjectIndexes[1], SWT.NONE,
+				                                                   this, booleanExprObject);
 				tBooleanExprUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tBooleanExprUI);
 				childCompositeIndex++;
@@ -187,10 +218,11 @@ public class TCompletionUI extends AbstractParentTagSection {
 			}
 
 			if (completion.getResult() != null) {
-				TResult resultObject = (TResult) completion.getResult();
-				TResultUI tResultUI = new TResultUI(editor, detailArea, this,
-						SWT.NONE, resultObject, childObjectIndexes[2],
-						childCompositeIndex);
+				TResult resultObject = completion.getResult();
+				TResultUI tResultUI =
+				                      new TResultUI(editor, detailArea, this, SWT.NONE,
+				                                    resultObject, childObjectIndexes[2],
+				                                    childCompositeIndex);
 				tResultUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tResultUI);
 				childCompositeIndex++;
@@ -209,8 +241,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			completion.getDocumentation().remove(childObjectIndex);
@@ -219,25 +250,21 @@ public class TCompletionUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TBooleanExprUI) {
 					TBooleanExprUI tBooleanExprUI = (TBooleanExprUI) compositeInstance;
 					if (tBooleanExprUI.getCompositeIndex() > childCompositeIndex) {
-						tBooleanExprUI.setCompositeIndex(tBooleanExprUI
-								.getCompositeIndex() - 1);
+						tBooleanExprUI.setCompositeIndex(tBooleanExprUI.getCompositeIndex() - 1);
 					}
 
-				}  else if (compositeInstance instanceof TResultUI) {
+				} else if (compositeInstance instanceof TResultUI) {
 					TResultUI tResultUI = (TResultUI) compositeInstance;
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
-						tResultUI.setCompositeIndex(tResultUI
-								.getCompositeIndex() - 1);
+						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 
 				} else {
@@ -253,34 +280,30 @@ public class TCompletionUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 
-				}else if (compositeInstance instanceof TBooleanExprUI) {
+				} else if (compositeInstance instanceof TBooleanExprUI) {
 					TBooleanExprUI tBooleanExprUI = (TBooleanExprUI) compositeInstance;
 					if (tBooleanExprUI.getCompositeIndex() > childCompositeIndex) {
-						tBooleanExprUI.setCompositeIndex(tBooleanExprUI
-								.getCompositeIndex() - 1);
+						tBooleanExprUI.setCompositeIndex(tBooleanExprUI.getCompositeIndex() - 1);
 					}
 					if (tBooleanExprUI.objectIndex > childObjectIndex) {
-						tBooleanExprUI.setObjectIndex(tBooleanExprUI
-								.getObjectIndex() - 1);
+						tBooleanExprUI.setObjectIndex(tBooleanExprUI.getObjectIndex() - 1);
 					}
 
-				} else if (compositeInstance instanceof TResultUI ){
+				} else if (compositeInstance instanceof TResultUI) {
 					TResultUI tResultUI = (TResultUI) compositeInstance;
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
-						tResultUI.setCompositeIndex(tResultUI
-								.getCompositeIndex() - 1);
+						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 
-				}else {
+				} else {
 
 				}
- 
+
 			}
-		}else if (itemName.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
+		} else if (itemName.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
 			this.childObjectIndexes[2]--;
 			completion.setResult(null);
 			for (Composite compositeInstance : childComposites) {
@@ -288,29 +311,25 @@ public class TCompletionUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 
-				}else if (compositeInstance instanceof TBooleanExprUI) {
+				} else if (compositeInstance instanceof TBooleanExprUI) {
 					TBooleanExprUI tBooleanExprUI = (TBooleanExprUI) compositeInstance;
 					if (tBooleanExprUI.getCompositeIndex() > childCompositeIndex) {
-						tBooleanExprUI.setCompositeIndex(tBooleanExprUI
-								.getCompositeIndex() - 1);
+						tBooleanExprUI.setCompositeIndex(tBooleanExprUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TResultUI) {
 					TResultUI tResultUI = (TResultUI) compositeInstance;
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
-						tResultUI.setCompositeIndex(tResultUI
-								.getCompositeIndex() - 1);
+						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 					if (tResultUI.getObjectIndex() > childObjectIndex) {
-						tResultUI.setObjectIndex(tResultUI
-								.getObjectIndex() - 1);
+						tResultUI.setObjectIndex(tResultUI.getObjectIndex() - 1);
 					}
 
-				}else {
+				} else {
 
 				}
 
@@ -334,15 +353,15 @@ public class TCompletionUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(completion.getDocumentation().get(
-						tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(completion.getDocumentation()
+				                                     .get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TBooleanExprUI) {
 				TBooleanExprUI tBooleanExprUI = (TBooleanExprUI) compositeInstance;
 				tBooleanExprUI.loadModel(completion.getCondition());
 			} else if (compositeInstance instanceof TResultUI) {
 				TResultUI tResultUI = (TResultUI) compositeInstance;
-				tResultUI.result=completion.getResult();
-				tResultUI.refreshLogic(textEditor);
+				tResultUI.result = completion.getResult();
+				tResultUI.onPageRefresh(textEditor);
 				tResultUI.loadModel(completion.getResult());
 			}
 		}

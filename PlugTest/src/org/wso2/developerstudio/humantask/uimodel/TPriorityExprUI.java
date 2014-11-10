@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -29,18 +45,19 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	private TPriorityExpr tPriorityExpr;
 	protected int compositeIndex;
 	protected int objectIndex;
-	
-	public TPriorityExprUI(XMLEditor textEditor, Composite parentComposite,
-			int compositeIndex, int objectIndex, int styleBit,
-			Composite parentTagContainer, Object modelParent) throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit, HTEditorConstants.PRIORITY_TITLE);
+
+	public TPriorityExprUI(XMLEditor textEditor, Composite parentComposite, int compositeIndex,
+	                       int objectIndex, int styleBit, Composite parentTagContainer,
+	                       Object modelParent) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit,
+		      HTEditorConstants.PRIORITY_TITLE);
 		this.objectIndex = objectIndex;
 		this.tPriorityExpr = (TPriorityExpr) modelParent;
 		this.parentTagContainer = parentTagContainer;
-		this.compositeIndex =compositeIndex;
-		setExpanded(true); 
+		this.compositeIndex = compositeIndex;
+		setExpanded(true);
 	}
-	
+
 	/**
 	 * Update the values of attributes(xml attributes) of the section and xml
 	 * element content value and marshal into the TextEditor when the update
@@ -50,12 +67,13 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		tPriorityExpr.setExpressionLanguage(((Text) textBoxesList.get(0)).getText());
-		if (tPriorityExpr.getContent().size() != 0)  
+		if (tPriorityExpr.getContent().size() != 0) {
 			tPriorityExpr.getContent().remove(0);
-		
-		tPriorityExpr.getContent().add(0,((Text) textBoxesList.get(1)).getText());
+		}
+
+		tPriorityExpr.getContent().add(0, ((Text) textBoxesList.get(1)).getText());
 		centralUtils.marshal(textEditor);
 	}
 
@@ -66,17 +84,19 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection parentContainer = (AbstractParentTagSection) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.PRIORITY_TITLE,compositeIndex, objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.PRIORITY_TITLE, compositeIndex,
+		                                objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -84,24 +104,25 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if(tPriorityExpr.getExpressionLanguage()!=null)
-		((Text) textBoxesList.get(0)).setText(tPriorityExpr.getExpressionLanguage());
-		if(tPriorityExpr.getContent().size()!=0)
-		((Text) textBoxesList.get(1)).setText((String)tPriorityExpr.getContent().get(0));
+		if (tPriorityExpr.getExpressionLanguage() != null) {
+			((Text) textBoxesList.get(0)).setText(tPriorityExpr.getExpressionLanguage());
+		}
+		if (tPriorityExpr.getContent().size() != 0) {
+			((Text) textBoxesList.get(1)).setText((String) tPriorityExpr.getContent().get(0));
+		}
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element contents (if available) in the section
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
 	 */
 	@Override
 	public void fillDetailArea() {
-		Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+		Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
-	
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		Table table = new Table(detailArea, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
 		for (int i = 0; i < 2; i++) {
@@ -124,7 +145,7 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 		textBoxesList.add(0, txtValue);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(txtValue, tblRow1, 1);
-		
+
 		Label lblContent = new Label(table, SWT.NONE);
 		lblContent.setText("Content");
 		tblEditor.grabHorizontal = true;
@@ -143,7 +164,7 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 	 * 
 	 * @param model
 	 */
-	public void loadModel(Object model){
+	public void loadModel(Object model) {
 		tPriorityExpr = (TPriorityExpr) model;
 	}
 
@@ -157,6 +178,12 @@ public class TPriorityExprUI extends AbstractEndTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

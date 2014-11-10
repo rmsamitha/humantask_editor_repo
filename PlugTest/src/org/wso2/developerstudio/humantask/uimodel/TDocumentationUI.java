@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -28,7 +44,7 @@ import org.wso2.developerstudio.humantask.models.TDocumentation;
 public class TDocumentationUI extends AbstractEndTagSection {
 	private Composite parentTagContainer; // parent Section(xml element)
 	private TDocumentation documentation; // model class related to this UI
-	                                      // Section
+	// Section
 	private int compositeIndex;/*
 							    * this section's(composite's) index (index of
 							    * any type of child class objects created in
@@ -74,7 +90,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		/* Set the Lang attribute value of this xml element */
 		documentation.setLang(((Combo) textBoxesList.get(0)).getText());
 
@@ -96,7 +112,7 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection parentContainer = (AbstractParentTagSection) parentTagContainer;
 
 		// calls the refreshChildren() method of this Section's parent Section
@@ -118,14 +134,16 @@ public class TDocumentationUI extends AbstractEndTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if (documentation.getLang() != null)
+		if (documentation.getLang() != null) {
 			// get the "lang" attribute value from the model and fill it into
 			// the corresponding combo box
 			((Combo) textBoxesList.get(0)).setText(documentation.getLang());
-		if (documentation.getContent().size() != 0)
+		}
+		if (documentation.getContent().size() != 0) {
 			// get the xml element content value from the model and fill it
 			// into the corresponding text box
 			((Text) textBoxesList.get(1)).setText((String) documentation.getContent().get(0));
+		}
 	}
 
 	/**

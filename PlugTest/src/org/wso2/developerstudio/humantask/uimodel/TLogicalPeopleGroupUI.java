@@ -111,7 +111,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		/* Set the name attribute value of this xml element */
 		logicalPeopleGroup.setName(((Text) textBoxesList.get(0)).getText());
 
@@ -129,7 +129,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TLogicalPeopleGroupsUI tLogicalPeopleGroupsUI = (TLogicalPeopleGroupsUI) parentTagContainer;
 
 		// calls the refreshChildren() method of this Section's parent Section
@@ -152,11 +152,11 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) { // check
-			                                                                     // the
-			                                                                     // selection
+			// the
+			// selection
 			TDocumentation tDocumentation = new TDocumentation();
 
 			// initialize attribute values to prevent being null
@@ -272,10 +272,11 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if ((logicalPeopleGroup.getName() != null))
+		if (logicalPeopleGroup.getName() != null) {
 			// get the "Name" attribute value from the model and fill it into
 			// the corresponding text box
 			((Text) textBoxesList.get(0)).setText(logicalPeopleGroup.getName());
+		}
 		if (logicalPeopleGroup.getReference() != null) {
 			// get the "Reference" attribute value from the model and fill it
 			// into the corresponding text box
@@ -294,7 +295,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		// dispose all child Sections
 		for (Composite composite : childComposites) {
 			composite.dispose();
@@ -326,9 +327,9 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 				                                                         this,
 				                                                         documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);// Initialize or set the
-				                                    // values of attributes of
-				                                    // that Documentation
-				                                    // element
+				// values of attributes of
+				// that Documentation
+				// element
 
 				// add above UI object to the childComposite list of this
 				// Section.
@@ -355,8 +356,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 				                                              childObjectIndexes[1],
 				                                              childCompositeIndex);
 				tTParameterUI.initialize(editor);// Initialize or set the values
-				                                 // of attributes of that
-				                                 // Parameter element
+				// of attributes of that
+				// Parameter element
 
 				// add above UI object to the childComposite list of this
 				// Section.
@@ -400,10 +401,10 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 			for (Composite compositeInstance : childComposites) {
 
 				if (compositeInstance instanceof TDocumentationUI) { // if the
-					                                                 // child is
-					                                                 // a
-					                                                 // Documentation
-					                                                 // element
+					// child is
+					// a
+					// Documentation
+					// element
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					// reorganizing is required only if the removed composites's
 					// index is less than the now considering other child
@@ -418,11 +419,11 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TParameterUI) { // if
-					                                                    // the
-					                                                    // child
-					                                                    // is a
-					                                                    // Parameter
-					                                                    // element
+					// the
+					// child
+					// is a
+					// Parameter
+					// element
 					TParameterUI tParameterUI = (TParameterUI) compositeInstance;
 					if (tParameterUI.getCompositeIndex() > childCompositeIndex) {
 						tParameterUI.setCompositeIndex(tParameterUI.getCompositeIndex() - 1);
@@ -485,7 +486,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 				                                             .get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TParameterUI) {
 				TParameterUI tParameterUI = (TParameterUI) compositeInstance;
-				tParameterUI.refreshLogic(textEditor);
+				tParameterUI.onPageRefresh(textEditor);
 				tParameterUI.loadModel(logicalPeopleGroup.getParameter()
 				                                         .get(tParameterUI.objectIndex));
 			}

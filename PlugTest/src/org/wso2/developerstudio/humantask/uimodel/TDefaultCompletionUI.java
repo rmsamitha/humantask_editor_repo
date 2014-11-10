@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -42,14 +58,16 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TDefaultCompletionUI(XMLEditor textEditor,
-			Composite parentComposite, Composite parentTagContainer,
-			int styleBit, Object objectModel, int objectIndex,
-			int compositeIndex) throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-						HTEditorConstants.RESULT_TITLE },
-				HTEditorConstants.DEFAULT_COMPLETION_TITLE);
+	public TDefaultCompletionUI(XMLEditor textEditor, Composite parentComposite,
+	                            Composite parentTagContainer, int styleBit, Object objectModel,
+	                            int objectIndex, int compositeIndex) throws JAXBException {
+		super(
+		      textEditor,
+		      parentComposite,
+		      parentTagContainer,
+		      styleBit,
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.RESULT_TITLE },
+		      HTEditorConstants.DEFAULT_COMPLETION_TITLE);
 		this.defaultCompletion = (TDefaultCompletion) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -60,7 +78,7 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 	}
 
 	/**
@@ -70,10 +88,10 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) parentTagContainer;
-		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.DEFAULT_COMPLETION_TITLE, getCompositeIndex(),
-				getObjectIndex());
+		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.DEFAULT_COMPLETION_TITLE,
+		                                      getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -81,18 +99,28 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
-			defaultCompletion.getDocumentation().add(childObjectIndexes[0],
-					tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			defaultCompletion.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -100,9 +128,9 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 			TResult tResult = new TResult();
 
 			defaultCompletion.setResult(tResult);
-			TResultUI tResultUI = new TResultUI(editor, composite, this,
-					SWT.NONE, tResult, childObjectIndexes[1],
-					childCompositeIndex);
+			TResultUI tResultUI =
+			                      new TResultUI(editor, composite, this, SWT.NONE, tResult,
+			                                    childObjectIndexes[1], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tResultUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
@@ -113,8 +141,11 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 
 	@Override
 	public void fillDetailArea(Composite composite) {
-		btnUpdate.dispose();/* dispose update button as it is not required to this Section as there is no any
-		attribute or xml content in this Section */
+		btnUpdate.dispose();/*
+							 * dispose update button as it is not required to
+							 * this Section as there is no any
+							 * attribute or xml content in this Section
+							 */
 	}
 
 	@Override
@@ -125,14 +156,14 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 
 		for (Composite composite : childComposites) {
 			composite.dispose();
@@ -144,14 +175,18 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 		childCompositeIndex = 0;
 
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) defaultCompletion
-					.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-					.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI = new TDocumentationUI(
-						editor, detailArea, childCompositeIndex,
-						childObjectIndexes[0], SWT.NONE, this,
-						documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup =
+			                                               (ArrayList<TDocumentation>) defaultCompletion.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI =
+				                                    new TDocumentationUI(
+				                                                         editor,
+				                                                         detailArea,
+				                                                         childCompositeIndex,
+				                                                         childObjectIndexes[0],
+				                                                         SWT.NONE,
+				                                                         this,
+				                                                         documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -159,10 +194,11 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 			}
 
 			if (defaultCompletion.getResult() != null) {
-				TResult resultObject = (TResult) defaultCompletion.getResult();
-				TResultUI tResultUI = new TResultUI(editor, detailArea, this,
-						SWT.NONE, resultObject, childObjectIndexes[1],
-						childCompositeIndex);
+				TResult resultObject = defaultCompletion.getResult();
+				TResultUI tResultUI =
+				                      new TResultUI(editor, detailArea, this, SWT.NONE,
+				                                    resultObject, childObjectIndexes[1],
+				                                    childCompositeIndex);
 				tResultUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tResultUI);
 				childCompositeIndex++;
@@ -181,8 +217,7 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			defaultCompletion.getDocumentation().remove(childObjectIndex);
@@ -191,18 +226,15 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TResultUI) {
 					TResultUI tResultUI = (TResultUI) compositeInstance;
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
-						tResultUI.setCompositeIndex(tResultUI
-								.getCompositeIndex() - 1);
+						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 
 				} else {
@@ -219,19 +251,16 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TResultUI) {
 					TResultUI tResultUI = (TResultUI) compositeInstance;
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
-						tResultUI.setCompositeIndex(tResultUI
-								.getCompositeIndex() - 1);
+						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 					if (tResultUI.getObjectIndex() > childObjectIndex) {
-						tResultUI
-								.setObjectIndex(tResultUI.getObjectIndex() - 1);
+						tResultUI.setObjectIndex(tResultUI.getObjectIndex() - 1);
 					}
 
 				} else {
@@ -259,11 +288,11 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 				tDocumentationUI.loadModel(defaultCompletion.getDocumentation()
-						.get(tDocumentationUI.getObjectIndex()));
+				                                            .get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TResultUI) {
 				TResultUI tResultUI = (TResultUI) compositeInstance;
-				tResultUI.result=defaultCompletion.getResult();
-				tResultUI.refreshLogic(textEditor);
+				tResultUI.result = defaultCompletion.getResult();
+				tResultUI.onPageRefresh(textEditor);
 				tResultUI.loadModel(defaultCompletion.getResult());
 			}
 		}

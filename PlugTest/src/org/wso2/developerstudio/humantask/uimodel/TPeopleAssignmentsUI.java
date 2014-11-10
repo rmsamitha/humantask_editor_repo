@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -45,19 +61,18 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TPeopleAssignmentsUI(XMLEditor textEditor,
-			Composite parentComposite, Composite parentTagContainer, int style,
-			Object modelParent, int objectIndex, int compositeIndex)
-			throws JAXBException {
+	public TPeopleAssignmentsUI(XMLEditor textEditor, Composite parentComposite,
+	                            Composite parentTagContainer, int style, Object modelParent,
+	                            int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, style,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-						HTEditorConstants.POTENTIAL_OWNERS_TITLE,
-						HTEditorConstants.EXCLUDED_OWNERS_TITLE,
-						HTEditorConstants.TASK_INITIATOR_TITLE,
-						HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
-						HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE,
-						HTEditorConstants.RECIPIENTS_TITLE },
-				HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
+		                    HTEditorConstants.POTENTIAL_OWNERS_TITLE,
+		                    HTEditorConstants.EXCLUDED_OWNERS_TITLE,
+		                    HTEditorConstants.TASK_INITIATOR_TITLE,
+		                    HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
+		                    HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE,
+		                    HTEditorConstants.RECIPIENTS_TITLE },
+		      HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE);
 		this.tPeopleAssignments = (TPeopleAssignments) modelParent;
 		this.compositeIndex = compositeIndex;
 		this.parentTagContainer = parentTagContainer;
@@ -65,7 +80,7 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 		this.childObjectIndexes = new int[3];
 		setExpanded(true);
 	}
-	
+
 	/**
 	 * Update the values of attributes(xml attributes) of the section and xml
 	 * element content value and marshal into the TextEditor when the update
@@ -75,7 +90,7 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 	}
 
 	/**
@@ -85,10 +100,10 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection taskUI = (AbstractParentTagSection) parentTagContainer;
-		taskUI.refreshChildren(HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE,
-				compositeIndex, objectIndex);
+		taskUI.refreshChildren(HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE, compositeIndex,
+		                       objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -99,14 +114,14 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -116,101 +131,134 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) tPeopleAssignments
-				.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-				.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					detailArea, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this,
-					documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup =
+		                                               (ArrayList<TDocumentation>) tPeopleAssignments.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(
+			                                                         editor,
+			                                                         detailArea,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE,
+			                                                         this,
+			                                                         documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
 			childObjectIndexes[0]++;
 		}
 
-		ArrayList<JAXBElement<? extends TGenericHumanRoleAssignmentBase>> genericPeopleGroup = (ArrayList<JAXBElement<? extends TGenericHumanRoleAssignmentBase>>) tPeopleAssignments
-				.getGenericHumanRole();
+		ArrayList<JAXBElement<? extends TGenericHumanRoleAssignmentBase>> genericPeopleGroup =
+		                                                                                       (ArrayList<JAXBElement<? extends TGenericHumanRoleAssignmentBase>>) tPeopleAssignments.getGenericHumanRole();
 
-		for (int genericPeopleIndex = 0; genericPeopleIndex < genericPeopleGroup
-				.size(); genericPeopleIndex++) {
+		for (int genericPeopleIndex = 0; genericPeopleIndex < genericPeopleGroup.size(); genericPeopleIndex++) {
 			if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.PotentialOwners_QNAME)) {
-				TPotentialOwnerAssignmentsUI tPotentialOwnerAssignmentUI = new TPotentialOwnerAssignmentsUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.POTENTIAL_OWNERS_TITLE,
-						HTEditorConstants.PotentialOwners_QNAME);
+			                      .equals(HTEditorConstants.PotentialOwners_QNAME)) {
+				TPotentialOwnerAssignmentsUI tPotentialOwnerAssignmentUI =
+				                                                           new TPotentialOwnerAssignmentsUI(
+				                                                                                            editor,
+				                                                                                            detailArea,
+				                                                                                            this,
+				                                                                                            SWT.NONE,
+				                                                                                            genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                              .getValue(),
+				                                                                                            childObjectIndexes[1],
+				                                                                                            childCompositeIndex,
+				                                                                                            HTEditorConstants.POTENTIAL_OWNERS_TITLE,
+				                                                                                            HTEditorConstants.PotentialOwners_QNAME);
 				tPotentialOwnerAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tPotentialOwnerAssignmentUI);
+				childComposites.add(childCompositeIndex, tPotentialOwnerAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.ExcludedOwners_QNAME)) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.EXCLUDED_OWNERS_TITLE,
-						HTEditorConstants.ExcludedOwners_QNAME);
+			                             .equals(HTEditorConstants.ExcludedOwners_QNAME)) {
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              new TGenericHumanRoleAssignmentUI(
+				                                                                                                editor,
+				                                                                                                detailArea,
+				                                                                                                this,
+				                                                                                                SWT.NONE,
+				                                                                                                genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                                  .getValue(),
+				                                                                                                childObjectIndexes[1],
+				                                                                                                childCompositeIndex,
+				                                                                                                HTEditorConstants.EXCLUDED_OWNERS_TITLE,
+				                                                                                                HTEditorConstants.ExcludedOwners_QNAME);
 				tGenericHumanRoleAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tGenericHumanRoleAssignmentUI);
+				childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.TaskInitiator_QNAME)) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.TASK_INITIATOR_TITLE,
-						HTEditorConstants.TaskInitiator_QNAME);
+			                             .equals(HTEditorConstants.TaskInitiator_QNAME)) {
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              new TGenericHumanRoleAssignmentUI(
+				                                                                                                editor,
+				                                                                                                detailArea,
+				                                                                                                this,
+				                                                                                                SWT.NONE,
+				                                                                                                genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                                  .getValue(),
+				                                                                                                childObjectIndexes[1],
+				                                                                                                childCompositeIndex,
+				                                                                                                HTEditorConstants.TASK_INITIATOR_TITLE,
+				                                                                                                HTEditorConstants.TaskInitiator_QNAME);
 				tGenericHumanRoleAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tGenericHumanRoleAssignmentUI);
+				childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.TaskStakeholders_QNAME)) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.TASK_STAKEHOLDERS_TITLE,
-						HTEditorConstants.TaskStakeholders_QNAME);
+			                             .equals(HTEditorConstants.TaskStakeholders_QNAME)) {
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              new TGenericHumanRoleAssignmentUI(
+				                                                                                                editor,
+				                                                                                                detailArea,
+				                                                                                                this,
+				                                                                                                SWT.NONE,
+				                                                                                                genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                                  .getValue(),
+				                                                                                                childObjectIndexes[1],
+				                                                                                                childCompositeIndex,
+				                                                                                                HTEditorConstants.TASK_STAKEHOLDERS_TITLE,
+				                                                                                                HTEditorConstants.TaskStakeholders_QNAME);
 				tGenericHumanRoleAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tGenericHumanRoleAssignmentUI);
+				childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.BusinessAdministrators_QNAME)) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE,
-						HTEditorConstants.BusinessAdministrators_QNAME);
+			                             .equals(HTEditorConstants.BusinessAdministrators_QNAME)) {
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              new TGenericHumanRoleAssignmentUI(
+				                                                                                                editor,
+				                                                                                                detailArea,
+				                                                                                                this,
+				                                                                                                SWT.NONE,
+				                                                                                                genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                                  .getValue(),
+				                                                                                                childObjectIndexes[1],
+				                                                                                                childCompositeIndex,
+				                                                                                                HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE,
+				                                                                                                HTEditorConstants.BusinessAdministrators_QNAME);
 				tGenericHumanRoleAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tGenericHumanRoleAssignmentUI);
+				childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else if (genericPeopleGroup.get(genericPeopleIndex).getName()
-					.equals(HTEditorConstants.Recipients_QNAME)) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-						editor, detailArea, this, SWT.NONE, genericPeopleGroup
-								.get(childObjectIndexes[1]).getValue(),
-						childObjectIndexes[1], childCompositeIndex,
-						HTEditorConstants.RECIPIENTS_TITLE,
-						HTEditorConstants.Recipients_QNAME);
+			                             .equals(HTEditorConstants.Recipients_QNAME)) {
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              new TGenericHumanRoleAssignmentUI(
+				                                                                                                editor,
+				                                                                                                detailArea,
+				                                                                                                this,
+				                                                                                                SWT.NONE,
+				                                                                                                genericPeopleGroup.get(childObjectIndexes[1])
+				                                                                                                                  .getValue(),
+				                                                                                                childObjectIndexes[1],
+				                                                                                                childCompositeIndex,
+				                                                                                                HTEditorConstants.RECIPIENTS_TITLE,
+				                                                                                                HTEditorConstants.Recipients_QNAME);
 				tGenericHumanRoleAssignmentUI.initialize(editor);
-				childComposites.add(childCompositeIndex,
-						tGenericHumanRoleAssignmentUI);
+				childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 				childCompositeIndex++;
 				childObjectIndexes[1]++;
 			} else {
@@ -223,143 +271,184 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
-			tPeopleAssignments.getDocumentation().add(childObjectIndexes[0],
-					tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			tPeopleAssignments.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.POTENTIAL_OWNERS_TITLE)) {
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.POTENTIAL_OWNERS_TITLE)) {
 			TPotentialOwnerAssignment tPotentialOwnerAssignment = new TPotentialOwnerAssignment();
-			JAXBElement<TPotentialOwnerAssignment> tp = new JAXBElement<TPotentialOwnerAssignment>(
-					HTEditorConstants.PotentialOwners_QNAME,
-					TPotentialOwnerAssignment.class, tPotentialOwnerAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TPotentialOwnerAssignmentsUI tGenericHumanRoleAssignmentUI = new TPotentialOwnerAssignmentsUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex,
-					HTEditorConstants.POTENTIAL_OWNERS_TITLE,
-					HTEditorConstants.PotentialOwners_QNAME);
+			JAXBElement<TPotentialOwnerAssignment> tp =
+			                                            new JAXBElement<TPotentialOwnerAssignment>(
+			                                                                                       HTEditorConstants.PotentialOwners_QNAME,
+			                                                                                       TPotentialOwnerAssignment.class,
+			                                                                                       tPotentialOwnerAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TPotentialOwnerAssignmentsUI tGenericHumanRoleAssignmentUI =
+			                                                             new TPotentialOwnerAssignmentsUI(
+			                                                                                              editor,
+			                                                                                              detailArea,
+			                                                                                              this,
+			                                                                                              SWT.NONE,
+			                                                                                              tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                .get(childObjectIndexes[1])
+			                                                                                                                .getValue(),
+			                                                                                              childObjectIndexes[1],
+			                                                                                              childCompositeIndex,
+			                                                                                              HTEditorConstants.POTENTIAL_OWNERS_TITLE,
+			                                                                                              HTEditorConstants.PotentialOwners_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.EXCLUDED_OWNERS_TITLE)) {
-			TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TGenericHumanRoleAssignment();
-			JAXBElement<TGenericHumanRoleAssignment> tp = new JAXBElement<TGenericHumanRoleAssignment>(
-					HTEditorConstants.ExcludedOwners_QNAME,
-					TGenericHumanRoleAssignment.class,
-					tGenericHumanRoleAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex,
-					HTEditorConstants.EXCLUDED_OWNERS_TITLE,
-					HTEditorConstants.ExcludedOwners_QNAME);
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.EXCLUDED_OWNERS_TITLE)) {
+			TGenericHumanRoleAssignment tGenericHumanRoleAssignment =
+			                                                          new TGenericHumanRoleAssignment();
+			JAXBElement<TGenericHumanRoleAssignment> tp =
+			                                              new JAXBElement<TGenericHumanRoleAssignment>(
+			                                                                                           HTEditorConstants.ExcludedOwners_QNAME,
+			                                                                                           TGenericHumanRoleAssignment.class,
+			                                                                                           tGenericHumanRoleAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+			                                                              new TGenericHumanRoleAssignmentUI(
+			                                                                                                editor,
+			                                                                                                detailArea,
+			                                                                                                this,
+			                                                                                                SWT.NONE,
+			                                                                                                tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                  .get(childObjectIndexes[1])
+			                                                                                                                  .getValue(),
+			                                                                                                childObjectIndexes[1],
+			                                                                                                childCompositeIndex,
+			                                                                                                HTEditorConstants.EXCLUDED_OWNERS_TITLE,
+			                                                                                                HTEditorConstants.ExcludedOwners_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.TASK_INITIATOR_TITLE)) {
-			TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TGenericHumanRoleAssignment();
-			JAXBElement<TGenericHumanRoleAssignment> tp = new JAXBElement<TGenericHumanRoleAssignment>(
-					HTEditorConstants.TaskInitiator_QNAME,
-					TGenericHumanRoleAssignment.class,
-					tGenericHumanRoleAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex,
-					HTEditorConstants.TASK_INITIATOR_TITLE,
-					HTEditorConstants.TaskInitiator_QNAME);
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.TASK_INITIATOR_TITLE)) {
+			TGenericHumanRoleAssignment tGenericHumanRoleAssignment =
+			                                                          new TGenericHumanRoleAssignment();
+			JAXBElement<TGenericHumanRoleAssignment> tp =
+			                                              new JAXBElement<TGenericHumanRoleAssignment>(
+			                                                                                           HTEditorConstants.TaskInitiator_QNAME,
+			                                                                                           TGenericHumanRoleAssignment.class,
+			                                                                                           tGenericHumanRoleAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+			                                                              new TGenericHumanRoleAssignmentUI(
+			                                                                                                editor,
+			                                                                                                detailArea,
+			                                                                                                this,
+			                                                                                                SWT.NONE,
+			                                                                                                tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                  .get(childObjectIndexes[1])
+			                                                                                                                  .getValue(),
+			                                                                                                childObjectIndexes[1],
+			                                                                                                childCompositeIndex,
+			                                                                                                HTEditorConstants.TASK_INITIATOR_TITLE,
+			                                                                                                HTEditorConstants.TaskInitiator_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.TASK_STAKE_HOLDERS_TITLE)) {
-			TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TGenericHumanRoleAssignment();
-			JAXBElement<TGenericHumanRoleAssignment> tp = new JAXBElement<TGenericHumanRoleAssignment>(
-					HTEditorConstants.TaskStakeholders_QNAME,
-					TGenericHumanRoleAssignment.class,
-					tGenericHumanRoleAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex,
-					HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
-					HTEditorConstants.TaskStakeholders_QNAME);
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.TASK_STAKE_HOLDERS_TITLE)) {
+			TGenericHumanRoleAssignment tGenericHumanRoleAssignment =
+			                                                          new TGenericHumanRoleAssignment();
+			JAXBElement<TGenericHumanRoleAssignment> tp =
+			                                              new JAXBElement<TGenericHumanRoleAssignment>(
+			                                                                                           HTEditorConstants.TaskStakeholders_QNAME,
+			                                                                                           TGenericHumanRoleAssignment.class,
+			                                                                                           tGenericHumanRoleAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+			                                                              new TGenericHumanRoleAssignmentUI(
+			                                                                                                editor,
+			                                                                                                detailArea,
+			                                                                                                this,
+			                                                                                                SWT.NONE,
+			                                                                                                tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                  .get(childObjectIndexes[1])
+			                                                                                                                  .getValue(),
+			                                                                                                childObjectIndexes[1],
+			                                                                                                childCompositeIndex,
+			                                                                                                HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
+			                                                                                                HTEditorConstants.TaskStakeholders_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE)) {
-			TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TGenericHumanRoleAssignment();
-			JAXBElement<TGenericHumanRoleAssignment> tp = new JAXBElement<TGenericHumanRoleAssignment>(
-					HTEditorConstants.TaskInitiator_QNAME,
-					TGenericHumanRoleAssignment.class,
-					tGenericHumanRoleAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex,
-					HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
-					HTEditorConstants.TaskInitiator_QNAME);
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.BUSINESS_ADMINISTRATORS_TITLE)) {
+			TGenericHumanRoleAssignment tGenericHumanRoleAssignment =
+			                                                          new TGenericHumanRoleAssignment();
+			JAXBElement<TGenericHumanRoleAssignment> tp =
+			                                              new JAXBElement<TGenericHumanRoleAssignment>(
+			                                                                                           HTEditorConstants.TaskInitiator_QNAME,
+			                                                                                           TGenericHumanRoleAssignment.class,
+			                                                                                           tGenericHumanRoleAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+			                                                              new TGenericHumanRoleAssignmentUI(
+			                                                                                                editor,
+			                                                                                                detailArea,
+			                                                                                                this,
+			                                                                                                SWT.NONE,
+			                                                                                                tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                  .get(childObjectIndexes[1])
+			                                                                                                                  .getValue(),
+			                                                                                                childObjectIndexes[1],
+			                                                                                                childCompositeIndex,
+			                                                                                                HTEditorConstants.TASK_STAKE_HOLDERS_TITLE,
+			                                                                                                HTEditorConstants.TaskInitiator_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.RECIPIENTS_TITLE)) {
-			TGenericHumanRoleAssignment tGenericHumanRoleAssignment = new TGenericHumanRoleAssignment();
-			JAXBElement<TGenericHumanRoleAssignment> tp = new JAXBElement<TGenericHumanRoleAssignment>(
-					HTEditorConstants.Recipients_QNAME,
-					TGenericHumanRoleAssignment.class,
-					tGenericHumanRoleAssignment);
-			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1],
-					tp);
-			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = new TGenericHumanRoleAssignmentUI(
-					editor, detailArea, this, SWT.NONE, tPeopleAssignments
-							.getGenericHumanRole().get(childObjectIndexes[1])
-							.getValue(), childObjectIndexes[1],
-					childCompositeIndex, HTEditorConstants.RECIPIENTS_TITLE,
-					HTEditorConstants.Recipients_QNAME);
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.RECIPIENTS_TITLE)) {
+			TGenericHumanRoleAssignment tGenericHumanRoleAssignment =
+			                                                          new TGenericHumanRoleAssignment();
+			JAXBElement<TGenericHumanRoleAssignment> tp =
+			                                              new JAXBElement<TGenericHumanRoleAssignment>(
+			                                                                                           HTEditorConstants.Recipients_QNAME,
+			                                                                                           TGenericHumanRoleAssignment.class,
+			                                                                                           tGenericHumanRoleAssignment);
+			tPeopleAssignments.getGenericHumanRole().add(childObjectIndexes[1], tp);
+			TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+			                                                              new TGenericHumanRoleAssignmentUI(
+			                                                                                                editor,
+			                                                                                                detailArea,
+			                                                                                                this,
+			                                                                                                SWT.NONE,
+			                                                                                                tPeopleAssignments.getGenericHumanRole()
+			                                                                                                                  .get(childObjectIndexes[1])
+			                                                                                                                  .getValue(),
+			                                                                                                childObjectIndexes[1],
+			                                                                                                childCompositeIndex,
+			                                                                                                HTEditorConstants.RECIPIENTS_TITLE,
+			                                                                                                HTEditorConstants.Recipients_QNAME);
 			tGenericHumanRoleAssignmentUI.initialize(editor);
-			childComposites.add(childCompositeIndex,
-					tGenericHumanRoleAssignmentUI);
+			childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
 		}
@@ -385,8 +474,7 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			tPeopleAssignments.getDocumentation().remove(childObjectIndex);
@@ -395,28 +483,24 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance.getClass() == TGenericHumanRoleAssignmentUI.class) {
 
-					TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = (TGenericHumanRoleAssignmentUI) compositeInstance;
+					TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+					                                                              (TGenericHumanRoleAssignmentUI) compositeInstance;
 					if (tGenericHumanRoleAssignmentUI.getCompositeIndex() > childCompositeIndex) {
-						tGenericHumanRoleAssignmentUI
-								.setCompositeIndex(tGenericHumanRoleAssignmentUI
-										.getCompositeIndex() - 1);
+						tGenericHumanRoleAssignmentUI.setCompositeIndex(tGenericHumanRoleAssignmentUI.getCompositeIndex() - 1);
 					}
 				} else {
 
 				}
 
 			}
-		} else if (itemName
-				.equalsIgnoreCase(HTEditorConstants.GENERIC_HUMAN_ROLE_TITLE)) {
+		} else if (itemName.equalsIgnoreCase(HTEditorConstants.GENERIC_HUMAN_ROLE_TITLE)) {
 			this.childObjectIndexes[1]--;
 			tPeopleAssignments.getGenericHumanRole().remove(childObjectIndex);
 			for (Composite compositeInstance : childComposites) {
@@ -424,34 +508,27 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance.getClass() == TPotentialOwnerAssignmentsUI.class) {
 
-					TPotentialOwnerAssignmentsUI tPotentialUserAssignmentsUI = (TPotentialOwnerAssignmentsUI) compositeInstance;
+					TPotentialOwnerAssignmentsUI tPotentialUserAssignmentsUI =
+					                                                           (TPotentialOwnerAssignmentsUI) compositeInstance;
 					if (tPotentialUserAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
-						tPotentialUserAssignmentsUI
-								.setCompositeIndex(tPotentialUserAssignmentsUI
-										.getCompositeIndex() - 1);
+						tPotentialUserAssignmentsUI.setCompositeIndex(tPotentialUserAssignmentsUI.getCompositeIndex() - 1);
 					}
 					if (tPotentialUserAssignmentsUI.getObjectIndex() > childObjectIndex) {
-						tPotentialUserAssignmentsUI
-								.setObjectIndex(tPotentialUserAssignmentsUI
-										.getObjectIndex() - 1);
+						tPotentialUserAssignmentsUI.setObjectIndex(tPotentialUserAssignmentsUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance.getClass() == TGenericHumanRoleAssignmentUI.class) {
 
-					TGenericHumanRoleAssignmentUI tgenericHumanRoleAssignementUI = (TGenericHumanRoleAssignmentUI) compositeInstance;
+					TGenericHumanRoleAssignmentUI tgenericHumanRoleAssignementUI =
+					                                                               (TGenericHumanRoleAssignmentUI) compositeInstance;
 					if (tgenericHumanRoleAssignementUI.getCompositeIndex() > childCompositeIndex) {
-						tgenericHumanRoleAssignementUI
-								.setCompositeIndex(tgenericHumanRoleAssignementUI
-										.getCompositeIndex() - 1);
+						tgenericHumanRoleAssignementUI.setCompositeIndex(tgenericHumanRoleAssignementUI.getCompositeIndex() - 1);
 					}
 					if (tgenericHumanRoleAssignementUI.getObjectIndex() > childObjectIndex) {
-						tgenericHumanRoleAssignementUI
-								.setObjectIndex(tgenericHumanRoleAssignementUI
-										.getObjectIndex() - 1);
+						tgenericHumanRoleAssignementUI.setObjectIndex(tgenericHumanRoleAssignementUI.getObjectIndex() - 1);
 					}
 				} else {
 
@@ -476,22 +553,22 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(tPeopleAssignments
-						.getDocumentation().get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(tPeopleAssignments.getDocumentation()
+				                                             .get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance.getClass() == TPotentialOwnerAssignmentsUI.class) {
-				TPotentialOwnerAssignmentsUI tPotentialOwnerAssignmentsUI = (TPotentialOwnerAssignmentsUI) compositeInstance;
-				tPotentialOwnerAssignmentsUI.refreshLogic(textEditor);
-				tPotentialOwnerAssignmentsUI.loadModel(tPeopleAssignments
-						.getGenericHumanRole()
-						.get(tPotentialOwnerAssignmentsUI.getObjectIndex())
-						.getValue());
+				TPotentialOwnerAssignmentsUI tPotentialOwnerAssignmentsUI =
+				                                                            (TPotentialOwnerAssignmentsUI) compositeInstance;
+				tPotentialOwnerAssignmentsUI.onPageRefresh(textEditor);
+				tPotentialOwnerAssignmentsUI.loadModel(tPeopleAssignments.getGenericHumanRole()
+				                                                         .get(tPotentialOwnerAssignmentsUI.getObjectIndex())
+				                                                         .getValue());
 			} else if (compositeInstance.getClass() == TGenericHumanRoleAssignmentUI.class) {
-				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI = (TGenericHumanRoleAssignmentUI) compositeInstance;
-				tGenericHumanRoleAssignmentUI.refreshLogic(textEditor);
-				tGenericHumanRoleAssignmentUI.loadModel(tPeopleAssignments
-						.getGenericHumanRole()
-						.get(tGenericHumanRoleAssignmentUI.getObjectIndex())
-						.getValue());
+				TGenericHumanRoleAssignmentUI tGenericHumanRoleAssignmentUI =
+				                                                              (TGenericHumanRoleAssignmentUI) compositeInstance;
+				tGenericHumanRoleAssignmentUI.onPageRefresh(textEditor);
+				tGenericHumanRoleAssignmentUI.loadModel(tPeopleAssignments.getGenericHumanRole()
+				                                                          .get(tGenericHumanRoleAssignmentUI.getObjectIndex())
+				                                                          .getValue());
 			}
 		}
 	}
@@ -506,6 +583,12 @@ public class TPeopleAssignmentsUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

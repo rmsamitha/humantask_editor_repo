@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -54,14 +70,12 @@ public class TParallelUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	public TParallelUI(XMLEditor textEditor, Composite parentComposite,
-			Composite parentTagContainer, int styleBit, Object objectModel,
-			int objectIndex, int compositeIndex) throws JAXBException {
+	                   Composite parentTagContainer, int styleBit, Object objectModel,
+	                   int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] {HTEditorConstants.COMPLETION_BEHAVIOR_TITLE,
-						HTEditorConstants.FROM_TITLE,
-						HTEditorConstants.SEQUENCE_TITLE,
-						HTEditorConstants.PARALLEL_TITLE },
-				HTEditorConstants.PARALLEL_TITLE);
+		      new String[] { HTEditorConstants.COMPLETION_BEHAVIOR_TITLE,
+		                    HTEditorConstants.FROM_TITLE, HTEditorConstants.SEQUENCE_TITLE,
+		                    HTEditorConstants.PARALLEL_TITLE }, HTEditorConstants.PARALLEL_TITLE);
 		this.tParallel = (TParallel) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -79,10 +93,10 @@ public class TParallelUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		tParallel.setType(TRoutingPatternType.fromValue(((Combo) textBoxesList.get(0)	).getText()	));
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
+		tParallel.setType(TRoutingPatternType.fromValue(((Combo) textBoxesList.get(0)).getText()));
 		centralUtils.marshal(textEditor);
-		}
+	}
 
 	/**
 	 * Dispose the section when the remove button of section is clicked.
@@ -91,9 +105,10 @@ public class TParallelUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection parentTagSection = (AbstractParentTagSection) parentTagContainer;
-		parentTagSection.refreshChildren(HTEditorConstants.PARALLEL_TITLE, getCompositeIndex(), getObjectIndex());
+		parentTagSection.refreshChildren(HTEditorConstants.PARALLEL_TITLE, getCompositeIndex(),
+		                                 getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -104,14 +119,14 @@ public class TParallelUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -120,60 +135,82 @@ public class TParallelUI extends AbstractParentTagSection {
 		}
 		childComposites.clear();
 		childCompositeIndex = 0;
-		
+
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) tParallel
-					.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-					.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI = new TDocumentationUI(
-						editor, detailArea, childCompositeIndex,
-						childObjectIndexes[0], SWT.NONE, this,
-						documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup =
+			                                               (ArrayList<TDocumentation>) tParallel.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI =
+				                                    new TDocumentationUI(
+				                                                         editor,
+				                                                         detailArea,
+				                                                         childCompositeIndex,
+				                                                         childObjectIndexes[0],
+				                                                         SWT.NONE,
+				                                                         this,
+				                                                         documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
 				childObjectIndexes[0]++;
 			}
 
-			/*if (task.getInterface() != null) {
-				TTaskInterface interfaceObject = (TTaskInterface) task
-						.getInterface();
-				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, detailArea, this, SWT.NONE,
-						interfaceObject, childObjectIndexes[1],
-						childCompositeIndex);
-				tTaskInterfaceUI.initialize(editor);
-				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
-				childCompositeIndex++;
-				childObjectIndexes[1]++;
-			}*/
+			/*
+			 * if (task.getInterface() != null) {
+			 * TTaskInterface interfaceObject = (TTaskInterface) task
+			 * .getInterface();
+			 * TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor,
+			 * detailArea, this, SWT.NONE,
+			 * interfaceObject, childObjectIndexes[1],
+			 * childCompositeIndex);
+			 * tTaskInterfaceUI.initialize(editor);
+			 * childComposites.add(childCompositeIndex, tTaskInterfaceUI);
+			 * childCompositeIndex++;
+			 * childObjectIndexes[1]++;
+			 * }
+			 */
 
-			ArrayList<TExtensibleElements> sequenceOrParallelGroup = (ArrayList<TExtensibleElements>) tParallel
-					.getParallelOrSequence();
-			for (int sequenceOrParallelIndex = 0; sequenceOrParallelIndex < sequenceOrParallelGroup
-					.size(); sequenceOrParallelIndex++) {
-				if(sequenceOrParallelGroup.get(sequenceOrParallelIndex).getClass() == TParallel.class){
-	        		TParallelUI tGenericHumanRoleAssignmentUI = new TParallelUI(editor,
-	                        detailArea,this,SWT.NONE,sequenceOrParallelGroup.get(childObjectIndexes[2]), childObjectIndexes[2], childCompositeIndex);
-	                tGenericHumanRoleAssignmentUI.initialize(editor);
-	                childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
-	                childCompositeIndex++;
-	                childObjectIndexes[2]++;
-	        	}if(sequenceOrParallelGroup.get(sequenceOrParallelIndex).getClass() == TSequence.class){
-	        		TSequenceUI tSequenceUI = new TSequenceUI(editor,
-	                        detailArea,this,SWT.NONE,sequenceOrParallelGroup.get(childObjectIndexes[2]), childObjectIndexes[2], childCompositeIndex);
-	                tSequenceUI.initialize(editor);
-	                childComposites.add(childCompositeIndex, tSequenceUI);
-	                childCompositeIndex++;
-	                childObjectIndexes[2]++;
-	        	}
-				
+			ArrayList<TExtensibleElements> sequenceOrParallelGroup =
+			                                                         (ArrayList<TExtensibleElements>) tParallel.getParallelOrSequence();
+			for (int sequenceOrParallelIndex = 0; sequenceOrParallelIndex < sequenceOrParallelGroup.size(); sequenceOrParallelIndex++) {
+				if (sequenceOrParallelGroup.get(sequenceOrParallelIndex).getClass() == TParallel.class) {
+					TParallelUI tGenericHumanRoleAssignmentUI =
+					                                            new TParallelUI(
+					                                                            editor,
+					                                                            detailArea,
+					                                                            this,
+					                                                            SWT.NONE,
+					                                                            sequenceOrParallelGroup.get(childObjectIndexes[2]),
+					                                                            childObjectIndexes[2],
+					                                                            childCompositeIndex);
+					tGenericHumanRoleAssignmentUI.initialize(editor);
+					childComposites.add(childCompositeIndex, tGenericHumanRoleAssignmentUI);
+					childCompositeIndex++;
+					childObjectIndexes[2]++;
+				}
+				if (sequenceOrParallelGroup.get(sequenceOrParallelIndex).getClass() == TSequence.class) {
+					TSequenceUI tSequenceUI =
+					                          new TSequenceUI(
+					                                          editor,
+					                                          detailArea,
+					                                          this,
+					                                          SWT.NONE,
+					                                          sequenceOrParallelGroup.get(childObjectIndexes[2]),
+					                                          childObjectIndexes[2],
+					                                          childCompositeIndex);
+					tSequenceUI.initialize(editor);
+					childComposites.add(childCompositeIndex, tSequenceUI);
+					childCompositeIndex++;
+					childObjectIndexes[2]++;
+				}
+
 			}
 		}
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -181,82 +218,95 @@ public class TParallelUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if(tParallel.getType()!=null){
+		if (tParallel.getType() != null) {
 			Combo combo = (Combo) textBoxesList.get(0);
 			combo.select(combo.indexOf(tParallel.getType().value()));
 		}
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			tParallel.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.INTERFACE_TITLE)) {
-			/*if (childObjectIndexes[1] < 1) {
-				TTaskInterface tTaskInterface = new TTaskInterface();
-				tTaskInterface.setPortType(new QName(""));
-				tTaskInterface.setOperation("");
-				tParallel.setInterface(tTaskInterface);
-				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, composite, this, SWT.NONE,
-						tTaskInterface, childObjectIndexes[1],
-						childCompositeIndex);
-				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
-				childObjectIndexes[1]++;
-				childCompositeIndex++;
-			}*/
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.INTERFACE_TITLE)) {
+			/*
+			 * if (childObjectIndexes[1] < 1) {
+			 * TTaskInterface tTaskInterface = new TTaskInterface();
+			 * tTaskInterface.setPortType(new QName(""));
+			 * tTaskInterface.setOperation("");
+			 * tParallel.setInterface(tTaskInterface);
+			 * TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor,
+			 * composite, this, SWT.NONE,
+			 * tTaskInterface, childObjectIndexes[1],
+			 * childCompositeIndex);
+			 * childComposites.add(childCompositeIndex, tTaskInterfaceUI);
+			 * childObjectIndexes[1]++;
+			 * childCompositeIndex++;
+			 * }
+			 */
 		} else if (selection.equalsIgnoreCase(HTEditorConstants.PARALLEL_TITLE)) {
-			
-				TParallel tParallel = new TParallel();
-				tParallel.setType(TRoutingPatternType.fromValue("all"));
-				this.tParallel.getParallelOrSequence().add(childObjectIndexes[2],tParallel);
-				TParallelUI tPriorityExprUI = new TParallelUI(editor,
-                        detailArea,this,SWT.NONE,tParallel, childObjectIndexes[2], childCompositeIndex);
-				childComposites.add(childCompositeIndex, tPriorityExprUI);
-				childObjectIndexes[2]++;
-				childCompositeIndex++;
-			
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.SEQUENCE_TITLE)) {
-				TSequence tSequence = new TSequence();
-				tSequence.setType(TRoutingPatternType.fromValue("all"));
-				this.tParallel.getParallelOrSequence().add(childObjectIndexes[2],tSequence);
-				TSequenceUI tPresentationElementsUI = new TSequenceUI(
-						editor, composite, this, SWT.NONE,
-						tSequence, childObjectIndexes[2],
-						childCompositeIndex);
-				childComposites.add(childCompositeIndex,
-						tPresentationElementsUI);
-				childObjectIndexes[2]++;
-				childCompositeIndex++;
-			
-			}
+
+			TParallel tParallel = new TParallel();
+			tParallel.setType(TRoutingPatternType.fromValue("all"));
+			this.tParallel.getParallelOrSequence().add(childObjectIndexes[2], tParallel);
+			TParallelUI tPriorityExprUI =
+			                              new TParallelUI(editor, detailArea, this, SWT.NONE,
+			                                              tParallel, childObjectIndexes[2],
+			                                              childCompositeIndex);
+			childComposites.add(childCompositeIndex, tPriorityExprUI);
+			childObjectIndexes[2]++;
+			childCompositeIndex++;
+
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.SEQUENCE_TITLE)) {
+			TSequence tSequence = new TSequence();
+			tSequence.setType(TRoutingPatternType.fromValue("all"));
+			this.tParallel.getParallelOrSequence().add(childObjectIndexes[2], tSequence);
+			TSequenceUI tPresentationElementsUI =
+			                                      new TSequenceUI(editor, composite, this,
+			                                                      SWT.NONE, tSequence,
+			                                                      childObjectIndexes[2],
+			                                                      childCompositeIndex);
+			childComposites.add(childCompositeIndex, tPresentationElementsUI);
+			childObjectIndexes[2]++;
+			childCompositeIndex++;
+
 		}
-	
+	}
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
 	@Override
 	public void fillDetailArea(Composite composite) {
-		Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+		Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Table table = new Table(detailArea, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
@@ -272,7 +322,7 @@ public class TParallelUI extends AbstractParentTagSection {
 
 		Label lblType = new Label(table, SWT.NONE);
 		lblType.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblType.setText("  "+HTEditorConstants.TYPE_ATTRIBUTE_TITLE);
+		lblType.setText("  " + HTEditorConstants.TYPE_ATTRIBUTE_TITLE);
 		editorw.grabHorizontal = true;
 		editorw.setEditor(lblType, tblRow1, 0);
 
@@ -296,8 +346,7 @@ public class TParallelUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			tParallel.getDocumentation().remove(childObjectIndex);
@@ -306,33 +355,32 @@ public class TParallelUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
-				} /*else if (compositeInstance instanceof TTaskInterfaceUI) {
-					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
-						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
-								.getCompositeIndex() - 1);
-					}
-
-				}*/ else if (compositeInstance instanceof TParallelUI) {
+				} /*
+				   * else if (compositeInstance instanceof TTaskInterfaceUI) {
+				   * TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI)
+				   * compositeInstance;
+				   * if (tTaskInterfaceUI.getCompositeIndex() >
+				   * childCompositeIndex) {
+				   * tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
+				   * .getCompositeIndex() - 1);
+				   * }
+				   * 
+				   * }
+				   */else if (compositeInstance instanceof TParallelUI) {
 					TParallelUI tParallelUI = (TParallelUI) compositeInstance;
 					if (tParallelUI.getCompositeIndex() > childCompositeIndex) {
-						tParallelUI.setCompositeIndex(tParallelUI
-								.getCompositeIndex() - 1);
+						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TSequenceUI) {
 					TSequenceUI tSequenceUI = (TSequenceUI) compositeInstance;
 					if (tSequenceUI.getCompositeIndex() > childCompositeIndex) {
-						tSequenceUI
-								.setCompositeIndex(tSequenceUI
-										.getCompositeIndex() - 1);
+						tSequenceUI.setCompositeIndex(tSequenceUI.getCompositeIndex() - 1);
 					}
 
 				} else {
@@ -340,42 +388,40 @@ public class TParallelUI extends AbstractParentTagSection {
 				}
 
 			}
-		}else if (itemName.equalsIgnoreCase(HTEditorConstants.PARALLEL_TITLE)) {
+		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PARALLEL_TITLE)) {
 			this.childObjectIndexes[2]--;
 			tParallel.getParallelOrSequence().remove(childObjectIndex);
 			for (Composite compositeInstance : childComposites) {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
-				} /*else if (compositeInstance instanceof TTaskInterfaceUI) {
-					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
-						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
-								.getCompositeIndex() - 1);
-					}
-				}*/ else if (compositeInstance instanceof TParallelUI) {
+				} /*
+				   * else if (compositeInstance instanceof TTaskInterfaceUI) {
+				   * TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI)
+				   * compositeInstance;
+				   * if (tTaskInterfaceUI.getCompositeIndex() >
+				   * childCompositeIndex) {
+				   * tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
+				   * .getCompositeIndex() - 1);
+				   * }
+				   * }
+				   */else if (compositeInstance instanceof TParallelUI) {
 					TParallelUI tParallelUI = (TParallelUI) compositeInstance;
 					if (tParallelUI.getCompositeIndex() > childCompositeIndex) {
-						tParallelUI.setCompositeIndex(tParallelUI
-								.getCompositeIndex() - 1);
+						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
 					if (tParallelUI.objectIndex > childObjectIndex) {
-						tParallelUI.setObjectIndex(tParallelUI
-								.getObjectIndex() - 1);
+						tParallelUI.setObjectIndex(tParallelUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TSequenceUI) {
 					TSequenceUI tSequenceUI = (TSequenceUI) compositeInstance;
 					if (tSequenceUI.getCompositeIndex() > childCompositeIndex) {
-						tSequenceUI
-								.setCompositeIndex(tSequenceUI
-										.getCompositeIndex() - 1);
+						tSequenceUI.setCompositeIndex(tSequenceUI.getCompositeIndex() - 1);
 					}
 					if (tSequenceUI.getObjectIndex() > childObjectIndex) {
-						tSequenceUI.setObjectIndex(tSequenceUI
-								.getObjectIndex() - 1);
+						tSequenceUI.setObjectIndex(tSequenceUI.getObjectIndex() - 1);
 					}
 
 				} else {
@@ -389,44 +435,42 @@ public class TParallelUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
-				} /*else if (compositeInstance instanceof TTaskInterfaceUI) {
-					TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-					if (tTaskInterfaceUI.getCompositeIndex() > childCompositeIndex) {
-						tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
-								.getCompositeIndex() - 1);
-					}
-				}*/ else if (compositeInstance instanceof TParallelUI) {
+				} /*
+				   * else if (compositeInstance instanceof TTaskInterfaceUI) {
+				   * TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI)
+				   * compositeInstance;
+				   * if (tTaskInterfaceUI.getCompositeIndex() >
+				   * childCompositeIndex) {
+				   * tTaskInterfaceUI.setCompositeIndex(tTaskInterfaceUI
+				   * .getCompositeIndex() - 1);
+				   * }
+				   * }
+				   */else if (compositeInstance instanceof TParallelUI) {
 					TParallelUI tParallelUI = (TParallelUI) compositeInstance;
 					if (tParallelUI.getCompositeIndex() > childCompositeIndex) {
-						tParallelUI.setCompositeIndex(tParallelUI
-								.getCompositeIndex() - 1);
-					}if (tParallelUI.objectIndex > childObjectIndex) {
-						tParallelUI.setObjectIndex(tParallelUI
-								.getObjectIndex() - 1);
+						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
-					
+					if (tParallelUI.objectIndex > childObjectIndex) {
+						tParallelUI.setObjectIndex(tParallelUI.getObjectIndex() - 1);
+					}
+
 				} else if (compositeInstance instanceof TSequenceUI) {
 					TSequenceUI tSequenceUI = (TSequenceUI) compositeInstance;
 					if (tSequenceUI.getCompositeIndex() > childCompositeIndex) {
-						tSequenceUI
-								.setCompositeIndex(tSequenceUI
-										.getCompositeIndex() - 1);
+						tSequenceUI.setCompositeIndex(tSequenceUI.getCompositeIndex() - 1);
 					}
 					if (tSequenceUI.getObjectIndex() > childObjectIndex) {
-						tSequenceUI.setObjectIndex(tSequenceUI
-								.getObjectIndex() - 1);
+						tSequenceUI.setObjectIndex(tSequenceUI.getObjectIndex() - 1);
 					}
-				}else {
+				} else {
 				}
 
 			}
 		}
 		childComposites.remove(childCompositeIndex);
 		this.childCompositeIndex--;
-
 
 	}
 
@@ -442,23 +486,32 @@ public class TParallelUI extends AbstractParentTagSection {
 		tParallel = (TParallel) model;
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
-				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance; 
-				tDocumentationUI.loadModel(tParallel.getDocumentation().get(
-						tDocumentationUI.getObjectIndex()));
-			} /*else if (compositeInstance instanceof TTaskInterfaceUI) {
-				TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance; 
-				tTaskInterfaceUI.refreshLogic(textEditor);
-				tTaskInterfaceUI.loadModel(task.getInterface());
-			}*/ else if (compositeInstance instanceof TParallelUI) {
-				TParallelUI tParallelUI = (TParallelUI) compositeInstance; 
-				tParallelUI.tParallel = (TParallel) tParallel.getParallelOrSequence().get(tParallelUI.getObjectIndex());
-				tParallelUI.refreshLogic(textEditor);
-			tParallelUI.loadModel(tParallel.getParallelOrSequence().get(tParallelUI.objectIndex));
+				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
+				tDocumentationUI.loadModel(tParallel.getDocumentation()
+				                                    .get(tDocumentationUI.getObjectIndex()));
+			} /*
+			   * else if (compositeInstance instanceof TTaskInterfaceUI) {
+			   * TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI)
+			   * compositeInstance;
+			   * tTaskInterfaceUI.refreshLogic(textEditor);
+			   * tTaskInterfaceUI.loadModel(task.getInterface());
+			   * }
+			   */else if (compositeInstance instanceof TParallelUI) {
+				TParallelUI tParallelUI = (TParallelUI) compositeInstance;
+				tParallelUI.tParallel =
+				                        (TParallel) tParallel.getParallelOrSequence()
+				                                             .get(tParallelUI.getObjectIndex());
+				tParallelUI.onPageRefresh(textEditor);
+				tParallelUI.loadModel(tParallel.getParallelOrSequence()
+				                               .get(tParallelUI.objectIndex));
 			} else if (compositeInstance instanceof TSequenceUI) {
 				TSequenceUI tSequenceUI = (TSequenceUI) compositeInstance;
-				tSequenceUI.tSequence = (TSequence) tParallel.getParallelOrSequence().get(tSequenceUI.getObjectIndex());
-				tSequenceUI.refreshLogic(textEditor);
-				tSequenceUI.loadModel(tParallel.getParallelOrSequence().get(tSequenceUI.getObjectIndex()));
+				tSequenceUI.tSequence =
+				                        (TSequence) tParallel.getParallelOrSequence()
+				                                             .get(tSequenceUI.getObjectIndex());
+				tSequenceUI.onPageRefresh(textEditor);
+				tSequenceUI.loadModel(tParallel.getParallelOrSequence()
+				                               .get(tSequenceUI.getObjectIndex()));
 
 			}
 		}
@@ -496,6 +549,12 @@ public class TParallelUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

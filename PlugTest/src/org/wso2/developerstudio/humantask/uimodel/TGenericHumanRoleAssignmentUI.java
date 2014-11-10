@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -59,7 +75,7 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 	}
 
 	/**
@@ -69,7 +85,7 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection abstractParentTagSection =
 		                                                    (AbstractParentTagSection) parentTagContainer;
 		abstractParentTagSection.refreshChildren(HTEditorConstants.GENERIC_HUMAN_ROLE_TITLE,
@@ -91,7 +107,7 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -118,7 +134,7 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 			childObjectIndexes[0]++;
 		}
 		if (genericHumanRoleAssignment.getFrom() != null) {
-			TFrom fromObject = (TFrom) genericHumanRoleAssignment.getFrom();
+			TFrom fromObject = genericHumanRoleAssignment.getFrom();
 			TFromUI tFromUI =
 			                  new TFromUI(editor, detailArea, childCompositeIndex,
 			                              childObjectIndexes[1], SWT.NONE, this, fromObject);
@@ -133,9 +149,18 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
@@ -250,7 +275,7 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 	 * @param model
 	 * @throws JAXBException
 	 */
-	public void loadModel(Object model) throws JAXBException{
+	public void loadModel(Object model) throws JAXBException {
 		genericHumanRoleAssignment = (TGenericHumanRoleAssignment) model;
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
@@ -274,6 +299,12 @@ public class TGenericHumanRoleAssignmentUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

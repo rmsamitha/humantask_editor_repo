@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -40,9 +56,10 @@ import org.eclipse.wb.swt.SWTResourceManager;
  * implementing and overriding the abstract super class methods.
  */
 public class TTaskUI extends AbstractParentTagSection {
-	private int[] childObjectIndexes;//one array element for each child object type
+	private int[] childObjectIndexes;// one array element for each child object
+	// type
 	public TTask task;
-	private int objectIndex;		  
+	private int objectIndex;
 	private int compositeIndex;
 	private int childCompositeIndex;
 	private Composite parentTagContainer;
@@ -91,13 +108,13 @@ public class TTaskUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		task.setName(((Text) textBoxesList.get(0)).getText());
 		task.setActualOwnerRequired(TBoolean.fromValue(((Combo) textBoxesList.get(1)).getText()
 		                                                                             .toLowerCase()));
 		centralUtils.marshal(textEditor);
 	}
-	
+
 	/**
 	 * Dispose the section when the remove button of section is clicked.
 	 * 
@@ -105,7 +122,7 @@ public class TTaskUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TTasksUI tTasksUI = (TTasksUI) parentTagContainer;
 		tTasksUI.refreshChildren("", getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
@@ -115,9 +132,18 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
@@ -269,10 +295,11 @@ public class TTaskUI extends AbstractParentTagSection {
 
 		centralUtils.marshal(editor);
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element contents (if available) in the section
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
@@ -329,25 +356,27 @@ public class TTaskUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if (task.getName() != null)
+		if (task.getName() != null) {
 			((Text) textBoxesList.get(0)).setText(task.getName());
+		}
 		Combo comboBox = (Combo) textBoxesList.get(1);
-		if (task.getActualOwnerRequired() != null)
+		if (task.getActualOwnerRequired() != null) {
 			comboBox.select(comboBox.indexOf(task.getActualOwnerRequired().toString().toLowerCase()));
+		}
 	}
 
 	/**
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 
 		for (Composite composite : childComposites) {
 			composite.dispose();
@@ -378,7 +407,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 
 			if (task.getInterface() != null) {
-				TTaskInterface interfaceObject = (TTaskInterface) task.getInterface();
+				TTaskInterface interfaceObject = task.getInterface();
 				TTaskInterfaceUI tTaskInterfaceUI =
 				                                    new TTaskInterfaceUI(editor, detailArea, this,
 				                                                         SWT.NONE, interfaceObject,
@@ -391,7 +420,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 
 			if (task.getPriority() != null) {
-				TPriorityExpr priorityObject = (TPriorityExpr) task.getPriority();
+				TPriorityExpr priorityObject = task.getPriority();
 				TPriorityExprUI tPriorityUI =
 				                              new TPriorityExprUI(editor, detailArea,
 				                                                  childCompositeIndex,
@@ -404,8 +433,7 @@ public class TTaskUI extends AbstractParentTagSection {
 
 			}
 			if (task.getPeopleAssignments() != null) {
-				TPeopleAssignments peopleAssignmentObject =
-				                                            (TPeopleAssignments) task.getPeopleAssignments();
+				TPeopleAssignments peopleAssignmentObject = task.getPeopleAssignments();
 				TPeopleAssignmentsUI tPeopleAssingmentsUI =
 				                                            new TPeopleAssignmentsUI(
 				                                                                     editor,
@@ -423,8 +451,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getCompletionBehavior() != null) {
 
-				TCompletionBehavior tCompletionBehaviorObject =
-				                                                (TCompletionBehavior) task.getCompletionBehavior();
+				TCompletionBehavior tCompletionBehaviorObject = task.getCompletionBehavior();
 				TCompletionBehaviorUI tCompletionBehaviorUI =
 				                                              new TCompletionBehaviorUI(
 				                                                                        editor,
@@ -440,7 +467,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				childObjectIndexes[4]++;
 			}
 			if (task.getDelegation() != null) {
-				TDelegation tDelegationObject = (TDelegation) task.getDelegation();
+				TDelegation tDelegationObject = task.getDelegation();
 				TDelegationUI tDelegationUI =
 				                              new TDelegationUI(editor, detailArea, this, SWT.NONE,
 				                                                tDelegationObject,
@@ -452,8 +479,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				childObjectIndexes[5]++;
 			}
 			if (task.getPresentationElements() != null) {
-				TPresentationElements tPresentationElementsObject =
-				                                                    (TPresentationElements) task.getPresentationElements();
+				TPresentationElements tPresentationElementsObject = task.getPresentationElements();
 				TPresentationElementsUI tPreserntationElementsUI =
 				                                                   new TPresentationElementsUI(
 				                                                                               editor,
@@ -462,7 +488,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				                                                                               SWT.NONE,
 				                                                                               tPresentationElementsObject,
 				                                                                               childObjectIndexes[6],
-				                                                                               childCompositeIndex); 
+				                                                                               childCompositeIndex);
 				tPreserntationElementsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPreserntationElementsUI);
 				childCompositeIndex++;
@@ -480,7 +506,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				childObjectIndexes[7]++;
 			}
 			if (task.getSearchBy() != null) {
-				TExpression tSearchByObject = (TExpression) task.getSearchBy();
+				TExpression tSearchByObject = task.getSearchBy();
 				TExpressionUI tSearchByUI =
 				                            new TExpressionUI(editor, detailArea, this, SWT.NONE,
 				                                              tSearchByObject,
@@ -494,7 +520,7 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 
 			if (task.getRenderings() != null) {
-				TRenderings tRenderingsObject = (TRenderings) task.getRenderings();
+				TRenderings tRenderingsObject = task.getRenderings();
 				TRenderingsUI tRenderingsUI =
 				                              new TRenderingsUI(editor, detailArea, this, SWT.NONE,
 				                                                tRenderingsObject,
@@ -530,7 +556,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
-					} 
+					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
@@ -1281,8 +1307,8 @@ public class TTaskUI extends AbstractParentTagSection {
 				                               .get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TTaskInterfaceUI) {
 				TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
-				tTaskInterfaceUI.taskInterface=task.getInterface();
-				tTaskInterfaceUI.refreshLogic(textEditor);
+				tTaskInterfaceUI.taskInterface = task.getInterface();
+				tTaskInterfaceUI.onPageRefresh(textEditor);
 				tTaskInterfaceUI.loadModel(task.getInterface());
 			} else if (compositeInstance instanceof TPriorityExprUI) {
 				TPriorityExprUI tPriorityUI = (TPriorityExprUI) compositeInstance;
@@ -1291,43 +1317,43 @@ public class TTaskUI extends AbstractParentTagSection {
 				TPeopleAssignmentsUI tPeopleAssingmentsUI =
 				                                            (TPeopleAssignmentsUI) compositeInstance;
 				tPeopleAssingmentsUI.tPeopleAssignments = task.getPeopleAssignments();
-				tPeopleAssingmentsUI.refreshLogic(textEditor);
+				tPeopleAssingmentsUI.onPageRefresh(textEditor);
 				tPeopleAssingmentsUI.loadModel(task.getPeopleAssignments());
 
 			} else if (compositeInstance instanceof TCompletionBehaviorUI) {
 				TCompletionBehaviorUI tCompletionBehaviorUI =
 				                                              (TCompletionBehaviorUI) compositeInstance;
 				tCompletionBehaviorUI.completionBehavior = task.getCompletionBehavior();
-				tCompletionBehaviorUI.refreshLogic(textEditor);
+				tCompletionBehaviorUI.onPageRefresh(textEditor);
 				tCompletionBehaviorUI.loadModel(task.getCompletionBehavior());
 			} else if (compositeInstance instanceof TDelegationUI) {
 				TDelegationUI tDelegationUI = (TDelegationUI) compositeInstance;
 				tDelegationUI.tDelegation = task.getDelegation();
-				tDelegationUI.refreshLogic(textEditor);
+				tDelegationUI.onPageRefresh(textEditor);
 				tDelegationUI.loadModel(task.getDelegation());
 
 			} else if (compositeInstance instanceof TPresentationElementsUI) {
 				TPresentationElementsUI tPresentationElementsUI =
 				                                                  (TPresentationElementsUI) compositeInstance;
 				tPresentationElementsUI.presentationElements = task.getPresentationElements();
-				tPresentationElementsUI.refreshLogic(textEditor);
+				tPresentationElementsUI.onPageRefresh(textEditor);
 				tPresentationElementsUI.loadModel(task.getPresentationElements());
 
 			} else if (compositeInstance instanceof TQueryUI) {
 				TQueryUI tQueryUI = (TQueryUI) compositeInstance;
 				tQueryUI.query = task.getOutcome();
-				tQueryUI.refreshLogic(textEditor);
+				tQueryUI.onPageRefresh(textEditor);
 				tQueryUI.loadModel(task.getOutcome());
 			} else if (compositeInstance instanceof TExpressionUI) {
 				TExpressionUI tExpressionUI = (TExpressionUI) compositeInstance;
 				tExpressionUI.expression = task.getSearchBy();
-				tExpressionUI.refreshLogic(textEditor);
+				tExpressionUI.onPageRefresh(textEditor);
 				tExpressionUI.loadModel(task.getSearchBy());
 
 			} else if (compositeInstance instanceof TRenderingsUI) {
 				TRenderingsUI tRenderingsUI = (TRenderingsUI) compositeInstance;
 				tRenderingsUI.renderings = task.getRenderings();
-				tRenderingsUI.refreshLogic(textEditor);
+				tRenderingsUI.onPageRefresh(textEditor);
 				tRenderingsUI.loadModel(task.getRenderings());
 
 			}
@@ -1356,10 +1382,22 @@ public class TTaskUI extends AbstractParentTagSection {
 		this.compositeIndex = compositeIndex;
 	}
 
+	/**
+	 * Returns this Section's object index(index of only this type of class
+	 * objects in the parent) as per the order created in its parent
+	 * 
+	 * @return objectIndex
+	 */
 	public int getObjectIndex() {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

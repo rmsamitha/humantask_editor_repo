@@ -1,19 +1,9 @@
 package org.wso2.developerstudio.humantask.editor;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
@@ -21,7 +11,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -37,7 +26,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.wb.swt.ResourceManager;
 import org.eclipse.wb.swt.SWTResourceManager;
-import org.w3c.dom.Document;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -48,11 +36,15 @@ import org.wso2.developerstudio.humantask.models.TNotifications;
 import org.wso2.developerstudio.humantask.models.TTasks;
 import org.wso2.developerstudio.humantask.uimodel.TImportUI;
 import org.wso2.developerstudio.humantask.uimodel.TLogicalPeopleGroupsUI;
-import org.wso2.developerstudio.humantask.uimodel.TNameUI;
 import org.wso2.developerstudio.humantask.uimodel.TNotificationsUI;
 import org.wso2.developerstudio.humantask.uimodel.TTasksUI;
 import org.xml.sax.SAXException;
 
+/**
+ * The UI class representing the "humanInteractions" xml element in the .ht file
+ * All the functionalities of that element are performed in this class, by
+ * implementing and overriding the abstract super class methods.
+ */
 public class THumanInteractionsUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
 	public THumanInteractions humanInteractions;
@@ -70,6 +62,19 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 	private NamespaceItemComposite xmlnsHtdComposite = null;
 	private Text txtTargetNamespace;
 
+	/**
+	 * Call the super abstract class to set the UI and initialize class's
+	 * attribute variables
+	 * 
+	 * @param textEditor
+	 * @param parentComposite
+	 * @param parentTagContainer
+	 * @param styleBit
+	 * @param modelParent
+	 * @param objectIndex
+	 * @param compositeIndex
+	 * @throws JAXBException
+	 */
 	public THumanInteractionsUI(XMLEditor textEditor, Composite parentComposite,
 	                            Composite parentTagContainer, int styleBit, Object modelParent,
 	                            int objectIndex, int compositeIndex) throws JAXBException {
@@ -90,77 +95,29 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Update the values of attributes of the section and marshal into the
+	 * TextEditor when the update button of that section is clicked
+	 * 
+	 * @param textEditor
+	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) {
-		System.out.println("\n huaaaaa clicked update");
-
-		System.out.println("\n Checking available otherattributes when update clicked:");
-		for (Entry<QName, String> entry : (humanInteractions.getOtherAttributes()).entrySet()) {
-
-			System.out.println("prefix:" + entry.getKey().getPrefix() + "local part:" + entry.getKey().getLocalPart() + "| value " +
-			                   entry.getValue());
-			// i++;
-		}
-
-		System.out.println("check null:");
-		System.out.println(humanInteractions.getOtherAttributes() == null);
-		System.out.println("\n size before clearing otherattributes list:" +
-		                   humanInteractions.getOtherAttributes().size());
-		/*
-		 * for(Iterator<Map.Entry<QName, String>> it =
-		 * humanInteractions.getOtherAttributes().entrySet().iterator();
-		 * it.hasNext(); ) {
-		 * Map.Entry<QName, String> entry = it.next();
-		 * if(entry.getKey().getLocalPart().startsWith("xmlns:")) {
-		 * System.out.println("an item removed.");
-		 * it.remove();
-		 * }
-		 * }
-		 */
-		// humanInteractions.getOtherAttributes().clear();
-		System.out.println("size after clearing otherattributes list:" +
-		                   humanInteractions.getOtherAttributes().size());
-
-		System.out.println("namespace itemlist size:" + namespaceItemList.size());
+	public void onBtnUpdate(XMLEditor textEditor) {
 		for (int namespaceItemIndex = 0; namespaceItemIndex < namespaceItemList.size(); namespaceItemIndex++) {
 			String suffixOf_localPart =
-			                            ((NamespaceItemComposite) namespaceItemList.get(namespaceItemIndex)).txtPrefix.getText();
-			String namespaceTxt =
-			                      ((NamespaceItemComposite) namespaceItemList.get(namespaceItemIndex)).txtNamespace.getText();
+			                            namespaceItemList.get(namespaceItemIndex).txtPrefix.getText();
+			String namespaceTxt = namespaceItemList.get(namespaceItemIndex).txtNamespace.getText();
 			if (suffixOf_localPart == "" || suffixOf_localPart == null ||
 			    suffixOf_localPart.isEmpty()) {
 				suffixOf_localPart = "(value is not set)";
-				System.out.println("empty caught");
-				((NamespaceItemComposite) namespaceItemList.get(namespaceItemIndex)).txtPrefix.setText(suffixOf_localPart);
+				namespaceItemList.get(namespaceItemIndex).txtPrefix.setText(suffixOf_localPart);
 			}
 			if (namespaceTxt == "" || namespaceTxt == null || namespaceTxt.isEmpty()) {
 				namespaceTxt = "(value is not set)";
-				System.out.println("empty caught");
-				((NamespaceItemComposite) namespaceItemList.get(namespaceItemIndex)).txtNamespace.setText(namespaceTxt);
+				namespaceItemList.get(namespaceItemIndex).txtNamespace.setText(namespaceTxt);
 			}
 			humanInteractions.getOtherAttributes().put(new QName(HTEditorConstants.XMLNS_TITLE +
 			                                                     suffixOf_localPart), namespaceTxt);
-			/*
-			 	humanInteractions.getOtherAttributes().put(new QName(m1.item(k).getNodeName()),
-				                                           m1.item(k).getNodeValue()); */
-
-		}
-
-		if (humanInteractions.getOtherAttributes().size() > 0) {
-			System.out.println("in updation :in if in btnUpdateHandleLogic method");
-			int i = 0;
-			int ss = humanInteractions.getOtherAttributes().size(); // get(new
-			                                                        // QName(HTEditorConstants.XMLNS_TITLE
-			                                                        // +
-			                                                        // "aaa"));
-			System.out.println("size of otherattributes now is :" + ss);
-
-			for (Entry<QName, String> entry : (humanInteractions.getOtherAttributes()).entrySet()) {
-				// System.out.println("in for in if in update method");
-				System.out.println("prefix:" + entry.getKey().getPrefix() + "| local part:" +
-				                   entry.getKey().getLocalPart() + "| value " + entry.getValue());
-				i++;
-			}
 
 		}
 
@@ -170,45 +127,45 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		try {
 			centralUtils.marshal(textEditor);
 		} catch (JAXBException e) {
-			System.out.println("error while marshalling at updating");
-			e.printStackTrace();
+			
 		}
-		// parentComposite = super.parentComposite;
 		parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
-		System.out.println("btnUpdateHandleLogic over \n \n");
 	}
 
+	/**
+	 * Dispose the section when the remove button of section is clicked.
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
 	}
 
+	/**
+	 * Whenever a tab change occur from text editor to UI editor, this method is
+	 * invoked. It disposes all the child Sections in this section and recreate
+	 * them and call initialize() of each of them to reinitialize their
+	 * attribute values, according to the single model maintained by both the
+	 * UI editor and text .editor
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) {// throws JAXBException {
-		System.out.println("\n in refresh logic method:");
-		System.out.println("\n Checking otherattributes when jsut refresh occured:");
-		try {
-			for (Entry<QName, String> entry : (humanInteractions.getOtherAttributes()).entrySet()) {
-
-				System.out.println("local part:" + entry.getKey().getLocalPart() + "| value " +
-				                   entry.getValue());
-				// i++;
-			}
-		} catch (Exception e1) {
-			// do nothing. this exception is expected at some occasions
-		}
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 
 		detailArea.setSize(detailArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		try {
 			nodeList = centralUtils.getotherattrs().getElementsByTagName("htd:tHumanInteractions");
-			System.out.println("nodelist size in refresh logic method:(htd:tHumanInteractions)" +
-			                   nodeList.getLength());
+
 		} catch (Exception e) {
-			e.printStackTrace();
+
 		}
 		if (nodeList.getLength() == 0) {
 			try {
@@ -216,46 +173,31 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 				           centralUtils.getotherattrs()
 				                       .getElementsByTagName("htd:humanInteractions");
 			} catch (ParserConfigurationException e) {
-				e.printStackTrace();
+				MessageDialog.openError(Display.getDefault().getActiveShell(),
+				                        "Parser Configuration Error",
+				                        "Parser ConfigurationError Occured");
 			}
-			System.out.println("nodelist size in refresh logic method:(htd:humanInteractions):" +
-			                   nodeList.getLength());
 		}
+
 		NamedNodeMap m1 = nodeList.item(0).getAttributes();
-		System.out.println("no of attributes:" + m1.getLength());
 
-		// if (btnAddNamespace != null) {
-
-		// if (detailAreaInnerComposite != null) {
-		try {
+		if (detailAreaInnerComposite != null) {
 			detailAreaInnerComposite.dispose();
-			System.out.println("detailAreaComposite disposed.");
-		} catch (Exception e) {
-			// this exception is expected at a random occasion while running the
-			// project.
-			// e.printStackTrace();
 		}
+
 		for (Composite nsitem : namespaceItemList) {
 			nsitem.dispose();
 		}
 
-		// }
-
-		// parentComposite = super.parentComposite;
-		// parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT,
-		// SWT.DEFAULT));
-
-		// final Composite
 		detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
 		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		namespaceItemList.clear();
-		System.out.println("size after clearing list: " + namespaceItemList.size());
 
-		// add xmlns:htd
+		// add the field for xmlns:htd
 		for (int k = 0; k < m1.getLength(); k++) {
 
-			// If the attribute is only a xml namespace>> starts with xmlns:
+			// If the attribute is only a xmlns:htd
 			if (m1.item(k).getNodeName() == "xmlns:htd") {
 				if (xmlnsHtdComposite != null) {
 					xmlnsHtdComposite.dispose();
@@ -263,7 +205,6 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 				xmlnsHtdComposite =
 				                    new NamespaceItemComposite(detailAreaInnerComposite, SWT.NONE,
 				                                               2);
-				System.out.println("pooops:" + m1.item(k).getNodeName());
 				xmlnsHtdComposite.txtPrefix.setText(m1.item(k).getNodeName().substring(6));
 				xmlnsHtdComposite.txtNamespace.setText(m1.item(k).getNodeValue());
 				xmlnsHtdComposite.txtPrefix.setEditable(false);
@@ -275,15 +216,10 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 
 			}
 		}
-		
-		for (int k = 0; k < m1.getLength(); k++) {
-			System.out.println("node name-" + m1.item(k).getNodeName()+
-			                   " |node value- " + m1.item(k).getNodeValue());
-		}
 
 		for (int k = 0; k < m1.getLength(); k++) {
-
-			// If the attribute is only a xml namespace>> starts with xmlns:
+			// If the attribute is only a xml namespace>> starts with xmlns: and
+			// not xmlns:htd
 			if (m1.item(k).getNodeType() == Node.ATTRIBUTE_NODE &&
 			    m1.item(k).getNodeName() != "targetNamespace" &&
 			    m1.item(k).getNodeName() != "queryLanguage" &&
@@ -291,9 +227,6 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 			    m1.item(k).getNodeName() != "xmlns:htd" &&
 			    m1.item(k).getNodeName().startsWith("xmlns:")) {
 
-				System.out.println("Adding prevailed item");
-				System.out.println("node name:xmlns:" + m1.item(k).getNodeName().substring(6) +
-				                   " |node value: " + m1.item(k).getNodeValue());
 				final int tempindex = namespaceItemList.size();
 				namespaceItemList.add(new NamespaceItemComposite(detailAreaInnerComposite,
 				                                                 SWT.NONE, tempindex));
@@ -302,53 +235,39 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 				namedItemComposite.txtPrefix.setText(m1.item(k).getNodeName().substring(6));
 				namedItemComposite.txtNamespace.setText(m1.item(k).getNodeValue());
 
-				(namedItemComposite.btnRemoveNamespace).addListener(SWT.Selection, new Listener() {
+				namedItemComposite.btnRemoveNamespace.addListener(SWT.Selection, new Listener() {
 
 					@Override
 					public void handleEvent(Event event) {
-						namespaceItemList.remove((namespaceItemList.indexOf(namedItemComposite)));
+						namespaceItemList.remove(namespaceItemList.indexOf(namedItemComposite));
 						namedItemComposite.dispose();
 						parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT,
 						                                                    SWT.DEFAULT));
 
-						/*
-						 * for (NamespaceItemComposite
-						 * singleNamedItemComposite : namespaceItemList)
-						 * { if (namedItemComposite.itemIndex <
-						 * singleNamedItemComposite.itemIndex) {
-						 * singleNamedItemComposite.itemIndex =
-						 * singleNamedItemComposite.itemIndex - 1;
-						 * 
-						 * }
-						 * 
-						 * }
-						 */
 					}
 				});
 
-			} /*else if (m1.item(k).getNodeName().contains(":") &&
-			           m1.item(k).getNodeName() != "xmlns:htd") {
-				System.out.println("\n\n special:" + m1.item(k).getNodeName() + " |node value: " +
-				                   m1.item(k).getNodeValue());
-				humanInteractions.getOtherAttributes().put(new QName(m1.item(k).getNodeName()),
-				                                           m1.item(k).getNodeValue());
-
-			} */else {
-				System.out.println("\n\nelse case..!!! this is a user made otherrrr attribute>>node name:" +
-				                   m1.item(k).getNodeName() +
-				                   " |node value: " +
-				                   m1.item(k).getNodeValue());
+			} /*
+			   * else if (m1.item(k).getNodeName().contains(":") &&
+			   * m1.item(k).getNodeName() != "xmlns:htd") {
+			   * System.out.println("\n\n special:" + m1.item(k).getNodeName() +
+			   * " |node value: " +
+			   * m1.item(k).getNodeValue());
+			   * humanInteractions.getOtherAttributes().put(new
+			   * QName(m1.item(k).getNodeName()),
+			   * m1.item(k).getNodeValue());
+			   * 
+			   * } e
+			   */else {
+				// do nothing
 			}
 
 		}
 
-		try {
+		if (btnAddNamespace != null) {
 			btnAddNamespace.dispose();
-			System.out.println("btnaddNAMespace disposed.");
-		} catch (Exception e) {
-			System.out.println("btnaddNAMespace is already disposed.");
-			// e.printStackTrace();
 		}
+
 		btnAddNamespace = new Button(detailArea, SWT.NONE);
 		btnAddNamespace.setBounds(373, 20, 91, 29);
 		btnAddNamespace.setText("Add Namespace");
@@ -358,8 +277,6 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 
 			@Override
 			public void handleEvent(Event event) {
-				System.out.println("new button clicked. list size now is:" +
-				                   namespaceItemList.size());
 				final int tempindex = namespaceItemList.size();
 				namespaceItemList.add(new NamespaceItemComposite(detailAreaInnerComposite,
 				                                                 SWT.NONE, tempindex));
@@ -368,54 +285,18 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 				namespaceItemComposite.txtPrefix.setText("");
 				namespaceItemComposite.txtNamespace.setText("");
 
-				(namespaceItemComposite.btnRemoveNamespace).addListener(SWT.Selection,
-				                                                        new Listener() {
+				namespaceItemComposite.btnRemoveNamespace.addListener(SWT.Selection,
+				                                                      new Listener() {
 
-					                                                        @Override
-					                                                        public void handleEvent(Event event) {
-						                                                        namespaceItemList.remove((namespaceItemList.indexOf(namespaceItemComposite)));
-						                                                        namespaceItemComposite.dispose();
-						                                                        parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT,
-						                                                                                                            SWT.DEFAULT));
+					                                                      @Override
+					                                                      public void handleEvent(Event event) {
+						                                                      namespaceItemList.remove(namespaceItemList.indexOf(namespaceItemComposite));
+						                                                      namespaceItemComposite.dispose();
+						                                                      parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT,
+						                                                                                                          SWT.DEFAULT));
 
-						                                                        /*
-																				 * for
-																				 * (
-																				 * NamespaceItemComposite
-																				 * singleNamedItemComposite
-																				 * :
-																				 * namespaceItemList
-																				 * )
-																				 * {
-																				 * if
-																				 * (
-																				 * namedItemComposite
-																				 * .
-																				 * itemIndex
-																				 * <
-																				 * singleNamedItemComposite
-																				 * .
-																				 * itemIndex
-																				 * )
-																				 * {
-																				 * singleNamedItemComposite
-																				 * .
-																				 * itemIndex
-																				 * =
-																				 * singleNamedItemComposite
-																				 * .
-																				 * itemIndex
-																				 * -
-																				 * 1
-																				 * ;
-																				 * 
-																				 * }
-																				 * 
-																				 * }
-																				 */
-					                                                        }
-				                                                        });
-				// parentComposite=
+					                                                      }
+				                                                      });
 
 				parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
@@ -424,7 +305,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 
 		parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
-		// refresh elements
+		// refresh the elements
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -444,8 +325,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                          importGroup.get(childObjectIndexes[0]));
 					tImportUI.initialize(editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 
 				childComposites.add(childCompositeIndex, tImportUI);
@@ -455,7 +335,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 
 			if (humanInteractions.getLogicalPeopleGroups() != null) {
 				TLogicalPeopleGroups tLogicalPeopleGroup =
-				                                           (TLogicalPeopleGroups) humanInteractions.getLogicalPeopleGroups();
+				                                           humanInteractions.getLogicalPeopleGroups();
 				TLogicalPeopleGroupsUI tLogicalPeopleGroupsUI = null;
 				try {
 					tLogicalPeopleGroupsUI =
@@ -466,8 +346,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                                                    childCompositeIndex);
 					tLogicalPeopleGroupsUI.initialize(editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+
 				}
 
 				childComposites.add(childCompositeIndex, tLogicalPeopleGroupsUI);
@@ -476,7 +355,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 			}
 
 			if (humanInteractions.getTasks() != null) {
-				TTasks tTasks = (TTasks) humanInteractions.getTasks();
+				TTasks tTasks = humanInteractions.getTasks();
 				TTasksUI tTasksUI = null;
 				try {
 					tTasksUI =
@@ -494,8 +373,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 			}
 
 			if (humanInteractions.getNotifications() != null) {
-				TNotifications tLogicalPeopleGroup =
-				                                     (TNotifications) humanInteractions.getNotifications();
+				TNotifications tLogicalPeopleGroup = humanInteractions.getNotifications();
 				TNotificationsUI tNotificationsUI = null;
 				try {
 					tNotificationsUI =
@@ -505,7 +383,6 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                                        childCompositeIndex);
 					tNotificationsUI.initialize(editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
@@ -514,21 +391,15 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 				childObjectIndexes[3]++;
 			}
 		}
-
-		/*
-		 * System.out.println("\n Checking otherattributes after refresh occured:"
-		 * );
-		 * for (Entry<QName, String> entry :
-		 * (humanInteractions.getOtherAttributes()).entrySet()) {
-		 * 
-		 * System.out.println("local part:" +
-		 * entry.getKey().getLocalPart() + "| value " + entry.getValue());
-		 * //i++;
-		 * }
-		 */
-
 	}
 
+	/**
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur from text editor to the UI editor
+	 * 
+	 * @param textEditor
+	 * @throws JAXBException
+	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		if (humanInteractions != null) {
@@ -545,8 +416,8 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.IMPORT_TITLE)) {
 			TImport tImport = new TImport();
 			tImport.setImportType("");
@@ -604,6 +475,13 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		centralUtils.marshal(editor);
 	}
 
+	/**
+	 * Fill the detail area of the composite. This creates the table UI widget
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
+	 * 
+	 * @param composite
+	 */
 	@Override
 	public void fillDetailArea(Composite composite) {
 		final Composite innerZComp = formToolkit.createComposite(composite);
@@ -712,6 +590,15 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		btnRemove.dispose();
 	}
 
+	/**
+	 * Whenever a child Section of this section is removed by the user, this
+	 * method is invoked to reorganize the order and indexes of the child
+	 * Sections of this section
+	 * 
+	 * @param itemName
+	 * @param childCompositeIndex
+	 * @param childObjectIndex
+	 */
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.IMPORT_TITLE)) {
@@ -860,25 +747,33 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		this.childCompositeIndex--;
 	}
 
+	/**
+	 * Load the JAXB model objects into the UI model from the top to bottom of
+	 * the tree structure of the model whenever a tab change occurs from text
+	 * editor to the UI editor.
+	 * 
+	 * @param model
+	 * @throws JAXBException
+	 */
 	public void loadModel(Object model) throws JAXBException {
 		humanInteractions = (THumanInteractions) model;
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TTasksUI) {
 				TTasksUI tTasksUI = (TTasksUI) compositeInstance;
 				tTasksUI.tasks = humanInteractions.getTasks();
-				tTasksUI.refreshLogic(textEditor);
+				tTasksUI.onPageRefresh(textEditor);
 				tTasksUI.loadModel(humanInteractions.getTasks());
 			} else if (compositeInstance instanceof TLogicalPeopleGroupsUI) {
 				TLogicalPeopleGroupsUI tLogicalPeopleGroupsUI =
 				                                                (TLogicalPeopleGroupsUI) compositeInstance;
 				tLogicalPeopleGroupsUI.logicalPeopleGroups =
 				                                             humanInteractions.getLogicalPeopleGroups();
-				tLogicalPeopleGroupsUI.refreshLogic(textEditor);
+				tLogicalPeopleGroupsUI.onPageRefresh(textEditor);
 				tLogicalPeopleGroupsUI.loadModel(humanInteractions.getLogicalPeopleGroups());
 			} else if (compositeInstance instanceof TNotificationsUI) {
 				TNotificationsUI tNotificationsUI = (TNotificationsUI) compositeInstance;
 				tNotificationsUI.notifications = humanInteractions.getNotifications();
-				tNotificationsUI.refreshLogic(textEditor);
+				tNotificationsUI.onPageRefresh(textEditor);
 				tNotificationsUI.loadModel(humanInteractions.getNotifications());
 
 			}

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -53,12 +69,14 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		if (presentationParameter.getName() != null)
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
+		if (presentationParameter.getName() != null) {
 			presentationParameter.setName(((Text) textBoxesList.get(0)).getText());
+		}
 		presentationParameter.setType(new QName(((Text) textBoxesList.get(1)).getText()));
-		if (presentationParameter.getContent().size() != 0)
+		if (presentationParameter.getContent().size() != 0) {
 			presentationParameter.getContent().remove(0);
+		}
 		presentationParameter.getContent().add(0, ((Text) textBoxesList.get(2)).getText());
 		centralUtils.marshal(textEditor);
 	}
@@ -70,7 +88,7 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TPresentationParametersUI parentContainer = (TPresentationParametersUI) parentTagContainer;
 		parentContainer.refreshChildren(HTEditorConstants.PRESENTATION_PARAMETER_TITLE,
 		                                compositeIndex, objectIndex);
@@ -90,10 +108,12 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if (presentationParameter.getName() != null)
+		if (presentationParameter.getName() != null) {
 			((Text) textBoxesList.get(0)).setText(presentationParameter.getName());
-		if (presentationParameter.getType() != null)
+		}
+		if (presentationParameter.getType() != null) {
 			((Text) textBoxesList.get(1)).setText(presentationParameter.getType().getLocalPart());
+		}
 		if (presentationParameter.getContent().size() != 0) {
 			String content = (String) presentationParameter.getContent().get(0);
 			((Text) textBoxesList.get(2)).setText(content.trim());
@@ -198,6 +218,12 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

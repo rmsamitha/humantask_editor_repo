@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -50,12 +66,11 @@ public class TExpressionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	public TExpressionUI(XMLEditor textEditor, Composite parentComposite,
-			Composite parentTagContainer, int style, Object modelParent,
-			int objectIndex, int compositeIndex, String sectionTitle)
-			throws JAXBException {
+	                     Composite parentTagContainer, int style, Object modelParent,
+	                     int objectIndex, int compositeIndex, String sectionTitle)
+	                                                                              throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, style,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
-				sectionTitle);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE }, sectionTitle);
 		this.expression = (TExpression) modelParent;
 		this.compositeIndex = compositeIndex;
 		this.parentTagContainer = parentTagContainer;
@@ -63,7 +78,7 @@ public class TExpressionUI extends AbstractParentTagSection {
 		this.sectionTitle = sectionTitle;
 		setExpanded(true);
 	}
-	
+
 	/**
 	 * Update the values of attributes(xml attributes) of the section and xml
 	 * element content value and marshal into the TextEditor when the update
@@ -73,12 +88,12 @@ public class TExpressionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		expression.setExpressionLanguage(((Text) textBoxesList.get(0))
-				.getText());
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
+		expression.setExpressionLanguage(((Text) textBoxesList.get(0)).getText());
 
-		if (expression.getContent().size() != 0)
+		if (expression.getContent().size() != 0) {
 			expression.getContent().remove(0);
+		}
 		expression.getContent().add(0, ((Text) textBoxesList.get(1)).getText());
 		centralUtils.marshal(textEditor);
 	}
@@ -90,10 +105,9 @@ public class TExpressionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection parentTagSection = (AbstractParentTagSection) parentTagContainer;
-		parentTagSection.refreshChildren(sectionTitle, getCompositeIndex(),
-				getObjectIndex());
+		parentTagSection.refreshChildren(sectionTitle, getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -105,14 +119,14 @@ public class TExpressionUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -125,36 +139,42 @@ public class TExpressionUI extends AbstractParentTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		if (expression.getExpressionLanguage() != null) {
-			((Text) textBoxesList.get(0)).setText(expression
-					.getExpressionLanguage());
+			((Text) textBoxesList.get(0)).setText(expression.getExpressionLanguage());
 		}
 		if (expression.getContent().size() != 0) {
-			((Text) textBoxesList.get(1)).setText((String) expression
-					.getContent().get(0));
+			((Text) textBoxesList.get(1)).setText((String) expression.getContent().get(0));
 		}
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
 	@Override
 	public void fillDetailArea(Composite composite) {
 
-		Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+		Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Table table = new Table(detailArea, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
@@ -170,8 +190,7 @@ public class TExpressionUI extends AbstractParentTagSection {
 		TableEditor tableEditor = new TableEditor(table);
 
 		Label lblExpressionLang = new Label(table, SWT.NONE | SWT.BORDER_SOLID);
-		lblExpressionLang.setText("  "
-				+ HTEditorConstants.EXPRESSION_LANGUAGE_ATTRIBUTE_TITLE);
+		lblExpressionLang.setText("  " + HTEditorConstants.EXPRESSION_LANGUAGE_ATTRIBUTE_TITLE);
 		tableEditor.grabHorizontal = true;
 		tableEditor.setEditor(lblExpressionLang, tableRow1, 0);
 
@@ -183,7 +202,7 @@ public class TExpressionUI extends AbstractParentTagSection {
 
 		tableEditor = new TableEditor(table);
 		Label lblValue = new Label(table, SWT.NONE);
-		lblValue.setText("     "+HTEditorConstants.VALUE_TAG_TITLE);
+		lblValue.setText("     " + HTEditorConstants.VALUE_TAG_TITLE);
 		tableEditor.grabHorizontal = true;
 		tableEditor.setEditor(lblValue, tableRow1, 2);
 
@@ -198,8 +217,7 @@ public class TExpressionUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 
 	}
 
@@ -211,7 +229,7 @@ public class TExpressionUI extends AbstractParentTagSection {
 	 */
 	public void loadModel(Object objectModel) throws JAXBException {
 		expression = (TExpression) objectModel;
-		
+
 	}
 
 	/**
@@ -224,6 +242,12 @@ public class TExpressionUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

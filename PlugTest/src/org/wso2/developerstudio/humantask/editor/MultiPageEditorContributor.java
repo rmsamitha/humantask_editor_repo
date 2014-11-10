@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.editor;
 
 import org.eclipse.jface.action.*;
@@ -14,80 +30,83 @@ import org.eclipse.ui.texteditor.ITextEditor;
 import org.eclipse.ui.texteditor.ITextEditorActionConstants;
 
 /**
- * Manages the installation/deinstallation of global actions for multi-page editors.
+ * Manages the installation/deinstallation of global actions for multi-page
+ * editors.
  * Responsible for the redirection of global actions to the active editor.
- * Multi-page contributor replaces the contributors for the individual editors in the multi-page editor.
+ * Multi-page contributor replaces the contributors for the individual editors
+ * in the multi-page editor.
  */
 public class MultiPageEditorContributor extends MultiPageEditorActionBarContributor {
 	private IEditorPart activeEditorPart;
 	private Action sampleAction;
-	
+
 	public MultiPageEditorContributor() {
 		super();
 		createActions();
 	}
-	
+
 	protected IAction getAction(ITextEditor editor, String actionID) {
-		return (editor == null ? null : editor.getAction(actionID));
+		return editor == null ? null : editor.getAction(actionID);
 	}
 
+	@Override
 	public void setActivePage(IEditorPart part) {
-		if (activeEditorPart == part)
+		if (activeEditorPart == part) {
 			return;
+		}
 
 		activeEditorPart = part;
 
 		IActionBars actionBars = getActionBars();
 		if (actionBars != null) {
 
-			ITextEditor editor = (part instanceof ITextEditor) ? (ITextEditor) part : null;
+			ITextEditor editor = part instanceof ITextEditor ? (ITextEditor) part : null;
 
-			actionBars.setGlobalActionHandler(
-				ActionFactory.DELETE.getId(),
-				getAction(editor, ITextEditorActionConstants.DELETE));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.UNDO.getId(),
-				getAction(editor, ITextEditorActionConstants.UNDO));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.REDO.getId(),
-				getAction(editor, ITextEditorActionConstants.REDO));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.CUT.getId(),
-				getAction(editor, ITextEditorActionConstants.CUT));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.COPY.getId(),
-				getAction(editor, ITextEditorActionConstants.COPY));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.PASTE.getId(),
-				getAction(editor, ITextEditorActionConstants.PASTE));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.SELECT_ALL.getId(),
-				getAction(editor, ITextEditorActionConstants.SELECT_ALL));
-			actionBars.setGlobalActionHandler(
-				ActionFactory.FIND.getId(),
-				getAction(editor, ITextEditorActionConstants.FIND));
-			actionBars.setGlobalActionHandler(
-				IDEActionFactory.BOOKMARK.getId(),
-				getAction(editor, IDEActionFactory.BOOKMARK.getId()));
+			actionBars.setGlobalActionHandler(ActionFactory.DELETE.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.DELETE));
+			actionBars.setGlobalActionHandler(ActionFactory.UNDO.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.UNDO));
+			actionBars.setGlobalActionHandler(ActionFactory.REDO.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.REDO));
+			actionBars.setGlobalActionHandler(ActionFactory.CUT.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.CUT));
+			actionBars.setGlobalActionHandler(ActionFactory.COPY.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.COPY));
+			actionBars.setGlobalActionHandler(ActionFactory.PASTE.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.PASTE));
+			actionBars.setGlobalActionHandler(ActionFactory.SELECT_ALL.getId(),
+			                                  getAction(editor,
+			                                            ITextEditorActionConstants.SELECT_ALL));
+			actionBars.setGlobalActionHandler(ActionFactory.FIND.getId(),
+			                                  getAction(editor, ITextEditorActionConstants.FIND));
+			actionBars.setGlobalActionHandler(IDEActionFactory.BOOKMARK.getId(),
+			                                  getAction(editor, IDEActionFactory.BOOKMARK.getId()));
 			actionBars.updateActionBars();
 		}
 	}
+
 	private void createActions() {
 		sampleAction = new Action() {
+			@Override
 			public void run() {
 				MessageDialog.openInformation(null, "PlugTest", "Sample Action Executed");
 			}
 		};
 		sampleAction.setText("Sample Action");
 		sampleAction.setToolTipText("Sample Action tool tip");
-		sampleAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-				getImageDescriptor(IDE.SharedImages.IMG_OBJS_TASK_TSK));
+		sampleAction.setImageDescriptor(PlatformUI.getWorkbench()
+		                                          .getSharedImages()
+		                                          .getImageDescriptor(IDE.SharedImages.IMG_OBJS_TASK_TSK));
 	}
+
+	@Override
 	public void contributeToMenu(IMenuManager manager) {
 		IMenuManager menu = new MenuManager("Editor &Menu");
 		manager.prependToGroup(IWorkbenchActionConstants.MB_ADDITIONS, menu);
 		menu.add(sampleAction);
 	}
+
+	@Override
 	public void contributeToToolBar(IToolBarManager manager) {
 		manager.add(new Separator());
 		manager.add(sampleAction);

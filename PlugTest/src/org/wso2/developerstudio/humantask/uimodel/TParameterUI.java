@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -44,20 +60,19 @@ public class TParameterUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TParameterUI(XMLEditor textEditor,
-			Composite parentComposite, Composite parentTagContainer, int style,
-			Object modelParent, int objectIndex, int compositeIndex)
-			throws JAXBException {
+	public TParameterUI(XMLEditor textEditor, Composite parentComposite,
+	                    Composite parentTagContainer, int style, Object modelParent,
+	                    int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, style,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
-				HTEditorConstants.PARAMETER_TITLE);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
+		      HTEditorConstants.PARAMETER_TITLE);
 		this.parameter = (TParameter) modelParent;
 		this.compositeIndex = compositeIndex;
 		this.parentTagContainer = parentTagContainer;
 		setExpanded(false);
-			
+
 	}
-	
+
 	/**
 	 * Update the values of attributes(xml attributes) of the section and xml
 	 * element content value and marshal into the TextEditor when the update
@@ -67,12 +82,13 @@ public class TParameterUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		parameter.setName(((Text) textBoxesList.get(0)).getText());	
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
+		parameter.setName(((Text) textBoxesList.get(0)).getText());
 		parameter.setType(new QName(((Text) textBoxesList.get(1)).getText()));
-		if (parameter.getContent().size() != 0)  
+		if (parameter.getContent().size() != 0) {
 			parameter.getContent().remove(0);
-		parameter.getContent().add(0,((Text) textBoxesList.get(2)).getText());
+		}
+		parameter.getContent().add(0, ((Text) textBoxesList.get(2)).getText());
 		centralUtils.marshal(textEditor);
 	}
 
@@ -83,25 +99,25 @@ public class TParameterUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TLogicalPeopleGroupUI logicalPeopleGroupUI = (TLogicalPeopleGroupUI) parentTagContainer;
 		logicalPeopleGroupUI.refreshChildren(HTEditorConstants.PARAMETER_TITLE,
-				getCompositeIndex(), getObjectIndex());
+		                                     getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
-		
+
 	}
 
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
-	
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -109,36 +125,41 @@ public class TParameterUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if(parameter.getName()!=null)	((Text) textBoxesList.get(0)).setText(parameter.getName());
-		if(parameter.getType()!=null)	((Text) textBoxesList.get(1)).setText(parameter.getType().getLocalPart());
-		if (parameter.getContent().size() != 0)		((Text) textBoxesList.get(2)).setText((String) parameter.getContent().get(0));
+		if (parameter.getName() != null) {
+			((Text) textBoxesList.get(0)).setText(parameter.getName());
+		}
+		if (parameter.getType() != null) {
+			((Text) textBoxesList.get(1)).setText(parameter.getType().getLocalPart());
+		}
+		if (parameter.getContent().size() != 0) {
+			((Text) textBoxesList.get(2)).setText((String) parameter.getContent().get(0));
+		}
 
 	}
 
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
 	@Override
 	public void fillDetailArea(Composite composite) {
-		
-		Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+
+		Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
-		
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+
 		final Table table = new Table(detailArea, SWT.NONE);
-		//table.setLinesVisible(false);
-		
+		// table.setLinesVisible(false);
+
 		new TableColumn(table, SWT.NONE).setWidth(100);
 		new TableColumn(table, SWT.NONE).setWidth(150);
 		new TableColumn(table, SWT.NONE).setWidth(100);
@@ -146,14 +167,14 @@ public class TParameterUI extends AbstractParentTagSection {
 
 		TableItem tableRow1 = new TableItem(table, SWT.NONE);
 		tableRow1.setBackground(SWTResourceManager.getColor(SWT.COLOR_GRAY));
-		
+
 		TableEditor tblEditor = new TableEditor(table);
-		
-		Label lblName = new Label(table, SWT.NONE|SWT.BORDER_SOLID);
-		lblName.setText("  "+HTEditorConstants.NAME_ATTRIBUTE_TITLE);
+
+		Label lblName = new Label(table, SWT.NONE | SWT.BORDER_SOLID);
+		lblName.setText("  " + HTEditorConstants.NAME_ATTRIBUTE_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblName, tableRow1, 0);
-		
+
 		tblEditor = new TableEditor(table);
 		Text txtName = new Text(table, SWT.BORDER);
 		textBoxesList.add(0, txtName);
@@ -161,8 +182,8 @@ public class TParameterUI extends AbstractParentTagSection {
 		tblEditor.setEditor(txtName, tableRow1, 1);
 
 		tblEditor = new TableEditor(table);
-		Label lbType= new Label(table, SWT.NONE);
-		lbType.setText("    "+ HTEditorConstants.TYPE_ATTRIBUTE_TITLE);
+		Label lbType = new Label(table, SWT.NONE);
+		lbType.setText("    " + HTEditorConstants.TYPE_ATTRIBUTE_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lbType, tableRow1, 2);
 
@@ -171,16 +192,15 @@ public class TParameterUI extends AbstractParentTagSection {
 		textBoxesList.add(1, txtType);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(txtType, tableRow1, 3);
-		
-		
+
 		TableItem tblRow2 = new TableItem(table, SWT.NONE);
-		
+
 		tblRow2.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
 		tblEditor = new TableEditor(table);
 
 		Label lblValue = new Label(table, SWT.NONE);
 		lblValue.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblValue.setText("  "+HTEditorConstants.VALUE_TAG_TITLE);
+		lblValue.setText("  " + HTEditorConstants.VALUE_TAG_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblValue, tblRow2, 0);
 
@@ -189,7 +209,7 @@ public class TParameterUI extends AbstractParentTagSection {
 		textBoxesList.add(2, txtValue);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(txtValue, tblRow2, 1);
-		
+
 		tblEditor = new TableEditor(table);
 		Label lblValue2 = new Label(table, SWT.NONE);
 		lblValue2.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
@@ -203,13 +223,12 @@ public class TParameterUI extends AbstractParentTagSection {
 		lblValue3.setText("");
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblValue3, tblRow2, 3);
-		
+
 	}
 
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
-		
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
+
 	}
 
 	/**
@@ -220,7 +239,7 @@ public class TParameterUI extends AbstractParentTagSection {
 	 */
 	public void loadModel(Object objectModel) throws JAXBException {
 		parameter = (TParameter) objectModel;
-		
+
 	}
 
 	/**
@@ -233,6 +252,12 @@ public class TParameterUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

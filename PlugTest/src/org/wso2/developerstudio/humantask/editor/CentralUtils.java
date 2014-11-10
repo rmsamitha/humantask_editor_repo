@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.editor;
 
 import java.io.ByteArrayInputStream;
@@ -19,7 +35,6 @@ import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.stream.util.StreamReaderDelegate;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -61,129 +76,127 @@ public class CentralUtils {
 
 	/**
 	 * Returns a single CentralUtils object when it is called
-	 * @param XMLEditor textEditor
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
 	 * @return CentralUtils
 	 */
-	public static CentralUtils getInstance(XMLEditor textEditor)
-			throws JAXBException {
+	public static CentralUtils getCentralUtils(XMLEditor textEditor) throws JAXBException {
 		if (textEditor.getCentralUtils() == null) {
 			textEditor.setCentralUtils(new CentralUtils());
-			textEditor.getCentralUtils().setiDocument(
-					textEditor.getDocumentProvider().getDocument(
-							textEditor.getEditorInput()));
-			textEditor.setJaxbContext(JAXBContext
-					.newInstance(HTEditorConstants.HT_JAXB_CONTEXT));
-			textEditor.setConfigJaxbContext(JAXBContext
-					.newInstance(HTEditorConstants.HT_CONFIG_JAXB_CONTEXT));
+			textEditor.getCentralUtils()
+			          .setiDocument(textEditor.getDocumentProvider()
+			                                  .getDocument(textEditor.getEditorInput()));
+			textEditor.setJaxbContext(JAXBContext.newInstance(HTEditorConstants.HT_JAXB_CONTEXT));
+			textEditor.setConfigJaxbContext(JAXBContext.newInstance(HTEditorConstants.HT_CONFIG_JAXB_CONTEXT));
 		}
 		return textEditor.getCentralUtils();
 	}
 
 	/**
 	 * Unmarshals the text editor text to Object Model
-	 * @param XMLEditor textEditor
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
 	 */
 	public void unmarshal(XMLEditor textEditor) throws JAXBException {
-		Unmarshaller unmarshaller = textEditor.getJaxbContext()
-				.createUnmarshaller();
+		Unmarshaller unmarshaller = textEditor.getJaxbContext().createUnmarshaller();
 		String textEditorText = iDocument.get();
 		Object marshalledObject = null;
-       // try {
-	        marshalledObject = unmarshaller.unmarshal(new StringReader(
-	        		textEditorText));
-        
+
+		marshalledObject = unmarshaller.unmarshal(new StringReader(textEditorText));
+
 		if (marshalledObject instanceof JAXBElement<?>) {
-			JAXBElement<THumanInteractions> rootElementObject = (JAXBElement<THumanInteractions>) unmarshaller
-					.unmarshal(new StringReader(textEditorText));
-			THumanInteractions tHumanInteractions = (rootElementObject
-					.getValue());
+			JAXBElement<THumanInteractions> rootElementObject =
+			                                                    (JAXBElement<THumanInteractions>) unmarshaller.unmarshal(new StringReader(
+			                                                                                                                              textEditorText));
+			THumanInteractions tHumanInteractions = rootElementObject.getValue();
 			textEditor.setRootElement(tHumanInteractions);
 		} else {
-			THumanInteractions rootElementObject = (THumanInteractions) unmarshaller
-					.unmarshal(new StringReader(textEditorText));
-			THumanInteractions tHumanInteractions = (rootElementObject);
+			THumanInteractions rootElementObject =
+			                                       (THumanInteractions) unmarshaller.unmarshal(new StringReader(
+			                                                                                                    textEditorText));
+			THumanInteractions tHumanInteractions = rootElementObject;
 			textEditor.setRootElement(tHumanInteractions);
 		}
-//} catch (javax.xml.bind.UnmarshalException e) {
-	//        e.printStackTrace();
-        //}
 
 	}
 
 	/**
 	 * Marshals the current object model into the text editor
-	 * @param XMLEditor textEditor
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
 	 */
 	public void marshal(XMLEditor textEditor) throws JAXBException {
 		Marshaller marshaller = textEditor.getJaxbContext().createMarshaller();
 		StringWriter stringWriter = new StringWriter();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		marshaller.marshal(textEditor.getRootElement(), stringWriter);
-		iDocument = textEditor.getDocumentProvider().getDocument(
-				textEditor.getEditorInput());
+		iDocument = textEditor.getDocumentProvider().getDocument(textEditor.getEditorInput());
 		iDocument.set(stringWriter.toString().trim());
 	}
-	
+
 	/**
 	 * Sets the basic structure of the UI editor
-	 * @param ScrolledComposite scrolledComposite
-	 * @param Composite baseConatiner
+	 * 
+	 * @param ScrolledComposite
+	 *            scrolledComposite
+	 * @param Composite
+	 *            baseConatiner
 	 */
-	public void setBasicUI(ScrolledComposite scrolledComposite,
-			Composite baseConatiner) {
+	public void setBasicUI(ScrolledComposite scrolledComposite, Composite baseConatiner) {
 		this.scrolledComposite = scrolledComposite;
 		this.baseContainer = baseConatiner;
 	}
 
+	/**
+	 * Resizes the UI Elements of the Editor
+	 */
 	public void redraw() {
-		scrolledComposite.setMinSize(baseContainer.computeSize(SWT.DEFAULT,
-				SWT.DEFAULT));
+		scrolledComposite.setMinSize(baseContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
-	
+
 	public Document getotherattrs() throws ParserConfigurationException {
-/*		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder builder = factory.newDocumentBuilder();
-		StringReader InputStream=new StringReader(iDocument.get()); 
-		InputStream inp=new 
-		Document editorDocument = builder.parse(InputStream);*/
-		
+
 		DocumentBuilder db = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		InputSource is = new InputSource(new StringReader(iDocument.get()));
-	//	is.setCharacterStream(new StringReader(iDocument.get()));
-		System.out.println();
-		
-		Document doc=null;
+
+		Document doc = null;
 		try {
-			 doc = db.parse(is);
+			doc = db.parse(is);
 		} catch (SAXException | IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
 		}
-		if(doc!=null)
-		{
-			System.out.println("dong");
-		}
+
 		return doc;
 	}
 
-	public Document getWSDL(XMLEditor textEditor)
-			throws ParserConfigurationException, SAXException, IOException {
+	/**
+	 * Returns WSDL as a DOM object, The location is extracted from the import
+	 * Tag
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
+	 * @return Document
+	 */
+	public Document getWSDL(XMLEditor textEditor) throws ParserConfigurationException,
+	                                             SAXException, IOException {
 		List<TImport> importList = new ArrayList<TImport>();
 		String filePath = null;
-		if(textEditor!=null){
-			importList=textEditor.getRootElement().getImport();
+		if (textEditor != null) {
+			importList = textEditor.getRootElement().getImport();
 		}
 		for (int importIndex = 0; importIndex < importList.size(); importIndex++) {
 			if (importList.get(importIndex).getImportType()
-					.equals(HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL)
-					&& importList.get(importIndex).getLocation() != null) {
+			              .equals(HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL) &&
+			    importList.get(importIndex).getLocation() != null) {
 				filePath = importList.get(importIndex).getLocation();
 			}
 		}
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
-		InputStream source = new ByteArrayInputStream(
-				HTEditorConstants.DOCUMENT_ROOT.getBytes());
+		InputStream source = new ByteArrayInputStream(HTEditorConstants.DOCUMENT_ROOT.getBytes());
 		Document editorDocument = builder.parse(source);
 		if (filePath != null) {
 			File kfile = new File(filePath);
@@ -192,65 +205,72 @@ public class CentralUtils {
 		return editorDocument;
 	}
 
-	public void fillConfigObject(XMLEditor textEditor)
-            throws ParserConfigurationException, SAXException, IOException,
-            JAXBException, NullPointerException {
-        THTDeploymentConfig tHTDeploymentConfig = new THTDeploymentConfig();
-        List<TTask> tasksList = textEditor.getRootElement().getTasks()
-                .getTask();
-        List<TNotification> notificationList = textEditor.getRootElement()
-                .getNotifications().getNotification();
-        for (int taskIndex = 0; taskIndex < tasksList.size(); taskIndex++) {
-            Task configTask = new Task();
-            configTask.setName(new QName(tasksList.get(taskIndex).getName()));
-            TPublish tPublish = new TPublish();
-            Service service = new Service();
-            service.setName(new QName(tasksList.get(taskIndex).getInterface()
-                    .getOperation()));
-            service.setPort(tasksList.get(taskIndex).getInterface()
-                    .getPortType().getLocalPart());
-            tPublish.setService(service);
-            configTask.setPublish(tPublish);
-            TCallback tResponse = new TCallback();
-            TCallback.Service callbackService = new TCallback.Service();
-            callbackService.setName(new QName(tasksList.get(taskIndex)
-                    .getInterface().getResponseOperation()));
-            callbackService.setPort(tasksList.get(taskIndex).getInterface()
-                    .getResponsePortType().getLocalPart());
-            tResponse.setService(callbackService);
-            configTask.setCallback(tResponse);
-            tHTDeploymentConfig.getTask().add(configTask);
-        }
+	/**
+	 * Fills the Config object model from the data extracted from TTaskInterface
+	 * and TNotificationInterface elements
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
+	 */
+	public void fillConfigObject(XMLEditor textEditor) throws ParserConfigurationException,
+	                                                  SAXException, IOException, JAXBException,
+	                                                  NullPointerException {
+		THTDeploymentConfig tHTDeploymentConfig = new THTDeploymentConfig();
+		List<TTask> tasksList = textEditor.getRootElement().getTasks().getTask();
+		List<TNotification> notificationList =
+		                                       textEditor.getRootElement().getNotifications()
+		                                                 .getNotification();
+		for (int taskIndex = 0; taskIndex < tasksList.size(); taskIndex++) {
+			Task configTask = new Task();
+			configTask.setName(new QName(tasksList.get(taskIndex).getName()));
+			TPublish tPublish = new TPublish();
+			Service service = new Service();
+			service.setName(new QName(tasksList.get(taskIndex).getInterface().getOperation()));
+			service.setPort(tasksList.get(taskIndex).getInterface().getPortType().getLocalPart());
+			tPublish.setService(service);
+			configTask.setPublish(tPublish);
+			TCallback tResponse = new TCallback();
+			TCallback.Service callbackService = new TCallback.Service();
+			callbackService.setName(new QName(tasksList.get(taskIndex).getInterface()
+			                                           .getResponseOperation()));
+			callbackService.setPort(tasksList.get(taskIndex).getInterface().getResponsePortType()
+			                                 .getLocalPart());
+			tResponse.setService(callbackService);
+			configTask.setCallback(tResponse);
+			tHTDeploymentConfig.getTask().add(configTask);
+		}
 
-        for (int notificationIndex = 0; notificationIndex < notificationList
-                .size(); notificationIndex++) {
-            Notification configNotification = new Notification();
-            configNotification.setName(new QName(notificationList.get(
-                    notificationIndex).getName()));
-            TPublish tPublish = new TPublish();
-            Service service = new Service();
-            service.setName(new QName(notificationList.get(notificationIndex)
-                    .getInterface().getOperation()));
-            service.setPort(notificationList.get(notificationIndex)
-                    .getInterface().getPortType().getLocalPart());
-            tPublish.setService(service);
-            configNotification.setPublish(tPublish);
-            tHTDeploymentConfig.getNotification().add(configNotification);
-        }
-        textEditor.setConfigRootElement(tHTDeploymentConfig);
-    }
+		for (int notificationIndex = 0; notificationIndex < notificationList.size(); notificationIndex++) {
+			Notification configNotification = new Notification();
+			configNotification.setName(new QName(notificationList.get(notificationIndex).getName()));
+			TPublish tPublish = new TPublish();
+			Service service = new Service();
+			service.setName(new QName(notificationList.get(notificationIndex).getInterface()
+			                                          .getOperation()));
+			service.setPort(notificationList.get(notificationIndex).getInterface().getPortType()
+			                                .getLocalPart());
+			tPublish.setService(service);
+			configNotification.setPublish(tPublish);
+			tHTDeploymentConfig.getNotification().add(configNotification);
+		}
+		textEditor.setConfigRootElement(tHTDeploymentConfig);
+	}
 
-	public void writeHTConfig(XMLEditor textEditor)
-			throws ParserConfigurationException, SAXException, IOException,
-			JAXBException, CoreException {
+	/**
+	 * Generates the htconfig.xml file in the project root
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
+	 */
+	public void writeHTConfig(XMLEditor textEditor) throws ParserConfigurationException,
+	                                               SAXException, IOException, JAXBException,
+	                                               CoreException {
 		THTDeploymentConfig rootElement = textEditor.getConfigRootElement();
-		Marshaller marshaller = textEditor.getConfigJaxbContext()
-				.createMarshaller();
+		Marshaller marshaller = textEditor.getConfigJaxbContext().createMarshaller();
 		StringWriter sw = new StringWriter();
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
 		marshaller.marshal(rootElement, sw);
-		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(getProjectName());
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(getProjectName());
 		IFile file = project.getFile(HTEditorConstants.HTCONFIG_FILE_NAME);
 		byte[] bytes = sw.toString().getBytes();
 		InputStream source = new ByteArrayInputStream(bytes);
@@ -262,14 +282,19 @@ public class CentralUtils {
 		}
 	}
 
+	/**
+	 * Returns the selected project name as a String
+	 * 
+	 * @return String activeProjectName
+	 */
 	public String getProjectName() {
-		IEditorPart editorPart = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+		IEditorPart editorPart =
+		                         PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		                                   .getActivePage().getActiveEditor();
 		String activeProjectName = null;
 
 		if (editorPart != null) {
-			IFileEditorInput input = (IFileEditorInput) editorPart
-					.getEditorInput();
+			IFileEditorInput input = (IFileEditorInput) editorPart.getEditorInput();
 			IFile file = input.getFile();
 			IProject activeProject = file.getProject();
 			activeProjectName = activeProject.getName();
@@ -277,37 +302,62 @@ public class CentralUtils {
 		return activeProjectName;
 	}
 
+	/**
+	 * Converts a DOM Object to string
+	 * 
+	 * @param XMLEditor
+	 *            textEditor
+	 * @return String convertedString
+	 */
 	public String docToString(Document document) throws TransformerException {
 		DOMSource domSource = new DOMSource(document);
 		StringWriter stringWriter = new StringWriter();
 		StreamResult streamResult = new StreamResult(stringWriter);
-		TransformerFactory transformerFactory = TransformerFactory
-				.newInstance();
+		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer;
 		transformer = transformerFactory.newTransformer();
 		transformer.transform(domSource, streamResult);
 		return stringWriter.toString();
 	}
 
-	public Document xmlRead(String xmlFilePath)
-			throws ParserConfigurationException, SAXException, IOException {
+	/**
+	 * Reads a XML and returns a DOM representation of the XML
+	 * 
+	 * @param Strings
+	 *            XMLFilePath
+	 * @return Document documentObject
+	 */
+	public Document xmlRead(String xmlFilePath) throws ParserConfigurationException, SAXException,
+	                                           IOException {
 		File xmlFile = new File(xmlFilePath);
 		Document document = null;
 		DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-		try{
-		document = documentBuilder.parse(xmlFile);
-		}catch(FileNotFoundException e){
-			MessageDialog.openError(Display.getDefault().getActiveShell(), HTEditorConstants.INTERNAL_ERROR,HTEditorConstants.FILE_NOT_FOUND);
+		try {
+			document = documentBuilder.parse(xmlFile);
+		} catch (FileNotFoundException e) {
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+			                        HTEditorConstants.INTERNAL_ERROR,
+			                        HTEditorConstants.FILE_NOT_FOUND);
 		}
 		document.getDocumentElement().normalize();
 		return document;
 	}
 
+	/**
+	 * Returns the IDocument object
+	 * 
+	 * @return IDocument iDocument
+	 */
 	public IDocument getiDocument() {
 		return iDocument;
 	}
 
+	/**
+	 * Sets the IDocument object
+	 * 
+	 * @Param IDocument iDocument
+	 */
 	public void setiDocument(IDocument iDocument) {
 		this.iDocument = iDocument;
 	}

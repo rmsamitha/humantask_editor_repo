@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.wso2.developerstudio.humantask.editor;
 
 import java.util.ArrayList;
@@ -46,14 +47,16 @@ import org.eclipse.wb.swt.SWTResourceManager;
 /**
  * This is the abstract class extended by all the UI classes representing each
  * xml element which do not have child elements in the .ht file. The basic and
- * common UI related declarations and button listners are included here. All the
+ * common UI related declarations and button listeners are included here. All
+ * the
  * UI classes which are representing xml elements which do not have child
  * elements (end tags) extend this abstract class. This
  * AbstractEndTagSection.java class itself is extended by
  * org.eclipse.ui.forms.widgets.Section and so this is actually a SWT section.
  * There are number of sub classes of this AbstractEndTagSection class and
- * the logics and method implementations are almost same in those all sub classes.
- * One such sub class TDocumentationUI is comprehensively  
+ * the logics and method implementations are almost same in those all sub
+ * classes.
+ * One such sub class TDocumentationUI is comprehensively
  * commented for better understanding of a reader.
  */
 public abstract class AbstractEndTagSection extends Section {
@@ -72,6 +75,7 @@ public abstract class AbstractEndTagSection extends Section {
 	/**
 	 * The basic and common UI related declarations and Update and Remove button
 	 * listners are included here.
+	 * 
 	 * @param textEditor
 	 * @param parentComposite
 	 * @param parentTagContainer
@@ -101,7 +105,7 @@ public abstract class AbstractEndTagSection extends Section {
 		setTitleBarBackground(new Color(getDisplay(), 228, 210, 247));
 		formToolkit.adapt(this);
 		formToolkit.paintBordersFor(this);
-		centralUtils = CentralUtils.getInstance(textEditor);
+		centralUtils = CentralUtils.getCentralUtils(textEditor);
 		RowLayout sectionRowLayout = new RowLayout();
 		sectionRowLayout.type = SWT.VERTICAL;
 		this.setLayout(sectionRowLayout);
@@ -127,9 +131,9 @@ public abstract class AbstractEndTagSection extends Section {
 		GridLayout detailAreaGridLayout = new GridLayout(1, false);
 		detailAreaGridLayout.marginLeft = 5;
 		detailArea.setLayout(detailAreaGridLayout);
-		
-		
-		//Tool bar which contains update and remove buttons of the section, on the right of the title bar. 
+
+		// Tool bar which contains update and remove buttons of the section, on
+		// the right of the title bar.
 		ToolBar toolBarTitle = new ToolBar(this, SWT.FLAT | SWT.RIGHT | SWT.SHADOW_OUT);
 		setTextClient(toolBarTitle);
 
@@ -139,7 +143,7 @@ public abstract class AbstractEndTagSection extends Section {
 		btnUpdate.setImage(ResourceManager.getPluginImage(HTEditorConstants.PLUGIN_IMAGE_SYMBOLIC_NAME,
 		                                                  HTEditorConstants.UPDATE_BUTTON_IMAGE));
 		fillDetailArea();
-		
+
 		// Remove button of the section
 		ToolItem btnRemove = new ToolItem(toolBarTitle, SWT.CHECK);
 		btnRemove.setToolTipText(HTEditorConstants.REMOVE_BUTTON_TOOLTIP);
@@ -150,8 +154,9 @@ public abstract class AbstractEndTagSection extends Section {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnRemoveHandleLogic(textEditor);
-					//Fill the emptied space created due to removing the section and re layout the sections
+					onBtnRemove(textEditor);
+					// Fill the emptied space created due to removing the
+					// section and re layout the sections
 					centralUtils.redraw();
 				} catch (JAXBException e) {
 					MessageDialog.openError(Display.getCurrent().getActiveShell(),
@@ -165,7 +170,7 @@ public abstract class AbstractEndTagSection extends Section {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnUpdateHandleLogic(textEditor);
+					onBtnUpdate(textEditor);
 				} catch (JAXBException e) {
 					MessageDialog.openError(Display.getCurrent().getActiveShell(),
 					                        HTEditorConstants.INTERNAL_ERROR,
@@ -184,7 +189,7 @@ public abstract class AbstractEndTagSection extends Section {
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
-	public abstract void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException;
+	public abstract void onBtnUpdate(XMLEditor textEditor) throws JAXBException;
 
 	/**
 	 * Dispose the section when the remove button of a section is clicked
@@ -192,7 +197,7 @@ public abstract class AbstractEndTagSection extends Section {
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
-	public abstract void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException;
+	public abstract void onBtnRemove(XMLEditor textEditor) throws JAXBException;
 
 	/**
 	 * Initialize or set the values of attributes whenever a tab change occur
@@ -211,6 +216,7 @@ public abstract class AbstractEndTagSection extends Section {
 
 	/**
 	 * Draw the outline borders of sections
+	 * 
 	 * @param composite
 	 */
 	public void drawBorder(final Composite composite) {

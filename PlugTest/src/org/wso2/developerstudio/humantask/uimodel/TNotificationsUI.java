@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -28,7 +44,7 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	private Composite parentTagContainer;
 	private XMLEditor textEditor;
 	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
-	
+
 	/**
 	 * Call the super abstract class to set the UI and initialize class's
 	 * attribute variables
@@ -43,15 +59,15 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	public TNotificationsUI(XMLEditor textEditor, Composite parentComposite,
-			Composite parentTagContainer, int styleBit, Object modelParent,
-			int objectIndex, int compositeIndex) throws JAXBException {
+	                        Composite parentTagContainer, int styleBit, Object modelParent,
+	                        int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] { HTEditorConstants.NOTIFICATION_TITLE },
-				HTEditorConstants.NOTIFICATIONS_TITLE); // change the list of
-														// items in drop down
-														// list
+		      new String[] { HTEditorConstants.NOTIFICATION_TITLE },
+		      HTEditorConstants.NOTIFICATIONS_TITLE); // change the list of
+		// items in drop down
+		// list
 		this.notifications = (TNotifications) modelParent; // change the model
-															// object
+		// object
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
 		this.parentTagContainer = parentTagContainer;
@@ -61,7 +77,7 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 	}
 
 	/**
@@ -71,10 +87,10 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection transition = (AbstractParentTagSection) parentTagContainer;
-		transition.refreshChildren(HTEditorConstants.NOTIFICATIONS_TITLE,
-				getCompositeIndex(), getObjectIndex());
+		transition.refreshChildren(HTEditorConstants.NOTIFICATIONS_TITLE, getCompositeIndex(),
+		                           getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -86,14 +102,14 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		if (notifications != null) {
 			for (Composite composite : childComposites) {
 				composite.dispose();
@@ -104,13 +120,18 @@ public class TNotificationsUI extends AbstractParentTagSection {
 			childComposites.clear();
 			childCompositeIndex = 0;
 
-			ArrayList<TNotification> taskNotifications = (ArrayList<TNotification>) notifications
-					.getNotification();
+			ArrayList<TNotification> taskNotifications =
+			                                             (ArrayList<TNotification>) notifications.getNotification();
 			for (int i = 0; i < taskNotifications.size(); i++) {
-				TNotificationUI tNotificationUI = new TNotificationUI(editor,
-						detailArea, this, SWT.NONE,
-						taskNotifications.get(childObjectIndexes[0]),
-						childObjectIndexes[0], childCompositeIndex);
+				TNotificationUI tNotificationUI =
+				                                  new TNotificationUI(
+				                                                      editor,
+				                                                      detailArea,
+				                                                      this,
+				                                                      SWT.NONE,
+				                                                      taskNotifications.get(childObjectIndexes[0]),
+				                                                      childObjectIndexes[0],
+				                                                      childCompositeIndex);
 				tNotificationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tNotificationUI);
 				childCompositeIndex++;
@@ -119,19 +140,27 @@ public class TNotificationsUI extends AbstractParentTagSection {
 		}
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, // //////////////Start from
-													// this
-			ScrolledComposite sc3, XMLEditor editor, Composite composite)
-			throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.NOTIFICATION_TITLE)) {
 			TNotification tNotification = new TNotification();
 			tNotification.setName("");
-			notifications.getNotification().add(childObjectIndexes[0],
-					tNotification);
-			TNotificationUI tNotificationUI = new TNotificationUI(editor,
-					composite, this, SWT.NONE, tNotification,
-					childObjectIndexes[0], childCompositeIndex);
+			notifications.getNotification().add(childObjectIndexes[0], tNotification);
+			TNotificationUI tNotificationUI =
+			                                  new TNotificationUI(editor, composite, this,
+			                                                      SWT.NONE, tNotification,
+			                                                      childObjectIndexes[0],
+			                                                      childCompositeIndex);
 			childComposites.add(childCompositeIndex, tNotificationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -163,24 +192,21 @@ public class TNotificationsUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
-		System.out.println("Child Index :" + childCompositeIndex);
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
+	
 		childComposites.remove(childCompositeIndex);
 		notifications.getNotification().remove(getObjectIndex());
 		this.childCompositeIndex--;
 		this.childObjectIndexes[0]--;
 		for (Composite compositeInstance : childComposites) {
 			TNotificationUI tNotificationUI = (TNotificationUI) compositeInstance; // children
-																					// node
-																					// type
+			// node
+			// type
 			if (tNotificationUI.getCompositeIndex() > childCompositeIndex) {
-				tNotificationUI.setCompositeIndex(tNotificationUI
-						.getCompositeIndex() - 1);
+				tNotificationUI.setCompositeIndex(tNotificationUI.getCompositeIndex() - 1);
 			}
 			if (tNotificationUI.getObjectIndex() >= childObjectIndex) {
-				tNotificationUI
-						.setObjectIndex(tNotificationUI.getObjectIndex() - 1);
+				tNotificationUI.setObjectIndex(tNotificationUI.getObjectIndex() - 1);
 			}
 		}
 
@@ -198,9 +224,9 @@ public class TNotificationsUI extends AbstractParentTagSection {
 		notifications = (TNotifications) model;
 		for (Composite compositeInstance : childComposites) {
 			TNotificationUI tNotificationUI = (TNotificationUI) compositeInstance;
-			tNotificationUI.refreshLogic(textEditor);
-			tNotificationUI.loadModel(notifications.getNotification().get(
-					tNotificationUI.getObjectIndex()));
+			tNotificationUI.onPageRefresh(textEditor);
+			tNotificationUI.loadModel(notifications.getNotification()
+			                                       .get(tNotificationUI.getObjectIndex()));
 			this.layout();
 		}
 	}
@@ -237,6 +263,12 @@ public class TNotificationsUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

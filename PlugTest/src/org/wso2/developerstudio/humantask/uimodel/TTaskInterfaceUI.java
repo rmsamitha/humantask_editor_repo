@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.io.IOException;
@@ -82,7 +98,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		taskInterface.setPortType(new QName(((Combo) textBoxesList.get(0)).getText()));
 		taskInterface.setOperation(((Combo) textBoxesList.get(1)).getText());
 		taskInterface.setResponsePortType(new QName(((Combo) textBoxesList.get(2)).getText()));
@@ -91,7 +107,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 		centralUtils.marshal(textEditor);
 
 	}
-	
+
 	/**
 	 * Dispose the section when the remove button of section is clicked.
 	 * 
@@ -99,7 +115,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) parentTagContainer;
 		parentContainer.refreshChildren(HTEditorConstants.INTERFACE_TITLE, compositeIndex,
 		                                objectIndex);
@@ -118,21 +134,26 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if (taskInterface.getPortType() != null)
+		if (taskInterface.getPortType() != null) {
 			((Combo) textBoxesList.get(0)).setText(taskInterface.getPortType().getLocalPart()
 			                                                    .toString());
-		if (taskInterface.getOperation() != null)
+		}
+		if (taskInterface.getOperation() != null) {
 			((Combo) textBoxesList.get(1)).setText(taskInterface.getOperation());
-		if (taskInterface.getResponsePortType() != null)
+		}
+		if (taskInterface.getResponsePortType() != null) {
 			((Combo) textBoxesList.get(2)).setText(taskInterface.getResponsePortType()
 			                                                    .getLocalPart().toString());
-		if (taskInterface.getResponseOperation() != null)
+		}
+		if (taskInterface.getResponseOperation() != null) {
 			((Combo) textBoxesList.get(3)).setText(taskInterface.getResponseOperation());
+		}
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element contents (if available) in the section
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
@@ -244,9 +265,10 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 					                                  .getChildNodes();
 					ArrayList<String> operationsList = new ArrayList<String>();
 					for (int i = 0; i < childNodeList.getLength(); i++) {
-						if (childNodeList.item(i).hasAttributes())
+						if (childNodeList.item(i).hasAttributes()) {
 							operationsList.add(childNodeList.item(i).getAttributes()
 							                                .getNamedItem("name").getTextContent());
+						}
 					}
 					String[] operations = new String[operationsList.size()];
 
@@ -279,9 +301,10 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 					                                  .getChildNodes();
 					ArrayList<String> operationsList = new ArrayList<String>();
 					for (int i = 0; i < childNodeList.getLength(); i++) {
-						if (childNodeList.item(i).hasAttributes())
+						if (childNodeList.item(i).hasAttributes()) {
 							operationsList.add(childNodeList.item(i).getAttributes()
 							                                .getNamedItem("name").getTextContent());
+						}
 					}
 					String[] operations = new String[operationsList.size()];
 
@@ -306,14 +329,14 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -343,9 +366,18 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
@@ -418,20 +450,20 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	}
 
 	/**
-	 * Set this Section's object index(index of only this type of class objects
-	 * in the parent) as per the order created in This Section's parent.
+	 * Returns this Section's object index(index of only this type of class
+	 * objects in the parent) as per the order created in its parent
 	 * 
-	 * @param objectIndex
+	 * @return objectIndex
 	 */
 	public int getObjectIndex() {
 		return objectIndex;
 	}
 
 	/**
-	 * Returns this Section's object index(index of only this type of class
-	 * objects in the parent) as per the order created in its parent
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
 	 * 
-	 * @return objectIndex
+	 * @param objectIndex
 	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;

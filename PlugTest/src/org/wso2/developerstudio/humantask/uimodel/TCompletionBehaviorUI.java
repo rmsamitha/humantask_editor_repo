@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -28,7 +44,8 @@ import org.wso2.developerstudio.humantask.models.TPattern;
 import org.wso2.developerstudio.humantask.models.TResult;
 
 /**
- * The UI class representing the "completionBehavior" xml element in the .ht file
+ * The UI class representing the "completionBehavior" xml element in the .ht
+ * file
  * All the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
@@ -55,15 +72,14 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TCompletionBehaviorUI(XMLEditor textEditor,
-			Composite parentComposite, Composite parentTagContainer,
-			int styleBit, Object objectModel, int objectIndex,
-			int compositeIndex) throws JAXBException {
+	public TCompletionBehaviorUI(XMLEditor textEditor, Composite parentComposite,
+	                             Composite parentTagContainer, int styleBit, Object objectModel,
+	                             int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-						HTEditorConstants.COMPLETION_TITLE,
-						HTEditorConstants.DEFAULT_COMPLETION_TITLE },
-				HTEditorConstants.COMPLETION_BEHAVIOR_TITLE);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
+		                    HTEditorConstants.COMPLETION_TITLE,
+		                    HTEditorConstants.DEFAULT_COMPLETION_TITLE },
+		      HTEditorConstants.COMPLETION_BEHAVIOR_TITLE);
 		this.completionBehavior = (TCompletionBehavior) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -81,9 +97,8 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
-		completionBehavior.setCompletionAction(TPattern
-				.fromValue(((Combo) textBoxesList.get(0)).getText()));
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
+		completionBehavior.setCompletionAction(TPattern.fromValue(((Combo) textBoxesList.get(0)).getText()));
 		centralUtils.marshal(textEditor);
 	}
 
@@ -94,19 +109,19 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) parentTagContainer;
-		parentContainer.refreshChildren(
-				HTEditorConstants.COMPLETION_BEHAVIOR_TITLE, compositeIndex,
-				objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.COMPLETION_BEHAVIOR_TITLE,
+		                                compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -116,14 +131,14 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		if (completionBehavior.getCompletionAction() != null) {
 			Combo comboBox = (Combo) textBoxesList.get(0);
-			comboBox.select(comboBox.indexOf(completionBehavior
-					.getCompletionAction().value()));
+			comboBox.select(comboBox.indexOf(completionBehavior.getCompletionAction().value()));
 		}
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
@@ -132,8 +147,7 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 
 		Composite innerZComp = formToolkit.createComposite(composite);
 		innerZComp.setLayout(new GridLayout(1, true));
-		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-				false, 1, 1));
+		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		final Table table = new Table(innerZComp, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
@@ -145,18 +159,15 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 
 		TableEditor tblEditor = new TableEditor(table);
 
-		Label lblcompletionAction = new Label(table, SWT.NONE
-				| SWT.BORDER_SOLID);
-		lblcompletionAction.setText("  "
-				+ HTEditorConstants.COMPLETION_ACTION_ATTRIBUTE_TITLE);
+		Label lblcompletionAction = new Label(table, SWT.NONE | SWT.BORDER_SOLID);
+		lblcompletionAction.setText("  " + HTEditorConstants.COMPLETION_ACTION_ATTRIBUTE_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblcompletionAction, tblRow1, 0);
 
 		tblEditor = new TableEditor(table);
 		Combo cmbcompletionAction = new Combo(table, SWT.NONE);
-		cmbcompletionAction.setItems(new String[] {
-				TPattern.AUTOMATIC.toString().toLowerCase(),
-				TPattern.MANUAL.toString().toLowerCase() });
+		cmbcompletionAction.setItems(new String[] { TPattern.AUTOMATIC.toString().toLowerCase(),
+		                                           TPattern.MANUAL.toString().toLowerCase() });
 		cmbcompletionAction.select(0);
 		textBoxesList.add(0, cmbcompletionAction);
 		tblEditor.grabHorizontal = true;
@@ -168,14 +179,14 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -185,36 +196,51 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) completionBehavior
-				.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-				.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					detailArea, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this,
-					documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup =
+		                                               (ArrayList<TDocumentation>) completionBehavior.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(
+			                                                         editor,
+			                                                         detailArea,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE,
+			                                                         this,
+			                                                         documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
 			childObjectIndexes[0]++;
 		}
-		ArrayList<TCompletion> completionGroup = (ArrayList<TCompletion>) completionBehavior
-				.getCompletion();
+		ArrayList<TCompletion> completionGroup =
+		                                         (ArrayList<TCompletion>) completionBehavior.getCompletion();
 		for (int i = 0; i < completionGroup.size(); i++) {
-			TCompletionUI tCompletionUI = new TCompletionUI(editor, detailArea,
-					this, SWT.NONE, completionGroup.get(childObjectIndexes[1]),
-					childObjectIndexes[1], childCompositeIndex);
+			TCompletionUI tCompletionUI =
+			                              new TCompletionUI(
+			                                                editor,
+			                                                detailArea,
+			                                                this,
+			                                                SWT.NONE,
+			                                                completionGroup.get(childObjectIndexes[1]),
+			                                                childObjectIndexes[1],
+			                                                childCompositeIndex);
 			tCompletionUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tCompletionUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
 		}
 		if (completionBehavior.getDefaultCompletion() != null) {
-			TDefaultCompletion tDefaultCompletion = (TDefaultCompletion) completionBehavior
-					.getDefaultCompletion();
-			TDefaultCompletionUI tDefaultCompletionUI = new TDefaultCompletionUI(
-					editor, detailArea, this, SWT.NONE, tDefaultCompletion,
-					childObjectIndexes[2], childCompositeIndex);
+			TDefaultCompletion tDefaultCompletion = completionBehavior.getDefaultCompletion();
+			TDefaultCompletionUI tDefaultCompletionUI =
+			                                            new TDefaultCompletionUI(
+			                                                                     editor,
+			                                                                     detailArea,
+			                                                                     this,
+			                                                                     SWT.NONE,
+			                                                                     tDefaultCompletion,
+			                                                                     childObjectIndexes[2],
+			                                                                     childCompositeIndex);
 			tDefaultCompletionUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDefaultCompletionUI);
 			childCompositeIndex++;
@@ -223,43 +249,57 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
-			completionBehavior.getDocumentation().add(childObjectIndexes[0],
-					tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			completionBehavior.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.COMPLETION_TITLE)) {
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.COMPLETION_TITLE)) {
 			TCompletion tCompletion = new TCompletion();
 			tCompletion.setCondition(new TBooleanExpr());
 			tCompletion.setResult(new TResult());
-			completionBehavior.getCompletion().add(childObjectIndexes[1],
-					tCompletion);
-			TCompletionUI tCompletionUI = new TCompletionUI(editor, composite,
-					this, SWT.NONE, tCompletion, childObjectIndexes[1],
-					childCompositeIndex);
+			completionBehavior.getCompletion().add(childObjectIndexes[1], tCompletion);
+			TCompletionUI tCompletionUI =
+			                              new TCompletionUI(editor, composite, this, SWT.NONE,
+			                                                tCompletion, childObjectIndexes[1],
+			                                                childCompositeIndex);
 			childComposites.add(childCompositeIndex, tCompletionUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
-		} else if (selection
-				.equalsIgnoreCase(HTEditorConstants.DEFAULT_COMPLETION_TITLE)) {
+		} else if (selection.equalsIgnoreCase(HTEditorConstants.DEFAULT_COMPLETION_TITLE)) {
 			if (childObjectIndexes[2] < 1) {
 				TDefaultCompletion tDefaultCompletion = new TDefaultCompletion();
 				tDefaultCompletion.setResult(new TResult());
 				completionBehavior.setDefaultCompletion(tDefaultCompletion);
-				TDefaultCompletionUI tDefaultCompletionUI = new TDefaultCompletionUI(
-						editor, composite, this, SWT.NONE, tDefaultCompletion,
-						childObjectIndexes[2], childCompositeIndex);
+				TDefaultCompletionUI tDefaultCompletionUI =
+				                                            new TDefaultCompletionUI(
+				                                                                     editor,
+				                                                                     composite,
+				                                                                     this,
+				                                                                     SWT.NONE,
+				                                                                     tDefaultCompletion,
+				                                                                     childObjectIndexes[2],
+				                                                                     childCompositeIndex);
 				childComposites.add(childCompositeIndex, tDefaultCompletionUI);
 				childObjectIndexes[2]++;
 				childCompositeIndex++;
@@ -279,8 +319,7 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			completionBehavior.getDocumentation().remove(childObjectIndex);
@@ -289,26 +328,22 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TCompletionUI) {
 					TCompletionUI tCompletionUI = (TCompletionUI) compositeInstance;
 					if (tCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tCompletionUI.setCompositeIndex(tCompletionUI
-								.getCompositeIndex() - 1);
+						tCompletionUI.setCompositeIndex(tCompletionUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TDefaultCompletionUI) {
-					TDefaultCompletionUI tDefaultCompletionUI = (TDefaultCompletionUI) compositeInstance;
+					TDefaultCompletionUI tDefaultCompletionUI =
+					                                            (TDefaultCompletionUI) compositeInstance;
 					if (tDefaultCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tDefaultCompletionUI
-								.setCompositeIndex(tDefaultCompletionUI
-										.getCompositeIndex() - 1);
+						tDefaultCompletionUI.setCompositeIndex(tDefaultCompletionUI.getCompositeIndex() - 1);
 					}
 
 				} else {
@@ -316,67 +351,56 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 				}
 
 			}
-		} else if (itemName
-				.equalsIgnoreCase(HTEditorConstants.COMPLETION_TITLE)) {
+		} else if (itemName.equalsIgnoreCase(HTEditorConstants.COMPLETION_TITLE)) {
 			this.childObjectIndexes[1]--;
 			completionBehavior.getCompletion().remove(childObjectIndex);
 			for (Composite compositeInstance : childComposites) {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TCompletionUI) {
 					TCompletionUI tCompletionUI = (TCompletionUI) compositeInstance;
 					if (tCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tCompletionUI.setCompositeIndex(tCompletionUI
-								.getCompositeIndex() - 1);
+						tCompletionUI.setCompositeIndex(tCompletionUI.getCompositeIndex() - 1);
 					}
 					if (tCompletionUI.getObjectIndex() > childObjectIndex) {
-						tCompletionUI.setObjectIndex(tCompletionUI
-								.getObjectIndex() - 1);
+						tCompletionUI.setObjectIndex(tCompletionUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TDefaultCompletionUI) {
-					TDefaultCompletionUI tDefaultCompletionUI = (TDefaultCompletionUI) compositeInstance;
+					TDefaultCompletionUI tDefaultCompletionUI =
+					                                            (TDefaultCompletionUI) compositeInstance;
 					if (tDefaultCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tDefaultCompletionUI
-								.setCompositeIndex(tDefaultCompletionUI
-										.getCompositeIndex() - 1);
+						tDefaultCompletionUI.setCompositeIndex(tDefaultCompletionUI.getCompositeIndex() - 1);
 					}
 
 				} else {
 				}
 
-			} 
-		} else if (itemName
-				.equalsIgnoreCase(HTEditorConstants.DEFAULT_COMPLETION_TITLE)) {
+			}
+		} else if (itemName.equalsIgnoreCase(HTEditorConstants.DEFAULT_COMPLETION_TITLE)) {
 			this.childObjectIndexes[2]--;
 			completionBehavior.setDefaultCompletion(null);
 			for (Composite compositeInstance : childComposites) {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TCompletionUI) {
 					TCompletionUI tCompletionUI = (TCompletionUI) compositeInstance;
 					if (tCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tCompletionUI.setCompositeIndex(tCompletionUI
-								.getCompositeIndex() - 1);
+						tCompletionUI.setCompositeIndex(tCompletionUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TDefaultCompletionUI) {
-					TDefaultCompletionUI tDefaultCompletionUI = (TDefaultCompletionUI) compositeInstance;
+					TDefaultCompletionUI tDefaultCompletionUI =
+					                                            (TDefaultCompletionUI) compositeInstance;
 					if (tDefaultCompletionUI.getCompositeIndex() > childCompositeIndex) {
-						tDefaultCompletionUI
-								.setCompositeIndex(tDefaultCompletionUI
-										.getCompositeIndex() - 1);
+						tDefaultCompletionUI.setCompositeIndex(tDefaultCompletionUI.getCompositeIndex() - 1);
 					}
 					if (tDefaultCompletionUI.getObjectIndex() > childObjectIndex) {
-						tDefaultCompletionUI
-								.setObjectIndex(tDefaultCompletionUI
-										.getObjectIndex() - 1);
+						tDefaultCompletionUI.setObjectIndex(tDefaultCompletionUI.getObjectIndex() - 1);
 					}
 
 				} else {
@@ -402,24 +426,24 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(completionBehavior
-						.getDocumentation().get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(completionBehavior.getDocumentation()
+				                                             .get(tDocumentationUI.getObjectIndex()));
 			}
 			if (compositeInstance instanceof TCompletionUI) {
 				TCompletionUI tCompletionUI = (TCompletionUI) compositeInstance;
-				tCompletionUI.completion = completionBehavior.getCompletion()
-						.get(tCompletionUI.getObjectIndex());
-				tCompletionUI.refreshLogic(textEditor);
-				tCompletionUI.loadModel(completionBehavior.getCompletion().get(
-						tCompletionUI.getObjectIndex()));
+				tCompletionUI.completion =
+				                           completionBehavior.getCompletion()
+				                                             .get(tCompletionUI.getObjectIndex());
+				tCompletionUI.onPageRefresh(textEditor);
+				tCompletionUI.loadModel(completionBehavior.getCompletion()
+				                                          .get(tCompletionUI.getObjectIndex()));
 			}
 			if (compositeInstance instanceof TDefaultCompletionUI) {
-				TDefaultCompletionUI tDefaultCompletionUI = (TDefaultCompletionUI) compositeInstance;
-				tDefaultCompletionUI.defaultCompletion = completionBehavior
-						.getDefaultCompletion();
-				tDefaultCompletionUI.refreshLogic(textEditor);
-				tDefaultCompletionUI.loadModel(completionBehavior
-						.getDefaultCompletion());
+				TDefaultCompletionUI tDefaultCompletionUI =
+				                                            (TDefaultCompletionUI) compositeInstance;
+				tDefaultCompletionUI.defaultCompletion = completionBehavior.getDefaultCompletion();
+				tDefaultCompletionUI.onPageRefresh(textEditor);
+				tDefaultCompletionUI.loadModel(completionBehavior.getDefaultCompletion());
 			}
 		}
 	}
@@ -434,6 +458,12 @@ public class TCompletionBehaviorUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

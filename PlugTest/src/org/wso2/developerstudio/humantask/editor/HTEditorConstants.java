@@ -1,49 +1,71 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.editor;
 
 import javax.xml.namespace.QName;
 
+/**
+ * This class holds all the constants used in HT Editor
+ * 
+ */
 public class HTEditorConstants {
 
-	public static final String HT_DEFAULT_NAMESPACE = "org.oasis_open.docs.ns.bpel4people.ws_humantask._200803";
-	
+	public static final String HT_DEFAULT_NAMESPACE =
+	                                                  "org.oasis_open.docs.ns.bpel4people.ws_humantask._200803";
+
 	public static final String UI_EDITOR_TITLE = "UI Editor";
-	
+
 	public static final String HT_JAXB_CONTEXT = "org.wso2.developerstudio.humantask.models";
-	
+
 	public static final String UPDATE_BUTTON_TOOLTIP = "Update XML";
-	
+
 	public static final String REMOVE_BUTTON_TOOLTIP = "Remove";
-	
+
 	public static final String ADD_CHILD_BUTTON_TOOLTIP = "Add Child Element";
-	
+
 	public static final String PLUGIN_IMAGE_SYMBOLIC_NAME = "PlugTest";
-	
+
 	public static final String UPDATE_BUTTON_IMAGE = "icons/rsz_rsz_software_update.png";
 
-	public static final String REMOVE_BUTTON_IMAGE ="icons/rsz_close-2-icon.png";
-			//"icons/rsz_1removebtn.png";
-			//"icons/rsz_rsz_1rsz_112.png";
+	public static final String REMOVE_BUTTON_IMAGE = "icons/rsz_close-2-icon.png";
+	// "icons/rsz_1removebtn.png";
+	// "icons/rsz_rsz_1rsz_112.png";
 
-	public static final String EDIT_BUTTON_IMAGE = "icons/rsz_rsz_1412072977_plus_add_blueedited.png";
+	public static final String EDIT_BUTTON_IMAGE =
+	                                               "icons/rsz_rsz_1412072977_plus_add_blueedited.png";
 
 	public static final String LOGICAL_PEOPLE_GROUPS_TITLE = "Logical People Groups";
 
 	public static final String NOTIFICATION_TITLE = "Notification";
 
 	public static final String DOCUMENTATION_TITLE = "Documentation";
-	
+
 	public static final String NAME_TAG_TITLE = "Name";
-	
+
 	public static final String PRESENTATION_ELEMENTS_TITLE = "Presentation Elements";
-	
+
 	public static final String SUBJECT_TITLE = "Subject";
-	
+
 	public static final String DESCRIPTION_TITLE = "Description";
-	
+
 	public static final String PRESENTATION_PARAMETERS_TITLE = "Presentation Parameters";
-	
+
 	public static final String PRESENTATION_PARAMETER_TITLE = "Presentation Parameter";
-	
+
 	public static final String PRIORITY_TITLE = "Priority";
 
 	public static final String INTERFACE_TITLE = "Interface";
@@ -53,42 +75,60 @@ public class HTEditorConstants {
 	public static final String TASK_TITLE = "Task";
 
 	public static final String NOTIFICATIONS_TITLE = "Notifications";
-	
+
 	public static final String POTENTIAL_OWNERS_TITLE = "Potential Owners";
 
-    public static final String EXCLUDED_OWNERS_TITLE = "Excluded Owners";
-   
-    public static final String TASK_INITIATOR_TITLE =  "Task Initiator";
-   
-    public static final String TASK_STAKE_HOLDERS_TITLE = "Task Stake Holders";
+	public static final String EXCLUDED_OWNERS_TITLE = "Excluded Owners";
 
-    public static final String BUSINESS_ADMINISTRATORS_TITLE ="Business Administrators";
+	public static final String TASK_INITIATOR_TITLE = "Task Initiator";
 
-    public static final String RECIPIENTS_TITLE = "Recipients";
-    
-    public static final String FROM_TITLE = "From";
+	public static final String TASK_STAKE_HOLDERS_TITLE = "Task Stake Holders";
 
-    public static final String PEOPLE_ASSIGNMENTS_TITLE = "People Assignments";
-    
-    public static final String GENERIC_HUMAN_ROLE_TITLE = "Generic Human Role";
-    
-    public static final String SEQUENCE_TITLE = "Sequence";
-    
-    public static final String PARALLEL_TITLE = "Parrelel";
-    
-    public static final QName PotentialOwners_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "potentialOwners");
+	public static final String BUSINESS_ADMINISTRATORS_TITLE = "Business Administrators";
 
-    public static final QName ExcludedOwners_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "excludedOwners");
+	public static final String RECIPIENTS_TITLE = "Recipients";
 
-    public static final QName TaskInitiator_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "taskInitiator");
+	public static final String FROM_TITLE = "From";
 
-    public final static QName TaskStakeholders_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "taskStakeholders");
+	public static final String PEOPLE_ASSIGNMENTS_TITLE = "People Assignments";
 
-    public final static QName Recipients_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "recipients");
-    
-    public final static QName BusinessAdministrators_QNAME = new QName("http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803", "businessAdministrators");
-    
-    public static final String LOGICAL_PEOPLE_GROUP_TITLE = "Logical People group";
+	public static final String GENERIC_HUMAN_ROLE_TITLE = "Generic Human Role";
+
+	public static final String SEQUENCE_TITLE = "Sequence";
+
+	public static final String PARALLEL_TITLE = "Parrelel";
+
+	public static final QName PotentialOwners_QNAME =
+	                                                  new QName(
+	                                                            "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                            "potentialOwners");
+
+	public static final QName ExcludedOwners_QNAME =
+	                                                 new QName(
+	                                                           "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                           "excludedOwners");
+
+	public static final QName TaskInitiator_QNAME =
+	                                                new QName(
+	                                                          "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                          "taskInitiator");
+
+	public final static QName TaskStakeholders_QNAME =
+	                                                   new QName(
+	                                                             "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                             "taskStakeholders");
+
+	public final static QName Recipients_QNAME =
+	                                             new QName(
+	                                                       "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                       "recipients");
+
+	public final static QName BusinessAdministrators_QNAME =
+	                                                         new QName(
+	                                                                   "http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803",
+	                                                                   "businessAdministrators");
+
+	public static final String LOGICAL_PEOPLE_GROUP_TITLE = "Logical People group";
 
 	public static final String PARAMETER_TITLE = "Parameter";
 
@@ -105,11 +145,11 @@ public class HTEditorConstants {
 	public static final String RESULT_TITLE = "Result";
 
 	public static final String PART_ATTRIBUTE_TITLE = "Part";
-	
+
 	public static final String LOCATION_ATTRIBUTE_TITLE = "Location";
-	
+
 	public static final String CONDITION_ATTRIBUTE_TITLE = "Condition";
-	
+
 	public static final String FUNCTION_ATTRIBUTE_TITLE = "Function";
 
 	public static final String LANGUAGE_ATTRIBUTE_TITLE = "Language";
@@ -171,21 +211,24 @@ public class HTEditorConstants {
 	public static final String PREFIX_TITLE = "Prefix";
 
 	public static final String IMPORT_TITLE = "Import";
-	
+
 	public static final String HTTP_SCHEMAS_XMLSOAP_ORG_WSDL = "http://schemas.xmlsoap.org/wsdl/";
 
 	public static final String INTERNAL_ERROR = "Internal Error";
 
 	public static final String XML_PARSE_ERROR_MESSAGE = "XML Parse Error occured";
 
-	public static final String DOCUMENT_ROOT ="<htd:humanInteractions xmlns:htd=\"http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803\" targetNamespace=\"http://www.example.com\"  />";
-			//"<htd:tHumanInteractions/>"; 
+	public static final String DOCUMENT_ROOT =
+	                                           "<htd:humanInteractions xmlns:htd=\"http://docs.oasis-open.org/ns/bpel4people/ws-humantask/200803\" targetNamespace=\"http://www.example.com\"  />";
+	// "<htd:tHumanInteractions/>";
 
 	public static final String HTCONFIG_FILE_NAME = "/htconfig.xml";
 
-	public static final String FILE_NOT_FOUND = "WSDL file given in the Import tag's location attribute is not Found";
+	public static final String FILE_NOT_FOUND =
+	                                            "WSDL file given in the Import tag's location attribute is not Found";
 
-	public static final String XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED = "XML Parse Error UI design cannot be viewed";
+	public static final String XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED =
+	                                                                        "XML Parse Error UI design cannot be viewed";
 
 	public static final String XML_PARSE_ERROR = "XML Parse Error";
 
@@ -197,11 +240,13 @@ public class HTEditorConstants {
 
 	static final String CONFIG_ERROR_MESSAGE = "Error in generating Config file";
 
-	protected static final String GENERATE_CONFIG_ERROR_MESSAGE = "Please Check Whether You Have Filled Import tag or Task Interface tag and Notification Interface tag is filled. ";
+	protected static final String GENERATE_CONFIG_ERROR_MESSAGE =
+	                                                              "Please Check Whether You Have Filled Import tag or Task Interface tag and Notification Interface tag is filled. ";
 
 	public static final String GENERATE_HT_CONFIG_BUTTON_TITLE = "Generate HT-Config";
 
-	public static final String GENERATE_HT_CONFIG_BUTTON_IMAGE = "icons/rsz_1gerenate_ht_config_btn2.png";
+	public static final String GENERATE_HT_CONFIG_BUTTON_IMAGE =
+	                                                             "icons/rsz_1gerenate_ht_config_btn2.png";
 
 	public static final String TARGET_NAMESPACE_ATTRIBUTE_TITLE = "Target Namespace";
 

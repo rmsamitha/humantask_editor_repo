@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.io.IOException;
@@ -30,7 +46,8 @@ import org.wso2.developerstudio.humantask.models.TNotificationInterface;
 import org.xml.sax.SAXException;
 
 /**
- * The UI class representing the "interface" xml element of type="tNotificationInterface" in the .ht file
+ * The UI class representing the "interface" xml element of
+ * type="tNotificationInterface" in the .ht file
  * All the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
@@ -81,7 +98,7 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		notificationInterface.setPortType(new QName(((Combo) textBoxesList.get(0)).getText()));
 		notificationInterface.setOperation(((Combo) textBoxesList.get(1)).getText());
 		centralUtils.marshal(textEditor);
@@ -94,7 +111,7 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TNotificationUI tNotificationUI = (TNotificationUI) parentTagContainer;
 		tNotificationUI.refreshChildren(HTEditorConstants.INTERFACE_TITLE, compositeIndex,
 		                                objectIndex);
@@ -105,9 +122,18 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
@@ -125,10 +151,11 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 		centralUtils.marshal(editor);
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
@@ -209,9 +236,10 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 					                                  .getChildNodes();
 					ArrayList<String> operationsList = new ArrayList<String>();
 					for (int i = 0; i < childNodeList.getLength(); i++) {
-						if (childNodeList.item(i).hasAttributes())
+						if (childNodeList.item(i).hasAttributes()) {
 							operationsList.add(childNodeList.item(i).getAttributes()
 							                                .getNamedItem("name").getTextContent());
+						}
 					}
 					String[] operations = new String[operationsList.size()];
 
@@ -232,9 +260,10 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 		});
 
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -242,27 +271,29 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-		if (notificationInterface.getPortType() != null)
+		if (notificationInterface.getPortType() != null) {
 			((Combo) textBoxesList.get(0)).setText(notificationInterface.getPortType()
 			                                                            .getLocalPart().toString());
-		if (notificationInterface.getOperation() != null)
+		}
+		if (notificationInterface.getOperation() != null) {
 			((Combo) textBoxesList.get(1)).setText(notificationInterface.getOperation());
+		}
 	}
 
 	/**
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException { // ///////////////////////Start
-																	  // from
-																	  // this/////////////////////
+	public void onPageRefresh(XMLEditor editor) throws JAXBException { // ///////////////////////Start
+		// from
+		// this/////////////////////
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -356,6 +387,12 @@ public class TNotificationInterfaceUI extends AbstractParentTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -50,11 +66,11 @@ public class TAggregateUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	public TAggregateUI(XMLEditor textEditor, Composite parentComposite,
-			Composite parentTagContainer, int styleBit, Object objectModel,
-			int objectIndex, int compositeIndex) throws JAXBException {
+	                    Composite parentTagContainer, int styleBit, Object objectModel,
+	                    int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
-				HTEditorConstants.AGGREGATE_TITLE);
+		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
+		      HTEditorConstants.AGGREGATE_TITLE);
 		this.aggregate = (TAggregate) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -71,11 +87,11 @@ public class TAggregateUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		aggregate.setPart(((Text) textBoxesList.get(0)).getText());
-		aggregate.setLocation((((Text) textBoxesList.get(1)).getText()));
-		aggregate.setCondition((((Text) textBoxesList.get(2)).getText()));
-		aggregate.setFunction((((Text) textBoxesList.get(3)).getText()));
+		aggregate.setLocation(((Text) textBoxesList.get(1)).getText());
+		aggregate.setCondition(((Text) textBoxesList.get(2)).getText());
+		aggregate.setFunction(((Text) textBoxesList.get(3)).getText());
 		centralUtils.marshal(textEditor);
 	}
 
@@ -86,10 +102,9 @@ public class TAggregateUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TResultUI tResultUI = (TResultUI) parentTagContainer;
-		tResultUI.refreshChildren(HTEditorConstants.AGGREGATE_TITLE,
-				compositeIndex, objectIndex);
+		tResultUI.refreshChildren(HTEditorConstants.AGGREGATE_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite tempCompo = this.getParent();
 		this.dispose();
@@ -97,18 +112,28 @@ public class TAggregateUI extends AbstractParentTagSection {
 
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3,
-			XMLEditor editor, Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
-			aggregate.getDocumentation().add(childObjectIndexes[0],
-					tDocumentation);
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					composite, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this, tDocumentation);
+			aggregate.getDocumentation().add(childObjectIndexes[0], tDocumentation);
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(editor, composite,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -116,24 +141,22 @@ public class TAggregateUI extends AbstractParentTagSection {
 		centralUtils.marshal(editor);
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element contents (if available) in the section
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
 	 * 
 	 * @param composite
 	 */
 	@Override
 	public void fillDetailArea(Composite composite) {
 
-		Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+		Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-		Table table = new Table(detailAreaInnerComposite, SWT.BORDER
-				| SWT.MULTI);
+		Table table = new Table(detailAreaInnerComposite, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
 		for (int i = 0; i < 4; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
@@ -174,10 +197,8 @@ public class TAggregateUI extends AbstractParentTagSection {
 		tblEditor = new TableEditor(table);
 
 		Label lblCondition = new Label(table, SWT.NONE);
-		lblCondition
-				.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-		lblCondition
-				.setText("  " + HTEditorConstants.CONDITION_ATTRIBUTE_TITLE);
+		lblCondition.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+		lblCondition.setText("  " + HTEditorConstants.CONDITION_ATTRIBUTE_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblCondition, tblRow2, 0);
 
@@ -202,9 +223,10 @@ public class TAggregateUI extends AbstractParentTagSection {
 		tblEditor.setEditor(txtFunction, tblRow2, 3);
 
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -213,14 +235,18 @@ public class TAggregateUI extends AbstractParentTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 
-		if (aggregate.getPart() != null)
+		if (aggregate.getPart() != null) {
 			((Text) textBoxesList.get(0)).setText(aggregate.getPart());
-		if (aggregate.getLocation() != null)
+		}
+		if (aggregate.getLocation() != null) {
 			((Text) textBoxesList.get(1)).setText(aggregate.getLocation());
-		if (aggregate.getCondition() != null)
+		}
+		if (aggregate.getCondition() != null) {
 			((Text) textBoxesList.get(2)).setText(aggregate.getCondition());
-		if (aggregate.getFunction() != null)
+		}
+		if (aggregate.getFunction() != null) {
 			((Text) textBoxesList.get(3)).setText(aggregate.getFunction());
+		}
 
 	}
 
@@ -228,14 +254,14 @@ public class TAggregateUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -245,14 +271,18 @@ public class TAggregateUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) aggregate
-				.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
-				.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor,
-					detailArea, childCompositeIndex, childObjectIndexes[0],
-					SWT.NONE, this,
-					documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup =
+		                                               (ArrayList<TDocumentation>) aggregate.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI =
+			                                    new TDocumentationUI(
+			                                                         editor,
+			                                                         detailArea,
+			                                                         childCompositeIndex,
+			                                                         childObjectIndexes[0],
+			                                                         SWT.NONE,
+			                                                         this,
+			                                                         documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
@@ -271,8 +301,7 @@ public class TAggregateUI extends AbstractParentTagSection {
 	 * @param childObjectIndex
 	 */
 	@Override
-	public void refreshChildren(String itemName, int childCompositeIndex,
-			int childObjectIndex) {
+	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			aggregate.getDocumentation().remove(childObjectIndex);
@@ -281,12 +310,10 @@ public class TAggregateUI extends AbstractParentTagSection {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
 					if (tDocumentationUI.getCompositeIndex() > childCompositeIndex) {
-						tDocumentationUI.setCompositeIndex(tDocumentationUI
-								.getCompositeIndex() - 1);
+						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
-						tDocumentationUI.setObjectIndex(tDocumentationUI
-								.getObjectIndex() - 1);
+						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else {
 
@@ -312,8 +339,8 @@ public class TAggregateUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(aggregate.getDocumentation().get(
-						tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(aggregate.getDocumentation()
+				                                    .get(tDocumentationUI.getObjectIndex()));
 			}
 		}
 	}

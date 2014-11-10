@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -30,9 +46,8 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	protected int compositeIndex;
 	protected int objectIndex;
 
-	public TTaskSubjectUI(XMLEditor editor, Composite parent,
-			int compositeIndex, int objectIndex, int style,
-			Composite container, Object modelParent) throws JAXBException {
+	public TTaskSubjectUI(XMLEditor editor, Composite parent, int compositeIndex, int objectIndex,
+	                      int style, Composite container, Object modelParent) throws JAXBException {
 		super(editor, parent, container, style, HTEditorConstants.SUBJECT_TITLE);
 		this.objectIndex = objectIndex;
 		this.tSubject = (TText) modelParent;
@@ -40,7 +55,7 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 		this.compositeIndex = compositeIndex;
 		setExpanded(true);
 	}
-	
+
 	/**
 	 * Update the values of attributes(xml attributes) of the section and xml
 	 * element content value and marshal into the TextEditor when the update
@@ -50,17 +65,17 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		tSubject.setLang(((Combo) textBoxesList.get(0)).getText());
 
-		
-		if (tSubject.getContent().size() != 0)  
+		if (tSubject.getContent().size() != 0) {
 			tSubject.getContent().remove(0);
-	
+		}
+
 		tSubject.getContent().add(0, ((Text) textBoxesList.get(1)).getText());
 		centralUtils.marshal(textEditor);
 	}
-	
+
 	/**
 	 * Dispose the section when the remove button of section is clicked.
 	 * 
@@ -68,10 +83,10 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TPresentationElementsUI parentContainer = (TPresentationElementsUI) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.SUBJECT_TITLE,
-				compositeIndex, objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.SUBJECT_TITLE, compositeIndex,
+		                                objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -87,23 +102,25 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	 */
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
-	if(tSubject.getLang()!=null)			((Combo) textBoxesList.get(0)).setText(tSubject.getLang());
-		if (tSubject.getContent().size() != 0)
-			((Text) textBoxesList.get(1)).setText((String) tSubject
-					.getContent().get(0));
+		if (tSubject.getLang() != null) {
+			((Combo) textBoxesList.get(0)).setText(tSubject.getLang());
+		}
+		if (tSubject.getContent().size() != 0) {
+			((Text) textBoxesList.get(1)).setText((String) tSubject.getContent().get(0));
+		}
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element contents (if available) in the section
+	 * to keep xml element attributes and element contents (if available) in the
+	 * section
 	 */
 	@Override
 	public void fillDetailArea() {
 		Composite innerZComp = formToolkit.createComposite(detailArea);
 		innerZComp.setLayout(new GridLayout(1, true));
-		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-				false, 1, 1));
+		innerZComp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		final Table table = new Table(innerZComp, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
 		new TableColumn(table, SWT.NONE).setWidth(100);
@@ -116,13 +133,13 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 		TableEditor tblEditor = new TableEditor(table);
 
 		Label lblXmlLang = new Label(table, SWT.NONE);
-		lblXmlLang.setText("      "+HTEditorConstants.LANGUAGE_ATTRIBUTE_TITLE);
+		lblXmlLang.setText("      " + HTEditorConstants.LANGUAGE_ATTRIBUTE_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblXmlLang, tblRow1, 0);
- 
+
 		tblEditor = new TableEditor(table);
 		Combo cmbXmlLang = new Combo(table, SWT.NONE);
-		cmbXmlLang.setItems(new String[] { "en-US", "en-GB","de-DE","fr-CA","zh-Hant" });
+		cmbXmlLang.setItems(new String[] { "en-US", "en-GB", "de-DE", "fr-CA", "zh-Hant" });
 		cmbXmlLang.select(0);
 		textBoxesList.add(0, cmbXmlLang);
 		tblEditor.grabHorizontal = true;
@@ -130,8 +147,7 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 
 		tblEditor = new TableEditor(table);
 		Label lblValue = new Label(table, SWT.NONE);
-		lblValue.setText("     "
-				+ HTEditorConstants.VALUE_TAG_TITLE);
+		lblValue.setText("     " + HTEditorConstants.VALUE_TAG_TITLE);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(lblValue, tblRow1, 2);
 
@@ -153,10 +169,22 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 		tSubject = (TText) model;
 	}
 
+	/**
+	 * Returns this Section's object index(index of only this type of class
+	 * objects in the parent) as per the order created in its parent
+	 * 
+	 * @return objectIndex
+	 */
 	public int getObjectIndex() {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 

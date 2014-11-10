@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -72,12 +88,13 @@ public class TQueryUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		query.setPart(((Text) textBoxesList.get(0)).getText());
 		query.setQueryLanguage(((Text) textBoxesList.get(1)).getText());
 
-		if (query.getContent().size() != 0)
+		if (query.getContent().size() != 0) {
 			query.getContent().remove(0);
+		}
 		query.getContent().add(0, ((Text) textBoxesList.get(2)).getText());
 		centralUtils.marshal(textEditor);
 	}
@@ -89,7 +106,7 @@ public class TQueryUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection tAbstractParentTagSection =
 		                                                     (AbstractParentTagSection) parentTagContainer;
 		tAbstractParentTagSection.refreshChildren(sectionTitle, getCompositeIndex(),
@@ -105,14 +122,14 @@ public class TQueryUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the 
+	 * attribute values, according to the single model maintained by both the
 	 * UI editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -144,10 +161,9 @@ public class TQueryUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 
-		centralUtils.marshal(editor);
 	}
 
 	/**
@@ -251,10 +267,22 @@ public class TQueryUI extends AbstractParentTagSection {
 		query = (TQuery) objectModel;
 	}
 
+	/**
+	 * Returns this Section's object index(index of only this type of class
+	 * objects in the parent) as per the order created in its parent
+	 * 
+	 * @return objectIndex
+	 */
 	public int getObjectIndex() {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 	}

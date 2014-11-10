@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import java.util.ArrayList;
@@ -60,7 +76,7 @@ public class TCopyUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 	}
 
 	/**
@@ -70,7 +86,7 @@ public class TCopyUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TResultUI resultUI = (TResultUI) parentTagContainer;
 		resultUI.refreshChildren(HTEditorConstants.COPY_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
@@ -90,7 +106,7 @@ public class TCopyUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void refreshLogic(XMLEditor editor) throws JAXBException {
+	public void onPageRefresh(XMLEditor editor) throws JAXBException {
 		for (Composite composite : childComposites) {
 			composite.dispose();
 		}
@@ -148,9 +164,18 @@ public class TCopyUI extends AbstractParentTagSection {
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 	}
 
+	/**
+	 * Create a new child Section for the selected xml child element
+	 * 
+	 * @param selection
+	 * @param scrolledComposite
+	 * @param editor
+	 * @param composite
+	 * @throws JAXBException
+	 */
 	@Override
-	public void newButtonLogic(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                           Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
+	                             Composite composite) throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
@@ -338,12 +363,12 @@ public class TCopyUI extends AbstractParentTagSection {
 			} else if (compositeInstance instanceof TExpressionUI) {
 				TExpressionUI tExpressionUI = (TExpressionUI) compositeInstance;
 				tExpressionUI.expression = tcopy.getFrom();
-				tExpressionUI.refreshLogic(textEditor);
+				tExpressionUI.onPageRefresh(textEditor);
 				tExpressionUI.loadModel(tcopy.getFrom());
 			} else if (compositeInstance instanceof TQueryUI) {
 				TQueryUI tQueryUI = (TQueryUI) compositeInstance;
 				tQueryUI.query = tcopy.getTo();
-				tQueryUI.refreshLogic(textEditor);
+				tQueryUI.onPageRefresh(textEditor);
 				tQueryUI.loadModel(tcopy.getTo());
 			}
 		}

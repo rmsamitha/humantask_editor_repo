@@ -1,3 +1,19 @@
+/*
+ * Copyright (c) 2014, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ * http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package org.wso2.developerstudio.humantask.uimodel;
 
 import javax.xml.bind.JAXBException;
@@ -36,12 +52,11 @@ public class TImportUI extends AbstractEndTagSection {
 	protected int compositeIndex;
 	protected int objectIndex;
 
-	public TImportUI(XMLEditor textEditor, Composite parentComposite,
-			int compositeIndex, int objectIndex, int styleBit,
-			Composite parentTagContainer, Object modelParent)
-			throws JAXBException {
+	public TImportUI(XMLEditor textEditor, Composite parentComposite, int compositeIndex,
+	                 int objectIndex, int styleBit, Composite parentTagContainer, Object modelParent)
+	                                                                                                 throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-				HTEditorConstants.IMPORT_TITLE);
+		      HTEditorConstants.IMPORT_TITLE);
 		this.objectIndex = objectIndex;
 		this.tImport = (TImport) modelParent;
 		this.parentTagContainer = parentTagContainer;
@@ -57,7 +72,7 @@ public class TImportUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		tImport.setImportType(((Combo) textBoxesList.get(0)).getItem(((Combo) textBoxesList.get(0)).getSelectionIndex()));
 		tImport.setLocation(((Text) textBoxesList.get(1)).getText());
 		tImport.setNamespace(((Text) textBoxesList.get(2)).getText());
@@ -71,19 +86,19 @@ public class TImportUI extends AbstractEndTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException {
+	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		THumanInteractionsUI parentContainer = (THumanInteractionsUI) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.IMPORT_TITLE,
-				compositeIndex, objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.IMPORT_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
 
 	}
-	
+
 	/**
-	 * Initialize or set the values of attributes and xml content(if available) whenever a tab change occur
+	 * Initialize or set the values of attributes and xml content(if available)
+	 * whenever a tab change occur
 	 * from text editor to the UI editor
 	 * 
 	 * @param textEditor
@@ -93,27 +108,27 @@ public class TImportUI extends AbstractEndTagSection {
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		if (tImport.getImportType() != null) {
 			Combo comboBox = (Combo) textBoxesList.get(0);
-			comboBox.select(comboBox
-					.indexOf(tImport.getImportType().toString()));
+			comboBox.select(comboBox.indexOf(tImport.getImportType().toString()));
 		}
-		if (tImport.getNamespace() != null)
+		if (tImport.getNamespace() != null) {
 			((Text) textBoxesList.get(2)).setText(tImport.getNamespace() + "");
-		if (tImport.getLocation() != null)
+		}
+		if (tImport.getLocation() != null) {
 			((Text) textBoxesList.get(1)).setText(tImport.getLocation() + "");
+		}
 
 	}
-	
+
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
-	 * to keep xml element attributes and element content (if available) in the section
+	 * to keep xml element attributes and element content (if available) in the
+	 * section
 	 */
 	@Override
 	public void fillDetailArea() {
-		final Composite detailAreaInnerComposite = formToolkit
-				.createComposite(detailArea);
+		final Composite detailAreaInnerComposite = formToolkit.createComposite(detailArea);
 		detailAreaInnerComposite.setLayout(new GridLayout(1, true));
-		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL,
-				SWT.CENTER, true, false, 1, 1));
+		detailAreaInnerComposite.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
 		Table table = new Table(detailArea, SWT.BORDER | SWT.MULTI);
 		table.setLinesVisible(true);
@@ -137,8 +152,7 @@ public class TImportUI extends AbstractEndTagSection {
 
 		tblEditor = new TableEditor(table);
 		final Combo cmbImportType = new Combo(table, SWT.NONE);
-		cmbImportType.setItems(new String[] {
-				HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL, "" });
+		cmbImportType.setItems(new String[] { HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL, "" });
 		cmbImportType.select(0);
 		tblEditor.grabHorizontal = true;
 		tblEditor.setEditor(cmbImportType, tblRow1, 1);
@@ -159,9 +173,10 @@ public class TImportUI extends AbstractEndTagSection {
 		gd_text_1.widthHint = 250;
 		txtLocation.setLayoutData(gd_text_1);
 		//
-		
-		org.eclipse.swt.widgets.Button btnLocation = formToolkit.createButton(
-				comps, "Browse", SWT.NONE);
+
+		org.eclipse.swt.widgets.Button btnLocation =
+		                                             formToolkit.createButton(comps, "Browse",
+		                                                                      SWT.NONE);
 		GridData gd_btnLocation = new GridData(SWT.LEFT, SWT.CENTER, false, false, 1, 1);
 		gd_btnLocation.widthHint = 60;
 		btnLocation.setLayoutData(gd_btnLocation);
@@ -212,11 +227,9 @@ public class TImportUI extends AbstractEndTagSection {
 
 			@Override
 			public void handleEvent(Event event) {
-				FileDialog dialog = new FileDialog(Display.getDefault()
-						.getActiveShell(), SWT.OPEN);
+				FileDialog dialog = new FileDialog(Display.getDefault().getActiveShell(), SWT.OPEN);
 				dialog.setFilterPath("c:\\temp");
-				if (cmbImportType.getText().equals(
-						HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL)) {
+				if (cmbImportType.getText().equals(HTEditorConstants.HTTP_SCHEMAS_XMLSOAP_ORG_WSDL)) {
 					dialog.setFilterExtensions(new String[] { "*.wsdl" });
 					dialog.setText("Select WSDL");
 				} else {
@@ -225,8 +238,9 @@ public class TImportUI extends AbstractEndTagSection {
 				}
 
 				String result = dialog.open();
-				if (result != null)
+				if (result != null) {
 					txtLocation.setText(result);
+				}
 			}
 		});
 		btnUpdate.setToolTipText("Update XML : You may need to go back to text \neditor and come back once to \naffect this updation on Notification Interface \ntag and Task Interface tag correctly.  ");
@@ -252,6 +266,12 @@ public class TImportUI extends AbstractEndTagSection {
 		return objectIndex;
 	}
 
+	/**
+	 * Set this Section's object index(index of only this type of class objects
+	 * in the parent) as per the order created in This Section's parent.
+	 * 
+	 * @param objectIndex
+	 */
 	public void setObjectIndex(int objectIndex) {
 		this.objectIndex = objectIndex;
 

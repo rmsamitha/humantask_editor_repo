@@ -40,6 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Widget;
+import org.eclipse.ui.forms.widgets.ExpandableComposite;
 import org.eclipse.ui.forms.widgets.FormToolkit;
 import org.eclipse.ui.forms.widgets.Section;
 import org.eclipse.wb.swt.ResourceManager;
@@ -97,13 +98,13 @@ public abstract class AbstractParentTagSection extends Section {
 	                                Composite parentTagContainer, int styleBit,
 	                                final String[] dropDownItems, String sectionTitle)
 	                                                                                  throws JAXBException {
-		super(parentComposite, Section.TWISTIE | Section.TITLE_BAR);
+		super(parentComposite, ExpandableComposite.TWISTIE | ExpandableComposite.TITLE_BAR);
 		formToolkit = new FormToolkit(Display.getCurrent());
 		setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 		setText(sectionTitle);
 		setExpanded(true);
 		setTitleBarBackground(new Color(getDisplay(), 224, 227, 253));
-		centralUtils = CentralUtils.getInstance(textEditor);
+		centralUtils = CentralUtils.getCentralUtils(textEditor);
 		textBoxesList = new ArrayList<Widget>();
 		this.parentTagContainer = parentTagContainer;
 		this.parentComposite = parentComposite;
@@ -115,6 +116,7 @@ public abstract class AbstractParentTagSection extends Section {
 
 		// dispose the formToolkit when this Section is disposed
 		addDisposeListener(new DisposeListener() {
+			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				formToolkit.dispose();
 			}
@@ -177,11 +179,12 @@ public abstract class AbstractParentTagSection extends Section {
 
 			final String selection = dropDownItems[dropDownItemIndex];
 			menuItemArrayList.get(dropDownItemIndex).addListener(SWT.Selection, new Listener() {
+				@Override
 				public void handleEvent(Event event) {
 
 					try {
-						newButtonLogic(selection, sectionParentScrolledComposite, textEditor,
-						               detailArea);
+						onCreateNewChild(selection, sectionParentScrolledComposite, textEditor,
+						                 detailArea);
 						centralUtils.redraw();/*
 											   * Fill the emptied space created
 											   * due to removing the section and
@@ -212,7 +215,7 @@ public abstract class AbstractParentTagSection extends Section {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnRemoveHandleLogic(textEditor);
+					onBtnRemove(textEditor);
 					centralUtils.redraw();
 				} catch (JAXBException e) {
 					MessageDialog.openError(shell, HTEditorConstants.INTERNAL_ERROR,
@@ -231,7 +234,7 @@ public abstract class AbstractParentTagSection extends Section {
 			@Override
 			public void handleEvent(Event event) {
 				try {
-					btnUpdateHandleLogic(textEditor);
+					onBtnUpdate(textEditor);
 				} catch (JAXBException e) {
 					MessageDialog.openError(shell, HTEditorConstants.INTERNAL_ERROR,
 					                        HTEditorConstants.XML_PARSE_ERROR_MESSAGE);
@@ -267,7 +270,7 @@ public abstract class AbstractParentTagSection extends Section {
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
-	public abstract void btnUpdateHandleLogic(XMLEditor textEditor) throws JAXBException;
+	public abstract void onBtnUpdate(XMLEditor textEditor) throws JAXBException;
 
 	/**
 	 * Dispose the section when the remove button of section is clicked.
@@ -275,7 +278,7 @@ public abstract class AbstractParentTagSection extends Section {
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
-	public abstract void btnRemoveHandleLogic(XMLEditor textEditor) throws JAXBException;
+	public abstract void onBtnRemove(XMLEditor textEditor) throws JAXBException;
 
 	/**
 	 * Whenever a tab change occur from text editor to UI editor, this method is
@@ -287,7 +290,7 @@ public abstract class AbstractParentTagSection extends Section {
 	 * @param textEditor
 	 * @throws JAXBException
 	 */
-	public abstract void refreshLogic(XMLEditor textEditor) throws JAXBException;
+	public abstract void onPageRefresh(XMLEditor textEditor) throws JAXBException;
 
 	/**
 	 * Initialize or set the values of attributes whenever a tab change occur
@@ -307,8 +310,9 @@ public abstract class AbstractParentTagSection extends Section {
 	 * @param composite
 	 * @throws JAXBException
 	 */
-	public abstract void newButtonLogic(String selection, ScrolledComposite scrolledComposite,
-	                                    XMLEditor editor, Composite composite) throws JAXBException;
+	public abstract void onCreateNewChild(String selection, ScrolledComposite scrolledComposite,
+	                                      XMLEditor editor, Composite composite)
+	                                                                            throws JAXBException;
 
 	/**
 	 * Fill the detail area of the composite. This creates the table UI widget
