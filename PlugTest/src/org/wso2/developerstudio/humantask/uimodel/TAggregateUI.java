@@ -315,10 +315,7 @@ public class TAggregateUI extends AbstractParentTagSection {
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);

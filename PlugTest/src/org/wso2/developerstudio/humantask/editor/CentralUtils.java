@@ -166,7 +166,9 @@ public class CentralUtils {
 		try {
 			doc = db.parse(is);
 		} catch (SAXException | IOException e) {
-
+			MessageDialog.openError(Display.getDefault().getActiveShell(),
+                    HTEditorConstants.INTERNAL_ERROR,
+                    HTEditorConstants.FILE_NOT_FOUND);
 		}
 
 		return doc;

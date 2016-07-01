@@ -32,8 +32,8 @@ import org.wso2.developerstudio.humantask.models.TDocumentation;
 import org.wso2.developerstudio.humantask.models.TResult;
 
 /**
- * The UI class representing the "completion" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
+ * The UI class representing the "completion" xml element in the .ht file All
+ * the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
 public class TCompletionUI extends AbstractParentTagSection {
@@ -59,13 +59,12 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TCompletionUI(XMLEditor textEditor, Composite parentComposite,
-	                     Composite parentTagContainer, int styleBit, Object objectModel,
-	                     int objectIndex, int compositeIndex) throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-		                    HTEditorConstants.BOOLEAN_EXPR_TITLE, HTEditorConstants.RESULT_TITLE },
-		      HTEditorConstants.COMPLETION_TITLE);
+	public TCompletionUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite,
+				parentTagContainer, styleBit, new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
+						HTEditorConstants.BOOLEAN_EXPR_TITLE, HTEditorConstants.RESULT_TITLE },
+				HTEditorConstants.COMPLETION_TITLE);
 		this.completion = (TCompletion) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -89,13 +88,12 @@ public class TCompletionUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) parentTagContainer;
-		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.COMPLETION_TITLE,
-		                                      getCompositeIndex(), getObjectIndex());
+		tCompletionBehaviorUI.refreshChildren(HTEditorConstants.COMPLETION_TITLE, getCompositeIndex(),
+				getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
 		parentComposite.layout(true, true);
-
 	}
 
 	/**
@@ -108,18 +106,15 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			completion.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -127,20 +122,16 @@ public class TCompletionUI extends AbstractParentTagSection {
 			TBooleanExpr tBooleanExpr = new TBooleanExpr();
 			tBooleanExpr.setExpressionLanguage("");
 			completion.setCondition(tBooleanExpr);
-			TBooleanExprUI tBooleanExprUI =
-			                                new TBooleanExprUI(editor, composite,
-			                                                   childCompositeIndex,
-			                                                   childObjectIndexes[1], SWT.NONE,
-			                                                   this, tBooleanExpr);
+			TBooleanExprUI tBooleanExprUI = new TBooleanExprUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[1], SWT.NONE, this, tBooleanExpr);
 			childComposites.add(childCompositeIndex, tBooleanExprUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
 		} else if (selection.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
 			TResult tResult = new TResult();
 			completion.setResult(tResult);
-			TResultUI tResultUI =
-			                      new TResultUI(editor, composite, this, SWT.NONE, tResult,
-			                                    childObjectIndexes[2], childCompositeIndex);
+			TResultUI tResultUI = new TResultUI(editor, composite, this, SWT.NONE, tResult, childObjectIndexes[2],
+					childCompositeIndex);
 			childComposites.add(childCompositeIndex, tResultUI);
 			childObjectIndexes[2]++;
 			childCompositeIndex++;
@@ -152,8 +143,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 	public void fillDetailArea(Composite composite) {
 		/*
 		 * dispose update button as it is not required to this Section as there
-		 * is no
-		 * any attribute or xml content in this Section
+		 * is no any attribute or xml content in this Section
 		 */
 		btnUpdate.dispose();
 	}
@@ -167,8 +157,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -186,18 +176,11 @@ public class TCompletionUI extends AbstractParentTagSection {
 		childCompositeIndex = 0;
 
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) completion.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) completion.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -206,11 +189,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 			if (completion.getCondition() != null) {
 				TBooleanExpr booleanExprObject = completion.getCondition();
-				TBooleanExprUI tBooleanExprUI =
-				                                new TBooleanExprUI(editor, detailArea,
-				                                                   childCompositeIndex,
-				                                                   childObjectIndexes[1], SWT.NONE,
-				                                                   this, booleanExprObject);
+				TBooleanExprUI tBooleanExprUI = new TBooleanExprUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[1], SWT.NONE, this, booleanExprObject);
 				tBooleanExprUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tBooleanExprUI);
 				childCompositeIndex++;
@@ -219,10 +199,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 			if (completion.getResult() != null) {
 				TResult resultObject = completion.getResult();
-				TResultUI tResultUI =
-				                      new TResultUI(editor, detailArea, this, SWT.NONE,
-				                                    resultObject, childObjectIndexes[2],
-				                                    childCompositeIndex);
+				TResultUI tResultUI = new TResultUI(editor, detailArea, this, SWT.NONE, resultObject,
+						childObjectIndexes[2], childCompositeIndex);
 				tResultUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tResultUI);
 				childCompositeIndex++;
@@ -233,8 +211,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 	/**
 	 * Whenever a child Section of this section is removed by the user, this
-	 * method is invoked to
-	 * reorganize the order and indexes of the child Sections of this section
+	 * method is invoked to reorganize the order and indexes of the child
+	 * Sections of this section
 	 * 
 	 * @param itemName
 	 * @param childCompositeIndex
@@ -266,11 +244,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 					if (tResultUI.getCompositeIndex() > childCompositeIndex) {
 						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
-
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.BOOLEAN_EXPR_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -298,10 +272,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
 			this.childObjectIndexes[2]--;
@@ -329,10 +300,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 						tResultUI.setObjectIndex(tResultUI.getObjectIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -353,8 +321,7 @@ public class TCompletionUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(completion.getDocumentation()
-				                                     .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(completion.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TBooleanExprUI) {
 				TBooleanExprUI tBooleanExprUI = (TBooleanExprUI) compositeInstance;
 				tBooleanExprUI.loadModel(completion.getCondition());
@@ -369,8 +336,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -380,8 +347,8 @@ public class TCompletionUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

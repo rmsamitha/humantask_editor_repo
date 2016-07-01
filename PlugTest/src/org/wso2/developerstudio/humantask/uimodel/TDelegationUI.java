@@ -41,8 +41,8 @@ import org.wso2.developerstudio.humantask.models.TFrom;
 import org.wso2.developerstudio.humantask.models.TPotentialDelegatees;
 
 /**
- * The UI class representing the "delegation" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
+ * The UI class representing the "delegation" xml element in the .ht file All
+ * the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
 public class TDelegationUI extends AbstractParentTagSection {
@@ -67,16 +67,11 @@ public class TDelegationUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TDelegationUI(XMLEditor textEditor, Composite parentComposite,
-	                     Composite parentTagContainer, int style, Object modelParent,
-	                     int objectIndex, int compositeIndex) throws JAXBException {
-		super(
-		      textEditor,
-		      parentComposite,
-		      parentTagContainer,
-		      style,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE, },
-		      HTEditorConstants.DELEGATION_TITLE);
+	public TDelegationUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int style,
+			Object modelParent, int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, style,
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE, },
+				HTEditorConstants.DELEGATION_TITLE);
 		this.tDelegation = (TDelegation) modelParent;
 		this.compositeIndex = compositeIndex;
 		this.parentTagContainer = parentTagContainer;
@@ -106,10 +101,9 @@ public class TDelegationUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
-		AbstractParentTagSection abstractParentTagSection =
-		                                                    (AbstractParentTagSection) parentTagContainer;
-		abstractParentTagSection.refreshChildren(HTEditorConstants.DELEGATION_TITLE,
-		                                         getCompositeIndex(), getObjectIndex());
+		AbstractParentTagSection abstractParentTagSection = (AbstractParentTagSection) parentTagContainer;
+		abstractParentTagSection.refreshChildren(HTEditorConstants.DELEGATION_TITLE, getCompositeIndex(),
+				getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -121,8 +115,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -138,18 +132,11 @@ public class TDelegationUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup =
-		                                               (ArrayList<TDocumentation>) tDelegation.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(
-			                                                         editor,
-			                                                         detailArea,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE,
-			                                                         this,
-			                                                         documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) tDelegation.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+				.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
@@ -157,9 +144,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 		}
 		if (tDelegation.getFrom() != null) {
 			TFrom fromObject = tDelegation.getFrom();
-			TFromUI tFromUI =
-			                  new TFromUI(editor, detailArea, childCompositeIndex,
-			                              childObjectIndexes[1], SWT.NONE, this, fromObject);
+			TFromUI tFromUI = new TFromUI(editor, detailArea, childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+					this, fromObject);
 			tFromUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tFromUI);
 			childCompositeIndex++;
@@ -170,8 +156,7 @@ public class TDelegationUI extends AbstractParentTagSection {
 
 	/**
 	 * Initialize or set the values of attributes and xml content(if available)
-	 * whenever a tab change occur
-	 * from text editor to the UI editor
+	 * whenever a tab change occur from text editor to the UI editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -195,18 +180,15 @@ public class TDelegationUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			tDelegation.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -217,9 +199,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 				tFrom.setLogicalPeopleGroup("");
 				tFrom.getContent().add(0, "");
 				tDelegation.setFrom(tFrom);
-				TFromUI tFromUI =
-				                  new TFromUI(editor, detailArea, childCompositeIndex,
-				                              childObjectIndexes[1], SWT.NONE, this, tFrom);
+				TFromUI tFromUI = new TFromUI(editor, detailArea, childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tFrom);
 				tFromUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tFromUI);
 				childCompositeIndex++;
@@ -261,11 +242,9 @@ public class TDelegationUI extends AbstractParentTagSection {
 		editorw = new TableEditor(table);
 
 		Combo cmbPotentialDelegetees = new Combo(table, SWT.NONE);
-		cmbPotentialDelegetees.setItems(new String[] {
-		                                              TPotentialDelegatees.ANYBODY.value(),
-		                                              TPotentialDelegatees.NOBODY.value(),
-		                                              TPotentialDelegatees.POTENTIAL_OWNERS.value(),
-		                                              TPotentialDelegatees.OTHER.value() });
+		cmbPotentialDelegetees
+				.setItems(new String[] { TPotentialDelegatees.ANYBODY.value(), TPotentialDelegatees.NOBODY.value(),
+						TPotentialDelegatees.POTENTIAL_OWNERS.value(), TPotentialDelegatees.OTHER.value() });
 		cmbPotentialDelegetees.select(0);
 		textBoxesList.add(0, cmbPotentialDelegetees);
 		editorw.grabHorizontal = true;
@@ -275,8 +254,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 
 	/**
 	 * Whenever a child Section of this section is removed by the user, this
-	 * method is invoked to
-	 * reorganize the order and indexes of the child Sections of this section
+	 * method is invoked to reorganize the order and indexes of the child
+	 * Sections of this section
 	 * 
 	 * @param itemName
 	 * @param childCompositeIndex
@@ -299,15 +278,11 @@ public class TDelegationUI extends AbstractParentTagSection {
 					}
 				} else if (compositeInstance instanceof TPresentationParameterUI) {
 
-					TPresentationParameterUI tPresentationParameterUI =
-					                                                    (TPresentationParameterUI) compositeInstance;
+					TPresentationParameterUI tPresentationParameterUI = (TPresentationParameterUI) compositeInstance;
 					if (tPresentationParameterUI.compositeIndex > childCompositeIndex) {
 						tPresentationParameterUI.setCompositeIndex(tPresentationParameterUI.getCompositeIndex() - 1);
 					}
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.FROM_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -348,8 +323,7 @@ public class TDelegationUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(tDelegation.getDocumentation()
-				                                      .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(tDelegation.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TFromUI) {
 				TFromUI tFromUI = (TFromUI) compositeInstance;
 				tFromUI.loadModel(tDelegation.getFrom());
@@ -379,8 +353,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -390,8 +364,8 @@ public class TDelegationUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

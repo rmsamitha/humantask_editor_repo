@@ -36,9 +36,9 @@ import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.wso2.developerstudio.humantask.models.TText;
 
 /**
- * The UI class representing the "subject" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "subject" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TTaskSubjectUI extends AbstractEndTagSection {
 	private Composite parentTagContainer;
@@ -46,8 +46,8 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	protected int compositeIndex;
 	protected int objectIndex;
 
-	public TTaskSubjectUI(XMLEditor editor, Composite parent, int compositeIndex, int objectIndex,
-	                      int style, Composite container, Object modelParent) throws JAXBException {
+	public TTaskSubjectUI(XMLEditor editor, Composite parent, int compositeIndex, int objectIndex, int style,
+			Composite container, Object modelParent) throws JAXBException {
 		super(editor, parent, container, style, HTEditorConstants.SUBJECT_TITLE);
 		this.objectIndex = objectIndex;
 		this.tSubject = (TText) modelParent;
@@ -85,8 +85,7 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TPresentationElementsUI parentContainer = (TPresentationElementsUI) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.SUBJECT_TITLE, compositeIndex,
-		                                objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.SUBJECT_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -192,8 +191,8 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -203,8 +202,8 @@ public class TTaskSubjectUI extends AbstractEndTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

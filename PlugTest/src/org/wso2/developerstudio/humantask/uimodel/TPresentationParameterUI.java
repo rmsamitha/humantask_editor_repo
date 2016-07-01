@@ -37,8 +37,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
  * The UI class representing the "presentationParameter" xml element in the .ht
- * file
- * All the functionalities of that element are performed in this class, by
+ * file All the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
 public class TPresentationParameterUI extends AbstractEndTagSection {
@@ -47,12 +46,10 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 	protected int compositeIndex;
 	protected int objectIndex;
 
-	public TPresentationParameterUI(XMLEditor textEditor, Composite parentComposite,
-	                                int compositeIndex, int objectIndex, int styleBit,
-	                                Composite parentTagContainer, Object modelParent)
-	                                                                                 throws JAXBException {
+	public TPresentationParameterUI(XMLEditor textEditor, Composite parentComposite, int compositeIndex,
+			int objectIndex, int styleBit, Composite parentTagContainer, Object modelParent) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      HTEditorConstants.PRESENTATION_PARAMETER_TITLE);
+				HTEditorConstants.PRESENTATION_PARAMETER_TITLE);
 		this.objectIndex = objectIndex;
 		this.presentationParameter = (TPresentationParameter) modelParent;
 		this.parentTagContainer = parentTagContainer;
@@ -90,8 +87,7 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TPresentationParametersUI parentContainer = (TPresentationParametersUI) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.PRESENTATION_PARAMETER_TITLE,
-		                                compositeIndex, objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.PRESENTATION_PARAMETER_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentTagComposite = this.getParent();
 		this.dispose();
@@ -100,8 +96,7 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 
 	/**
 	 * Initialize or set the values of attributes and xml content(if available)
-	 * whenever a tab change occur
-	 * from text editor to the UI editor
+	 * whenever a tab change occur from text editor to the UI editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -230,8 +225,8 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -241,8 +236,8 @@ public class TPresentationParameterUI extends AbstractEndTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

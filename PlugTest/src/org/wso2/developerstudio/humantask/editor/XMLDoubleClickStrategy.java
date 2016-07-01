@@ -16,6 +16,8 @@
 
 package org.wso2.developerstudio.humantask.editor;
 
+import java.util.logging.Logger;
+
 import org.eclipse.jface.text.*;
 
 /**
@@ -25,6 +27,7 @@ import org.eclipse.jface.text.*;
  */
 public class XMLDoubleClickStrategy implements ITextDoubleClickStrategy {
 	protected ITextViewer fText;
+	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class.getName());
 
 	@Override
 	public void doubleClicked(ITextViewer part) {
@@ -89,6 +92,7 @@ public class XMLDoubleClickStrategy implements ITextDoubleClickStrategy {
 			fText.setSelectedRange(offset, len);
 			return true;
 		} catch (BadLocationException x) {
+			LOG.info(x.getMessage());
 		}
 
 		return false;
@@ -130,6 +134,7 @@ public class XMLDoubleClickStrategy implements ITextDoubleClickStrategy {
 			return true;
 
 		} catch (BadLocationException x) {
+			LOG.info(x.getMessage());
 		}
 
 		return false;

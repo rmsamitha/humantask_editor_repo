@@ -18,6 +18,7 @@ package org.wso2.developerstudio.humantask.uimodel;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
 
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
@@ -40,16 +41,17 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.w3c.dom.NodeList;
 import org.wso2.developerstudio.humantask.editor.AbstractParentTagSection;
 import org.wso2.developerstudio.humantask.editor.HTEditorConstants;
+import org.wso2.developerstudio.humantask.editor.MultiPageEditor;
 import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.wso2.developerstudio.humantask.models.TDocumentation;
 import org.wso2.developerstudio.humantask.models.TTaskInterface;
 import org.xml.sax.SAXException;
 
 /**
- * The UI class representing the "taskInterface" xml element of
- * type "tTaskInterface"in the .ht file.
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "taskInterface" xml element of type
+ * "tTaskInterface"in the .ht file. All the functionalities of that element are
+ * performed in this class, by implementing and overriding the abstract super
+ * class methods.
  */
 public class TTaskInterfaceUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
@@ -61,6 +63,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	private XMLEditor textEditor;
 	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
 	private NodeList nodeList = null;
+	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class.getName());
 
 	/**
 	 * Call the super abstract class to set the UI and initialize class's
@@ -75,12 +78,10 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TTaskInterfaceUI(XMLEditor textEditor, Composite parentComposite,
-	                        Composite parentTagContainer, int styleBit, Object objectModel,
-	                        int objectIndex, int compositeIndex) throws JAXBException {
+	public TTaskInterfaceUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
-		      HTEditorConstants.INTERFACE_TITLE);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE }, HTEditorConstants.INTERFACE_TITLE);
 		this.taskInterface = (TTaskInterface) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -117,8 +118,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TTaskUI parentContainer = (TTaskUI) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.INTERFACE_TITLE, compositeIndex,
-		                                objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.INTERFACE_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -135,15 +135,13 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	@Override
 	public void initialize(XMLEditor textEditor) throws JAXBException {
 		if (taskInterface.getPortType() != null) {
-			((Combo) textBoxesList.get(0)).setText(taskInterface.getPortType().getLocalPart()
-			                                                    .toString());
+			((Combo) textBoxesList.get(0)).setText(taskInterface.getPortType().getLocalPart().toString());
 		}
 		if (taskInterface.getOperation() != null) {
 			((Combo) textBoxesList.get(1)).setText(taskInterface.getOperation());
 		}
 		if (taskInterface.getResponsePortType() != null) {
-			((Combo) textBoxesList.get(2)).setText(taskInterface.getResponsePortType()
-			                                                    .getLocalPart().toString());
+			((Combo) textBoxesList.get(2)).setText(taskInterface.getResponsePortType().getLocalPart().toString());
 		}
 		if (taskInterface.getResponseOperation() != null) {
 			((Combo) textBoxesList.get(3)).setText(taskInterface.getResponseOperation());
@@ -177,11 +175,11 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 		try {
 			nodeList = centralUtils.getWSDL(xmlEditor).getElementsByTagName("wsdl:portType");
 		} catch (ParserConfigurationException e) {
-			e.printStackTrace();
+			LOG.info(e.getMessage());
 		} catch (SAXException e) {
-			e.printStackTrace();
+			LOG.info(e.getMessage());
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.info(e.getMessage());
 		}
 
 		Label lblPortType = new Label(table, SWT.NONE | SWT.BORDER_SOLID);
@@ -191,12 +189,9 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 		String[] portTypeList = new String[nodeList.getLength()];
 		String[] operationList = new String[nodeList.getLength()];
 		for (int i = 0; i < nodeList.getLength(); i++) {
-			portTypeList[i] =
-			                  nodeList.item(i).getAttributes().getNamedItem("name")
-			                          .getTextContent();
-			operationList[i] =
-			                   nodeList.item(i).getChildNodes().item(1).getAttributes()
-			                           .getNamedItem("name").getTextContent();
+			portTypeList[i] = nodeList.item(i).getAttributes().getNamedItem("name").getTextContent();
+			operationList[i] = nodeList.item(i).getChildNodes().item(1).getAttributes().getNamedItem("name")
+					.getTextContent();
 		}
 		tblEditor = new TableEditor(table);
 		final Combo cmbPortType = new Combo(table, SWT.NONE);
@@ -257,17 +252,13 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 			@Override
 			public void widgetSelected(SelectionEvent e1) {
 				try {
-					NodeList nodeLists =
-					                     centralUtils.getWSDL(textEditor)
-					                                 .getElementsByTagName("wsdl:portType");
-					NodeList childNodeList =
-					                         nodeLists.item(cmbPortType.getSelectionIndex())
-					                                  .getChildNodes();
+					NodeList nodeLists = centralUtils.getWSDL(textEditor).getElementsByTagName("wsdl:portType");
+					NodeList childNodeList = nodeLists.item(cmbPortType.getSelectionIndex()).getChildNodes();
 					ArrayList<String> operationsList = new ArrayList<String>();
 					for (int i = 0; i < childNodeList.getLength(); i++) {
 						if (childNodeList.item(i).hasAttributes()) {
-							operationsList.add(childNodeList.item(i).getAttributes()
-							                                .getNamedItem("name").getTextContent());
+							operationsList
+									.add(childNodeList.item(i).getAttributes().getNamedItem("name").getTextContent());
 						}
 					}
 					String[] operations = new String[operationsList.size()];
@@ -275,11 +266,11 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 					cmbOperation.setItems(operationsList.toArray(operations));
 					cmbOperation.select(cmbOperation.indexOf(operationsList.get(0)));
 				} catch (ParserConfigurationException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				} catch (SAXException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 			}
 
@@ -293,17 +284,13 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 			@Override
 			public void widgetSelected(SelectionEvent e1) {
 				try {
-					NodeList nodeLists =
-					                     centralUtils.getWSDL(textEditor)
-					                                 .getElementsByTagName("wsdl:portType");
-					NodeList childNodeList =
-					                         nodeLists.item(cmbResponsePortType.getSelectionIndex())
-					                                  .getChildNodes();
+					NodeList nodeLists = centralUtils.getWSDL(textEditor).getElementsByTagName("wsdl:portType");
+					NodeList childNodeList = nodeLists.item(cmbResponsePortType.getSelectionIndex()).getChildNodes();
 					ArrayList<String> operationsList = new ArrayList<String>();
 					for (int i = 0; i < childNodeList.getLength(); i++) {
 						if (childNodeList.item(i).hasAttributes()) {
-							operationsList.add(childNodeList.item(i).getAttributes()
-							                                .getNamedItem("name").getTextContent());
+							operationsList
+									.add(childNodeList.item(i).getAttributes().getNamedItem("name").getTextContent());
 						}
 					}
 					String[] operations = new String[operationsList.size()];
@@ -311,11 +298,11 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 					cmbResponseOperation.setItems(operationsList.toArray(operations));
 					cmbResponseOperation.select(cmbOperation.indexOf(operationsList.get(0)));
 				} catch (ParserConfigurationException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				} catch (SAXException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				} catch (IOException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 			}
 
@@ -329,8 +316,8 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -346,18 +333,11 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup =
-		                                               (ArrayList<TDocumentation>) taskInterface.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(
-			                                                         editor,
-			                                                         detailArea,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE,
-			                                                         this,
-			                                                         documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) taskInterface.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+				.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
@@ -376,18 +356,15 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			taskInterface.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -419,10 +396,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -443,8 +417,7 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(taskInterface.getDocumentation()
-				                                        .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(taskInterface.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			}
 		}
 	}
@@ -471,8 +444,8 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -482,8 +455,8 @@ public class TTaskInterfaceUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

@@ -36,9 +36,8 @@ import org.wso2.developerstudio.humantask.models.TSequence;
 
 /**
  * The UI class representing the "potentialOwnerAssignment" xml element in the
- * .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * .ht file All the functionalities of that element are performed in this class,
+ * by implementing and overriding the abstract super class methods.
  */
 public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 
@@ -64,14 +63,13 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TPotentialOwnerAssignmentsUI(XMLEditor textEditor, Composite parentComposite,
-	                                    Composite parentTagContainer, int styleBit,
-	                                    Object modelParent, int objectIndex, int compositeIndex,
-	                                    String type, QName qname) throws JAXBException {
+	public TPotentialOwnerAssignmentsUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
+			int styleBit, Object modelParent, int objectIndex, int compositeIndex, String type, QName qname)
+			throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE,
-		                    HTEditorConstants.SEQUENCE_TITLE, HTEditorConstants.PARALLEL_TITLE },
-		      type);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE,
+						HTEditorConstants.SEQUENCE_TITLE, HTEditorConstants.PARALLEL_TITLE },
+				type);
 		this.potentialOwnerAssignment = (TPotentialOwnerAssignment) modelParent;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -93,10 +91,9 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
-		AbstractParentTagSection abstractParentTagSection =
-		                                                    (AbstractParentTagSection) parentTagContainer;
-		abstractParentTagSection.refreshChildren(HTEditorConstants.GENERIC_HUMAN_ROLE_TITLE,
-		                                         getCompositeIndex(), getObjectIndex());
+		AbstractParentTagSection abstractParentTagSection = (AbstractParentTagSection) parentTagContainer;
+		abstractParentTagSection.refreshChildren(HTEditorConstants.GENERIC_HUMAN_ROLE_TITLE, getCompositeIndex(),
+				getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -107,8 +104,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -123,18 +120,12 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 		}
 		childComposites.clear();
 		childCompositeIndex = 0;
-		ArrayList<TDocumentation> documentationGroup =
-		                                               (ArrayList<TDocumentation>) potentialOwnerAssignment.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(
-			                                                         editor,
-			                                                         detailArea,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE,
-			                                                         this,
-			                                                         documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) potentialOwnerAssignment
+				.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+				.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
@@ -142,19 +133,16 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 		}
 		if (potentialOwnerAssignment.getFrom() != null) {
 			TFrom fromObject = potentialOwnerAssignment.getFrom();
-			TFromUI tFromUI =
-			                  new TFromUI(editor, detailArea, childCompositeIndex,
-			                              childObjectIndexes[1], SWT.NONE, this, fromObject);
+			TFromUI tFromUI = new TFromUI(editor, detailArea, childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+					this, fromObject);
 			tFromUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tFromUI);
 			childCompositeIndex++;
 			childObjectIndexes[1]++;
 		}
 		if (potentialOwnerAssignment.getParallel() != null) {
-			TParallelUI tParallelUI =
-			                          new TParallelUI(editor, detailArea, this, SWT.NONE,
-			                                          potentialOwnerAssignment.getParallel(),
-			                                          childObjectIndexes[2], childCompositeIndex);
+			TParallelUI tParallelUI = new TParallelUI(editor, detailArea, this, SWT.NONE,
+					potentialOwnerAssignment.getParallel(), childObjectIndexes[2], childCompositeIndex);
 			tParallelUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tParallelUI);
 			childCompositeIndex++;
@@ -163,10 +151,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 		}
 		if (potentialOwnerAssignment.getSequence() != null) {
 			TSequence tSequence = potentialOwnerAssignment.getSequence();
-			TSequenceUI tSequenceUI =
-			                          new TSequenceUI(editor, detailArea, this, SWT.NONE,
-			                                          tSequence, childObjectIndexes[3],
-			                                          childCompositeIndex);
+			TSequenceUI tSequenceUI = new TSequenceUI(editor, detailArea, this, SWT.NONE, tSequence,
+					childObjectIndexes[3], childCompositeIndex);
 			tSequenceUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tSequenceUI);
 			childCompositeIndex++;
@@ -189,18 +175,15 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			potentialOwnerAssignment.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -211,9 +194,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 				tFrom.setLogicalPeopleGroup("");
 				tFrom.getContent().add(0, "");
 				potentialOwnerAssignment.setFrom(tFrom);
-				TFromUI tFromUI =
-				                  new TFromUI(editor, detailArea, childCompositeIndex,
-				                              childObjectIndexes[1], SWT.NONE, this, tFrom);
+				TFromUI tFromUI = new TFromUI(editor, detailArea, childCompositeIndex, childObjectIndexes[1], SWT.NONE,
+						this, tFrom);
 				tFromUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tFromUI);
 				childCompositeIndex++;
@@ -224,10 +206,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 			TParallel tParallel = new TParallel();
 			tParallel.setType(TRoutingPatternType.fromValue("all"));
 			potentialOwnerAssignment.setParallel(tParallel);
-			TParallelUI tPriorityExprUI =
-			                              new TParallelUI(editor, detailArea, this, SWT.NONE,
-			                                              tParallel, childObjectIndexes[2],
-			                                              childCompositeIndex);
+			TParallelUI tPriorityExprUI = new TParallelUI(editor, detailArea, this, SWT.NONE, tParallel,
+					childObjectIndexes[2], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tPriorityExprUI);
 			childObjectIndexes[2]++;
 			childCompositeIndex++;
@@ -236,11 +216,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 			TSequence tSequence = new TSequence();
 			tSequence.setType(TRoutingPatternType.fromValue("all"));
 			potentialOwnerAssignment.setSequence(tSequence);
-			TSequenceUI tPresentationElementsUI =
-			                                      new TSequenceUI(editor, composite, this,
-			                                                      SWT.NONE, tSequence,
-			                                                      childObjectIndexes[3],
-			                                                      childCompositeIndex);
+			TSequenceUI tPresentationElementsUI = new TSequenceUI(editor, composite, this, SWT.NONE, tSequence,
+					childObjectIndexes[3], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tPresentationElementsUI);
 			childObjectIndexes[3]++;
 			childCompositeIndex++;
@@ -300,10 +277,7 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.FROM_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -335,10 +309,7 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.SEQUENCE_TITLE)) {
 			this.childObjectIndexes[2]--;
@@ -368,8 +339,6 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 					if (tParallelUI.getCompositeIndex() > childCompositeIndex) {
 						tParallelUI.setCompositeIndex(tParallelUI.getCompositeIndex() - 1);
 					}
-
-				} else {
 
 				}
 			}
@@ -402,8 +371,6 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 						tParallelUI.setObjectIndex(tParallelUI.getObjectIndex() - 1);
 					}
 
-				} else {
-
 				}
 			}
 		}
@@ -423,8 +390,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(potentialOwnerAssignment.getDocumentation()
-				                                                   .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI
+						.loadModel(potentialOwnerAssignment.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TFromUI) {
 				TFromUI tFromUI = (TFromUI) compositeInstance;
 				tFromUI.loadModel(potentialOwnerAssignment.getFrom());
@@ -465,8 +432,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -476,8 +443,8 @@ public class TPotentialOwnerAssignmentsUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

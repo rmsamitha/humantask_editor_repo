@@ -32,9 +32,9 @@ import org.wso2.developerstudio.humantask.models.TExpression;
 import org.wso2.developerstudio.humantask.models.TQuery;
 
 /**
- * The UI class representing the "copy" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "copy" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TCopyUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
@@ -59,12 +59,11 @@ public class TCopyUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TCopyUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
-	               int style, Object modelParent, int objectIndex, int compositeIndex)
-	                                                                                  throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, style,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE,
-		                    HTEditorConstants.TO_TITLE, }, HTEditorConstants.COPY_TITLE);
+	public TCopyUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int style,
+			Object modelParent, int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, style, new String[] {
+				HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.FROM_TITLE, HTEditorConstants.TO_TITLE, },
+				HTEditorConstants.COPY_TITLE);
 		this.tcopy = (TCopy) modelParent;
 		this.setObjectIndex(objectIndex);
 		this.compositeIndex = compositeIndex;
@@ -72,7 +71,6 @@ public class TCopyUI extends AbstractParentTagSection {
 		this.textEditor = textEditor;
 		this.childObjectIndexes = new int[3];
 		setExpanded(true);
-
 	}
 
 	@Override
@@ -99,8 +97,8 @@ public class TCopyUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -116,18 +114,11 @@ public class TCopyUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) tcopy.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) tcopy.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -136,11 +127,8 @@ public class TCopyUI extends AbstractParentTagSection {
 
 			if (tcopy.getFrom() != null) {
 				TExpression fromObject = tcopy.getFrom();
-				TExpressionUI tExpressionUI =
-				                              new TExpressionUI(editor, detailArea, this, SWT.NONE,
-				                                                fromObject, childObjectIndexes[1],
-				                                                childCompositeIndex,
-				                                                HTEditorConstants.FROM_TITLE);
+				TExpressionUI tExpressionUI = new TExpressionUI(editor, detailArea, this, SWT.NONE, fromObject,
+						childObjectIndexes[1], childCompositeIndex, HTEditorConstants.FROM_TITLE);
 				tExpressionUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tExpressionUI);
 				childCompositeIndex++;
@@ -148,10 +136,8 @@ public class TCopyUI extends AbstractParentTagSection {
 			}
 			if (tcopy.getTo() != null) {
 				TQuery toObject = tcopy.getTo();
-				TQueryUI tQueryUI =
-				                    new TQueryUI(editor, detailArea, this, SWT.NONE, toObject,
-				                                 childObjectIndexes[2], childCompositeIndex,
-				                                 HTEditorConstants.TO_TITLE);
+				TQueryUI tQueryUI = new TQueryUI(editor, detailArea, this, SWT.NONE, toObject, childObjectIndexes[2],
+						childCompositeIndex, HTEditorConstants.TO_TITLE);
 				tQueryUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tQueryUI);
 				childCompositeIndex++;
@@ -174,18 +160,15 @@ public class TCopyUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			tcopy.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -196,11 +179,8 @@ public class TCopyUI extends AbstractParentTagSection {
 				tExpression.getContent().add(0, "");
 				tcopy.setFrom(tExpression);
 
-				TExpressionUI tExpressionUI =
-				                              new TExpressionUI(editor, composite, this, SWT.NONE,
-				                                                tExpression, childObjectIndexes[1],
-				                                                childCompositeIndex,
-				                                                HTEditorConstants.FROM_TITLE);
+				TExpressionUI tExpressionUI = new TExpressionUI(editor, composite, this, SWT.NONE, tExpression,
+						childObjectIndexes[1], childCompositeIndex, HTEditorConstants.FROM_TITLE);
 				childComposites.add(childCompositeIndex, tExpressionUI);
 				childComposites.add(childCompositeIndex, tExpressionUI);
 				childObjectIndexes[1]++;
@@ -213,10 +193,8 @@ public class TCopyUI extends AbstractParentTagSection {
 				tQuery.setQueryLanguage("");
 				tQuery.getContent().add(0, "");
 				tcopy.setTo(tQuery);
-				TQueryUI tQueryUI =
-				                    new TQueryUI(editor, detailArea, this, SWT.NONE, tQuery,
-				                                 childObjectIndexes[2], childCompositeIndex,
-				                                 HTEditorConstants.TO_TITLE);
+				TQueryUI tQueryUI = new TQueryUI(editor, detailArea, this, SWT.NONE, tQuery, childObjectIndexes[2],
+						childCompositeIndex, HTEditorConstants.TO_TITLE);
 				childComposites.add(childCompositeIndex, tQueryUI);
 				childObjectIndexes[2]++;
 				childCompositeIndex++;
@@ -229,16 +207,15 @@ public class TCopyUI extends AbstractParentTagSection {
 	public void fillDetailArea(Composite composite) {
 		/*
 		 * dispose update button as it is not required to this Section as there
-		 * is no
-		 * any attribute or xml content in this Section
+		 * is no any attribute or xml content in this Section
 		 */
 		btnUpdate.dispose();
 	}
 
 	/**
 	 * Whenever a child Section of this section is removed by the user, this
-	 * method is invoked to
-	 * reorganize the order and indexes of the child Sections of this section
+	 * method is invoked to reorganize the order and indexes of the child
+	 * Sections of this section
 	 * 
 	 * @param itemName
 	 * @param childCompositeIndex
@@ -271,10 +248,7 @@ public class TCopyUI extends AbstractParentTagSection {
 						tQueryUI.setCompositeIndex(tQueryUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		if (itemName.equalsIgnoreCase(HTEditorConstants.FROM_TITLE)) {
@@ -303,10 +277,7 @@ public class TCopyUI extends AbstractParentTagSection {
 						tQueryUI.setCompositeIndex(tQueryUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		if (itemName.equalsIgnoreCase(HTEditorConstants.TO_TITLE)) {
@@ -334,11 +305,7 @@ public class TCopyUI extends AbstractParentTagSection {
 					if (tQueryUI.getObjectIndex() > childObjectIndex) {
 						tQueryUI.setObjectIndex(tQueryUI.getObjectIndex() - 1);
 					}
-
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -358,8 +325,7 @@ public class TCopyUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(tcopy.getDocumentation()
-				                                .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(tcopy.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TExpressionUI) {
 				TExpressionUI tExpressionUI = (TExpressionUI) compositeInstance;
 				tExpressionUI.expression = tcopy.getFrom();
@@ -396,8 +362,8 @@ public class TCopyUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -407,8 +373,8 @@ public class TCopyUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

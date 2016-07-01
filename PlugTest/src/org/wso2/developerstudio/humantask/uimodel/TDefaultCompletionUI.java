@@ -237,10 +237,7 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 						tResultUI.setCompositeIndex(tResultUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.RESULT_TITLE)) {
@@ -263,10 +260,7 @@ public class TDefaultCompletionUI extends AbstractParentTagSection {
 						tResultUI.setObjectIndex(tResultUI.getObjectIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);

@@ -83,8 +83,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			int pageIndex = addPage(textEditor, getEditorInput());
 			setPageText(pageIndex, textEditor.getTitle());
 		} catch (PartInitException e) {
-			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null,
-			                      e.getStatus());
+			ErrorDialog.openError(getSite().getShell(), "Error creating nested text editor", null, e.getStatus());
 		}
 	}
 
@@ -177,8 +176,7 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			try {
 
 				CentralUtils centralUtils = CentralUtils.getCentralUtils(textEditor);
-				if (!centralUtils.getiDocument().get().trim().equals("") ||
-				    centralUtils.getiDocument().get() != null) {
+				if (!centralUtils.getiDocument().get().trim().equals("") || centralUtils.getiDocument().get() != null) {
 					centralUtils.unmarshal(textEditor);
 					baseUI.baseContainer.setVisible(true);
 					baseUI.loadModel(textEditor.getRootElement());
@@ -188,15 +186,13 @@ public class MultiPageEditor extends MultiPageEditorPart {
 			} catch (JAXBException e) {
 
 				if (textEditor.getRootElement() == null) {
-					MessageDialog.openError(Display.getDefault().getActiveShell(),
-					                        HTEditorConstants.XML_PARSE_ERROR,
-					                        HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+					MessageDialog.openError(Display.getDefault().getActiveShell(), HTEditorConstants.XML_PARSE_ERROR,
+							HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
 				}
 				if (textEditor.getRootElement() != null) {
-					
-					MessageDialog.openError(Display.getDefault().getActiveShell(),
-					                        HTEditorConstants.XML_PARSE_ERROR,
-					                        HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+
+					MessageDialog.openError(Display.getDefault().getActiveShell(), HTEditorConstants.XML_PARSE_ERROR,
+							HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
 					textEditor.setRootElement(null);
 					try {
 						baseUI.loadModel(textEditor.getRootElement());//
@@ -205,14 +201,13 @@ public class MultiPageEditor extends MultiPageEditorPart {
 					} catch (JAXBException e1) {
 
 						MessageDialog.openError(Display.getDefault().getActiveShell(),
-						                        HTEditorConstants.XML_PARSE_ERROR,
-						                        HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+								HTEditorConstants.XML_PARSE_ERROR,
+								HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
 
 					}
 				}
-				MessageDialog.openError(Display.getDefault().getActiveShell(),
-				                        HTEditorConstants.XML_PARSE_ERROR,
-				                        HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
+				MessageDialog.openError(Display.getDefault().getActiveShell(), HTEditorConstants.XML_PARSE_ERROR,
+						HTEditorConstants.XML_PARSE_ERROR_UI_DESIGN_CANNOT_BE_VIEWED);
 
 			}
 		}
@@ -259,11 +254,9 @@ public class MultiPageEditor extends MultiPageEditorPart {
 					public void run() {
 						IWorkbenchPage[] pages = getSite().getWorkbenchWindow().getPages();
 						for (IWorkbenchPage page : pages) {
-							if (((FileEditorInput) textEditor.getEditorInput()).getFile()
-							                                                   .getProject()
-							                                                   .equals(event.getResource())) {
-								IEditorPart editorPart =
-								                         page.findEditor(textEditor.getEditorInput());
+							if (((FileEditorInput) textEditor.getEditorInput()).getFile().getProject()
+									.equals(event.getResource())) {
+								IEditorPart editorPart = page.findEditor(textEditor.getEditorInput());
 								page.closeEditor(editorPart, true);
 							}
 						}

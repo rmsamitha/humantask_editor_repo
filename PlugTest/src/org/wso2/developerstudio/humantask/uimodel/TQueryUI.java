@@ -39,9 +39,9 @@ import org.wso2.developerstudio.humantask.editor.XMLEditor;
 import org.wso2.developerstudio.humantask.models.TQuery;
 
 /**
- * The UI class representing the "query" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "query" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TQueryUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
@@ -66,11 +66,10 @@ public class TQueryUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TQueryUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
-	                int style, Object modelParent, int objectIndex, int compositeIndex,
-	                String sectionTitle) throws JAXBException {
+	public TQueryUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int style,
+			Object modelParent, int objectIndex, int compositeIndex, String sectionTitle) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, style,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE }, sectionTitle);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE }, sectionTitle);
 		this.query = (TQuery) modelParent;
 		this.compositeIndex = compositeIndex;
 		this.parentTagContainer = parentTagContainer;
@@ -107,10 +106,8 @@ public class TQueryUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
-		AbstractParentTagSection tAbstractParentTagSection =
-		                                                     (AbstractParentTagSection) parentTagContainer;
-		tAbstractParentTagSection.refreshChildren(sectionTitle, getCompositeIndex(),
-		                                          getObjectIndex());
+		AbstractParentTagSection tAbstractParentTagSection = (AbstractParentTagSection) parentTagContainer;
+		tAbstractParentTagSection.refreshChildren(sectionTitle, getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -122,8 +119,8 @@ public class TQueryUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -161,8 +158,8 @@ public class TQueryUI extends AbstractParentTagSection {
 	}
 
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 
 	}
 
@@ -289,8 +286,8 @@ public class TQueryUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -300,8 +297,8 @@ public class TQueryUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

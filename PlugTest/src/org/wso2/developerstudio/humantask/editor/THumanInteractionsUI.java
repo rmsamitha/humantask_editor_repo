@@ -2,6 +2,8 @@ package org.wso2.developerstudio.humantask.editor;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Logger;
+
 import javax.xml.bind.JAXBException;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.ParserConfigurationException;
@@ -61,6 +63,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 	protected ToolItem btnGenerateHTConfig;
 	private NamespaceItemComposite xmlnsHtdComposite = null;
 	private Text txtTargetNamespace;
+	private final static Logger LOG = Logger.getLogger(MultiPageEditor.class.getName());
 
 	/**
 	 * Call the super abstract class to set the UI and initialize class's
@@ -127,7 +130,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		try {
 			centralUtils.marshal(textEditor);
 		} catch (JAXBException e) {
-			
+			LOG.info(e.getMessage());
 		}
 		parentComposite.setSize(parentComposite.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 	}
@@ -164,8 +167,8 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 		try {
 			nodeList = centralUtils.getotherattrs().getElementsByTagName("htd:tHumanInteractions");
 
-		} catch (Exception e) {
-
+		} catch (ParserConfigurationException e) {
+			LOG.info(e.getMessage());
 		}
 		if (nodeList.getLength() == 0) {
 			try {
@@ -325,7 +328,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                          importGroup.get(childObjectIndexes[0]));
 					tImportUI.initialize(editor);
 				} catch (JAXBException e) {
-
+					LOG.info(e.getMessage());
 				}
 
 				childComposites.add(childCompositeIndex, tImportUI);
@@ -346,7 +349,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                                                    childCompositeIndex);
 					tLogicalPeopleGroupsUI.initialize(editor);
 				} catch (JAXBException e) {
-
+					LOG.info(e.getMessage());
 				}
 
 				childComposites.add(childCompositeIndex, tLogicalPeopleGroupsUI);
@@ -363,8 +366,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                        childObjectIndexes[2], childCompositeIndex);
 					tTasksUI.initialize(editor);
 				} catch (JAXBException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 
 				childComposites.add(childCompositeIndex, tTasksUI);
@@ -383,7 +385,7 @@ public class THumanInteractionsUI extends AbstractParentTagSection {
 					                                        childCompositeIndex);
 					tNotificationsUI.initialize(editor);
 				} catch (JAXBException e) {
-					e.printStackTrace();
+					LOG.info(e.getMessage());
 				}
 
 				childComposites.add(childCompositeIndex, tNotificationsUI);

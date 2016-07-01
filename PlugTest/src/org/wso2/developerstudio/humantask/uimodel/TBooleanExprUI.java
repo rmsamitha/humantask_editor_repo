@@ -37,9 +37,8 @@ import org.wso2.developerstudio.humantask.models.TBooleanExpr;
 
 /**
  * The UI class representing the "condition" xml element of type tBoolean-expr
- * in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * in the .ht file All the functionalities of that element are performed in this
+ * class, by implementing and overriding the abstract super class methods.
  */
 public class TBooleanExprUI extends AbstractEndTagSection {
 	private Composite parentTagContainer;
@@ -60,11 +59,9 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TBooleanExprUI(XMLEditor textEditor, Composite parentComposite, int compositeIndex,
-	                      int objectIndex, int styleBit, Composite parentTagContainer,
-	                      Object modelParent) throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      HTEditorConstants.BOOLEAN_EXPR_TITLE);
+	public TBooleanExprUI(XMLEditor textEditor, Composite parentComposite, int compositeIndex, int objectIndex,
+			int styleBit, Composite parentTagContainer, Object modelParent) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit, HTEditorConstants.BOOLEAN_EXPR_TITLE);
 		this.objectIndex = objectIndex;
 		this.tBooleanExpr = (TBooleanExpr) modelParent;
 		this.parentTagContainer = parentTagContainer;
@@ -100,8 +97,7 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection parentContainer = (AbstractParentTagSection) parentTagContainer;
-		parentContainer.refreshChildren(HTEditorConstants.BOOLEAN_EXPR_TITLE, compositeIndex,
-		                                objectIndex);
+		parentContainer.refreshChildren(HTEditorConstants.BOOLEAN_EXPR_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -110,8 +106,7 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 
 	/**
 	 * Initialize or set the values of attributes and xml content(if available)
-	 * whenever a tab change occur
-	 * from text editor to the UI editor
+	 * whenever a tab change occur from text editor to the UI editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -143,7 +138,6 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 		for (int i = 0; i < 4; i++) {
 			TableColumn column = new TableColumn(table, SWT.NONE);
 			column.setWidth(100);
-
 		}
 
 		TableItem tblRow1 = new TableItem(table, SWT.NONE);
@@ -201,8 +195,8 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -212,8 +206,8 @@ public class TBooleanExprUI extends AbstractEndTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

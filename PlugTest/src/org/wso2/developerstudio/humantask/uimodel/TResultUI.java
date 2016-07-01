@@ -35,9 +35,9 @@ import org.wso2.developerstudio.humantask.models.TQuery;
 import org.wso2.developerstudio.humantask.models.TResult;
 
 /**
- * The UI class representing the "result" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "result" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TResultUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
@@ -62,13 +62,12 @@ public class TResultUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TResultUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
-	                 int styleBit, Object objectModel, int objectIndex, int compositeIndex)
-	                                                                                       throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-		                    HTEditorConstants.AGGREGATE_TITLE, HTEditorConstants.COPY_TITLE },
-		      HTEditorConstants.RESULT_TITLE);
+	public TResultUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite,
+				parentTagContainer, styleBit, new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
+						HTEditorConstants.AGGREGATE_TITLE, HTEditorConstants.COPY_TITLE },
+				HTEditorConstants.RESULT_TITLE);
 		this.result = (TResult) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -117,8 +116,8 @@ public class TResultUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -136,46 +135,32 @@ public class TResultUI extends AbstractParentTagSection {
 
 		if (childComposites.size() == 0) {
 
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) result.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) result.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
 				childObjectIndexes[0]++;
 			}
-			ArrayList<TExtensibleElements> aggregateOrCopyGroup =
-			                                                      (ArrayList<TExtensibleElements>) result.getAggregateOrCopy();
+			ArrayList<TExtensibleElements> aggregateOrCopyGroup = (ArrayList<TExtensibleElements>) result
+					.getAggregateOrCopy();
 			for (int i = 0; i < aggregateOrCopyGroup.size(); i++) {
 				if (aggregateOrCopyGroup.get(i).getClass() == TAggregate.class) {
-					TAggregateUI tAggregateUI =
-					                            new TAggregateUI(
-					                                             editor,
-					                                             detailArea,
-					                                             this,
-					                                             SWT.NONE,
-					                                             aggregateOrCopyGroup.get(childObjectIndexes[1]),
-					                                             childObjectIndexes[1],
-					                                             childCompositeIndex);
+					TAggregateUI tAggregateUI = new TAggregateUI(editor, detailArea, this, SWT.NONE,
+							aggregateOrCopyGroup.get(childObjectIndexes[1]), childObjectIndexes[1],
+							childCompositeIndex);
 					tAggregateUI.initialize(editor);
 					childComposites.add(childCompositeIndex, tAggregateUI);
 					childCompositeIndex++;
 					childObjectIndexes[1]++;
 				}
 				if (aggregateOrCopyGroup.get(i).getClass() == TCopy.class) {
-					TCopyUI tCopyUI =
-					                  new TCopyUI(editor, detailArea, this, SWT.NONE,
-					                              aggregateOrCopyGroup.get(childObjectIndexes[1]),
-					                              childObjectIndexes[1], childCompositeIndex);
+					TCopyUI tCopyUI = new TCopyUI(editor, detailArea, this, SWT.NONE,
+							aggregateOrCopyGroup.get(childObjectIndexes[1]), childObjectIndexes[1],
+							childCompositeIndex);
 					tCopyUI.initialize(editor);
 					childComposites.add(childCompositeIndex, tCopyUI);
 					childCompositeIndex++;
@@ -197,18 +182,15 @@ public class TResultUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			result.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -220,10 +202,8 @@ public class TResultUI extends AbstractParentTagSection {
 			tAggregate.setFunction("");
 
 			result.getAggregateOrCopy().add(childObjectIndexes[1], tAggregate);
-			TAggregateUI tAggregateUI =
-			                            new TAggregateUI(editor, composite, this, SWT.NONE,
-			                                             tAggregate, childObjectIndexes[1],
-			                                             childCompositeIndex);
+			TAggregateUI tAggregateUI = new TAggregateUI(editor, composite, this, SWT.NONE, tAggregate,
+					childObjectIndexes[1], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tAggregateUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
@@ -233,9 +213,8 @@ public class TResultUI extends AbstractParentTagSection {
 			tCopy.setFrom(new TExpression());
 			tCopy.setTo(new TQuery());
 			result.getAggregateOrCopy().add(childObjectIndexes[1], tCopy);
-			TCopyUI tCopyUI =
-			                  new TCopyUI(editor, composite, this, SWT.NONE, tCopy,
-			                              childObjectIndexes[1], childCompositeIndex);
+			TCopyUI tCopyUI = new TCopyUI(editor, composite, this, SWT.NONE, tCopy, childObjectIndexes[1],
+					childCompositeIndex);
 			childComposites.add(childCompositeIndex, tCopyUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
@@ -281,10 +260,7 @@ public class TResultUI extends AbstractParentTagSection {
 						tCopyUI.setCompositeIndex(tCopyUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.AGGREGATE_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -311,9 +287,7 @@ public class TResultUI extends AbstractParentTagSection {
 					if (tCopyUI.getObjectIndex() > childObjectIndex) {
 						tCopyUI.setObjectIndex(tCopyUI.getObjectIndex() - 1);
 					}
-				} else {
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.COPY_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -342,9 +316,7 @@ public class TResultUI extends AbstractParentTagSection {
 						tCopyUI.setObjectIndex(tCopyUI.getObjectIndex() - 1);
 					}
 
-				} else {
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -365,16 +337,12 @@ public class TResultUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(result.getDocumentation()
-				                                 .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(result.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance.getClass() == TAggregateUI.class) {
 				TAggregateUI tAggregateUI = (TAggregateUI) compositeInstance;
-				tAggregateUI.aggregate =
-				                         (TAggregate) result.getAggregateOrCopy()
-				                                            .get(tAggregateUI.getObjectIndex());
+				tAggregateUI.aggregate = (TAggregate) result.getAggregateOrCopy().get(tAggregateUI.getObjectIndex());
 				tAggregateUI.onPageRefresh(textEditor);
-				tAggregateUI.loadModel(result.getAggregateOrCopy()
-				                             .get(tAggregateUI.getObjectIndex()));
+				tAggregateUI.loadModel(result.getAggregateOrCopy().get(tAggregateUI.getObjectIndex()));
 			} else if (compositeInstance.getClass() == TCopyUI.class) {
 
 				TCopyUI tCopyUI = (TCopyUI) compositeInstance;
@@ -407,8 +375,8 @@ public class TResultUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -418,8 +386,8 @@ public class TResultUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

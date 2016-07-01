@@ -42,19 +42,18 @@ import org.wso2.developerstudio.humantask.models.TLogicalPeopleGroup;
 
 /**
  * The UI class representing the "logicalPeopleGroup" xml element in the .ht
- * file
- * All the functionalities of that element are performed in this class, by
+ * file All the functionalities of that element are performed in this class, by
  * implementing and overriding the super class methods.
  */
 public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;/*
-									  * Array to keep the indexes of various
-									  * type of child object indexes
-									  */
+										 * Array to keep the indexes of various
+										 * type of child object indexes
+										 */
 	public TLogicalPeopleGroup logicalPeopleGroup;/*
-												   * model class related to this
-												   * UI Section
-												   */
+													 * model class related to
+													 * this UI Section
+													 */
 	private int objectIndex;/*
 							 * this Section's object index(index of only this
 							 * type of class objects in the parent) as per the
@@ -67,9 +66,9 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 								 * in this object's parent
 								 */
 	private int childCompositeIndex; /*
-									  * Index to keep this
-									  * section's(Composite's) child Sections
-									  */
+										 * Index to keep this
+										 * section's(Composite's) child Sections
+										 */
 	private Composite parentTagContainer; // parent Section(xml element)
 	private XMLEditor textEditor;
 	private ArrayList<Composite> childComposites = new ArrayList<Composite>();
@@ -87,13 +86,11 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TLogicalPeopleGroupUI(XMLEditor textEditor, Composite parentComposite,
-	                             Composite parentTagContainer, int styleBit, Object objectModel,
-	                             int objectIndex, int compositeIndex) throws JAXBException {
+	public TLogicalPeopleGroupUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
+			int styleBit, Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-		                    HTEditorConstants.PARAMETER_TITLE },
-		      HTEditorConstants.LOGICAL_PEOPLE_GROUP_TITLE);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.PARAMETER_TITLE },
+				HTEditorConstants.LOGICAL_PEOPLE_GROUP_TITLE);
 		this.logicalPeopleGroup = (TLogicalPeopleGroup) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -133,8 +130,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 		TLogicalPeopleGroupsUI tLogicalPeopleGroupsUI = (TLogicalPeopleGroupsUI) parentTagContainer;
 
 		// calls the refreshChildren() method of this Section's parent Section
-		tLogicalPeopleGroupsUI.refreshChildren(HTEditorConstants.LOGICAL_PEOPLE_GROUP_TITLE,
-		                                       getCompositeIndex(), getObjectIndex());
+		tLogicalPeopleGroupsUI.refreshChildren(HTEditorConstants.LOGICAL_PEOPLE_GROUP_TITLE, getCompositeIndex(),
+				getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();// dispose this UI Section
@@ -152,8 +149,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) { // check
 			// the
 			// selection
@@ -172,11 +169,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 			logicalPeopleGroup.getDocumentation().add(childObjectIndexes[0], tDocumentation);
 
 			// create and set a UI object to the created model object
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 
 			childObjectIndexes[0]++;
@@ -199,10 +193,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 			logicalPeopleGroup.getParameter().add(childObjectIndexes[1], tParameter);
 
 			// create and set a UI object to the created model object
-			TParameterUI tParameterUI =
-			                            new TParameterUI(editor, composite, this, SWT.NONE,
-			                                             tParameter, childObjectIndexes[1],
-			                                             childCompositeIndex);
+			TParameterUI tParameterUI = new TParameterUI(editor, composite, this, SWT.NONE, tParameter,
+					childObjectIndexes[1], childCompositeIndex);
 			childComposites.add(childCompositeIndex, tParameterUI);
 			childObjectIndexes[1]++;
 			childCompositeIndex++;
@@ -288,8 +280,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -311,21 +303,15 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 		if (childComposites.size() == 0) {
 			// get the child Documentation model object list of this model
 			// object
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) logicalPeopleGroup.getDocumentation();
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) logicalPeopleGroup
+					.getDocumentation();
 
 			// create and set a UI object to each Documentation model object
 			// from the above list
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);// Initialize or set the
 				// values of attributes of
 				// that Documentation
@@ -340,21 +326,13 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 			}
 
 			// get the child Parameter model object list of this model object
-			ArrayList<TParameter> parameterGroup =
-			                                       (ArrayList<TParameter>) logicalPeopleGroup.getParameter();
+			ArrayList<TParameter> parameterGroup = (ArrayList<TParameter>) logicalPeopleGroup.getParameter();
 
 			// create and set a UI object to each Parameter model object from
 			// the above list
 			for (int parameterGroupIndex = 0; parameterGroupIndex < parameterGroup.size(); parameterGroupIndex++) {
-				TParameterUI tTParameterUI =
-				                             new TParameterUI(
-				                                              editor,
-				                                              detailArea,
-				                                              this,
-				                                              SWT.NONE,
-				                                              parameterGroup.get(childObjectIndexes[1]),
-				                                              childObjectIndexes[1],
-				                                              childCompositeIndex);
+				TParameterUI tTParameterUI = new TParameterUI(editor, detailArea, this, SWT.NONE,
+						parameterGroup.get(childObjectIndexes[1]), childObjectIndexes[1], childCompositeIndex);
 				tTParameterUI.initialize(editor);// Initialize or set the values
 				// of attributes of that
 				// Parameter element
@@ -379,24 +357,19 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
-		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) { /*
-																				 * select
-																				 * the
-																				 * child
-																				 * element
-																				 * type
-																				 * that
-																				 * is
-																				 * removed
-																				 */
+		if (itemName.equalsIgnoreCase(
+				HTEditorConstants.DOCUMENTATION_TITLE)) { /*
+															 * select the child
+															 * element type that
+															 * is removed
+															 */
 			this.childObjectIndexes[0]--;
 			// remove that user removed element from the model
 			logicalPeopleGroup.getDocumentation().remove(childObjectIndex);
 
 			/*
 			 * consider to reorganize the order and indexes of all the other
-			 * child Sections of
-			 * this section
+			 * child Sections of this section
 			 */
 			for (Composite compositeInstance : childComposites) {
 
@@ -429,10 +402,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 						tParameterUI.setCompositeIndex(tParameterUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PARAMETER_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -454,10 +424,7 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 						tParameterUI.setObjectIndex(tParameterUI.getObjectIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -482,21 +449,20 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(logicalPeopleGroup.getDocumentation()
-				                                             .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI
+						.loadModel(logicalPeopleGroup.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TParameterUI) {
 				TParameterUI tParameterUI = (TParameterUI) compositeInstance;
 				tParameterUI.onPageRefresh(textEditor);
-				tParameterUI.loadModel(logicalPeopleGroup.getParameter()
-				                                         .get(tParameterUI.objectIndex));
+				tParameterUI.loadModel(logicalPeopleGroup.getParameter().get(tParameterUI.objectIndex));
 			}
 		}
 	}
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -506,8 +472,8 @@ public class TLogicalPeopleGroupUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

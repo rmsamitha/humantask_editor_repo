@@ -31,9 +31,9 @@ import org.wso2.developerstudio.humantask.models.TTask;
 import org.wso2.developerstudio.humantask.models.TTasks;
 
 /**
- * The UI class representing the "tasks" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "tasks" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TTasksUI extends AbstractParentTagSection {
 
@@ -59,11 +59,10 @@ public class TTasksUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TTasksUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
-	                int styleBit, Object modelParent, int objectIndex, int compositeIndex)
-	                                                                                      throws JAXBException {
-		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.TASK_TITLE }, HTEditorConstants.TASKS_TITLE);
+	public TTasksUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object modelParent, int objectIndex, int compositeIndex) throws JAXBException {
+		super(textEditor, parentComposite, parentTagContainer, styleBit, new String[] { HTEditorConstants.TASK_TITLE },
+				HTEditorConstants.TASKS_TITLE);
 		this.tasks = (TTasks) modelParent;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -86,8 +85,7 @@ public class TTasksUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection transition = (AbstractParentTagSection) parentTagContainer;
-		transition.refreshChildren(HTEditorConstants.TASKS_TITLE, getCompositeIndex(),
-		                           getObjectIndex());
+		transition.refreshChildren(HTEditorConstants.TASKS_TITLE, getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -98,8 +96,8 @@ public class TTasksUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -118,10 +116,8 @@ public class TTasksUI extends AbstractParentTagSection {
 
 			ArrayList<TTask> taskGroup = (ArrayList<TTask>) tasks.getTask();
 			for (int i = 0; i < taskGroup.size(); i++) {
-				TTaskUI tTaskUI =
-				                  new TTaskUI(editor, detailArea, this, SWT.NONE,
-				                              taskGroup.get(childObjectIndexes[0]),
-				                              childObjectIndexes[0], childCompositeIndex);
+				TTaskUI tTaskUI = new TTaskUI(editor, detailArea, this, SWT.NONE, taskGroup.get(childObjectIndexes[0]),
+						childObjectIndexes[0], childCompositeIndex);
 				tTaskUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tTaskUI);
 				childCompositeIndex++;
@@ -140,16 +136,15 @@ public class TTasksUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.TASK_TITLE)) {
 			TTask tTask = new TTask();
 			tTask.setName("");
 			tTask.setActualOwnerRequired(TBoolean.YES);
 			tasks.getTask().add(childObjectIndexes[0], tTask);
-			TTaskUI tTaskUI =
-			                  new TTaskUI(editor, composite, this, SWT.NONE, tTask,
-			                              childObjectIndexes[0], childCompositeIndex);
+			TTaskUI tTaskUI = new TTaskUI(editor, composite, this, SWT.NONE, tTask, childObjectIndexes[0],
+					childCompositeIndex);
 			childComposites.add(childCompositeIndex, tTaskUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -225,8 +220,8 @@ public class TTasksUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -236,8 +231,8 @@ public class TTasksUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

@@ -46,8 +46,8 @@ import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
- * The UI class representing the "notification" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
+ * The UI class representing the "notification" xml element in the .ht file All
+ * the functionalities of that element are performed in this class, by
  * implementing and overriding the abstract super class methods.
  */
 public class TNotificationUI extends AbstractParentTagSection {
@@ -73,16 +73,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TNotificationUI(XMLEditor textEditor, Composite parentComposite,
-	                       Composite parentTagContainer, int styleBit, Object objectModel,
-	                       int objectIndex, int compositeIndex) throws JAXBException {
+	public TNotificationUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-		                    HTEditorConstants.INTERFACE_TITLE, HTEditorConstants.PRIORITY_TITLE,
-		                    HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE,
-		                    HTEditorConstants.PRESENTATION_ELEMENTS_TITLE,
-		                    HTEditorConstants.RENDERINGS_TITLE },
-		      HTEditorConstants.NOTIFICATION_TITLE);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.INTERFACE_TITLE,
+						HTEditorConstants.PRIORITY_TITLE, HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE,
+						HTEditorConstants.PRESENTATION_ELEMENTS_TITLE, HTEditorConstants.RENDERINGS_TITLE },
+				HTEditorConstants.NOTIFICATION_TITLE);
 		this.notification = (TNotification) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -114,8 +111,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		TNotificationsUI tNotificationsUI = (TNotificationsUI) parentTagContainer;
-		tNotificationsUI.refreshChildren(HTEditorConstants.NOTIFICATION_TITLE, compositeIndex,
-		                                 objectIndex);
+		tNotificationsUI.refreshChildren(HTEditorConstants.NOTIFICATION_TITLE, compositeIndex, objectIndex);
 		centralUtils.marshal(textEditor);
 		Composite tempCompo = this.getParent();
 		this.dispose();
@@ -133,17 +129,15 @@ public class TNotificationUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase("Documentation")) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			notification.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tNot =
-			                        new TDocumentationUI(editor, composite, childCompositeIndex,
-			                                             childObjectIndexes[0], SWT.NONE, this,
-			                                             tDocumentation);
+			TDocumentationUI tNot = new TDocumentationUI(editor, composite, childCompositeIndex, childObjectIndexes[0],
+					SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tNot);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -153,15 +147,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 				tNotificationInterface.setPortType(new QName(""));
 				tNotificationInterface.setOperation("");
 				notification.setInterface(tNotificationInterface);
-				TNotificationInterfaceUI tNot =
-				                                new TNotificationInterfaceUI(
-				                                                             editor,
-				                                                             composite,
-				                                                             this,
-				                                                             SWT.NONE,
-				                                                             tNotificationInterface,
-				                                                             childObjectIndexes[1],
-				                                                             childCompositeIndex);
+				TNotificationInterfaceUI tNot = new TNotificationInterfaceUI(editor, composite, this, SWT.NONE,
+						tNotificationInterface, childObjectIndexes[1], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tNot);
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
@@ -173,11 +160,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 				tPriorityExpr.setExpressionLanguage("");
 				tPriorityExpr.getContent().add(0, "");
 				notification.setPriority(tPriorityExpr);
-				TPriorityExprUI tPriorityExprUI =
-				                                  new TPriorityExprUI(editor, composite,
-				                                                      childCompositeIndex,
-				                                                      childObjectIndexes[2],
-				                                                      SWT.NONE, this, tPriorityExpr);
+				TPriorityExprUI tPriorityExprUI = new TPriorityExprUI(editor, composite, childCompositeIndex,
+						childObjectIndexes[2], SWT.NONE, this, tPriorityExpr);
 				childComposites.add(childCompositeIndex, tPriorityExprUI);
 				childObjectIndexes[2]++;
 				childCompositeIndex++;
@@ -188,11 +172,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 			if (childObjectIndexes[3] < 1) {
 				TPeopleAssignments tPeopleAssignments = new TPeopleAssignments();
 				notification.setPeopleAssignments(tPeopleAssignments);
-				TPeopleAssignmentsUI tNot =
-				                            new TPeopleAssignmentsUI(editor, composite, this,
-				                                                     SWT.NONE, tPeopleAssignments,
-				                                                     childObjectIndexes[3],
-				                                                     childCompositeIndex);
+				TPeopleAssignmentsUI tNot = new TPeopleAssignmentsUI(editor, composite, this, SWT.NONE,
+						tPeopleAssignments, childObjectIndexes[3], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tNot);
 				childObjectIndexes[3]++;
 				childCompositeIndex++;
@@ -203,15 +184,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 			if (childObjectIndexes[4] < 1) {
 				TPresentationElements tPresentationElements = new TPresentationElements();
 				notification.setPresentationElements(tPresentationElements);
-				TPresentationElementsUI tPresentationElementsUI =
-				                                                  new TPresentationElementsUI(
-				                                                                              editor,
-				                                                                              composite,
-				                                                                              this,
-				                                                                              SWT.NONE,
-				                                                                              tPresentationElements,
-				                                                                              childObjectIndexes[4],
-				                                                                              childCompositeIndex);
+				TPresentationElementsUI tPresentationElementsUI = new TPresentationElementsUI(editor, composite, this,
+						SWT.NONE, tPresentationElements, childObjectIndexes[4], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tPresentationElementsUI);
 				childObjectIndexes[4]++;
 				childCompositeIndex++;
@@ -221,10 +195,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 			if (childObjectIndexes[5] < 1) {
 				TRenderings tRenderings = new TRenderings();
 				notification.setRenderings(tRenderings);
-				TRenderingsUI tNot =
-				                     new TRenderingsUI(editor, composite, this, SWT.NONE,
-				                                       tRenderings, childObjectIndexes[5],
-				                                       childCompositeIndex);
+				TRenderingsUI tNot = new TRenderingsUI(editor, composite, this, SWT.NONE, tRenderings,
+						childObjectIndexes[5], childCompositeIndex);
 
 				/*
 				 * editor, composite, childCompositeIndex,
@@ -278,8 +250,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 
 	/**
 	 * Initialize or set the values of attributes and xml content(if available)
-	 * whenever a tab change occur
-	 * from text editor to the UI editor
+	 * whenever a tab change occur from text editor to the UI editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -295,8 +266,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -313,18 +284,11 @@ public class TNotificationUI extends AbstractParentTagSection {
 		childCompositeIndex = 0;
 
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) notification.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) notification.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -333,15 +297,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 
 			if (notification.getInterface() != null) {
 				TNotificationInterface interfaceObject = notification.getInterface();
-				TNotificationInterfaceUI tNotificationInterfaceUI =
-				                                                    new TNotificationInterfaceUI(
-				                                                                                 editor,
-				                                                                                 detailArea,
-				                                                                                 this,
-				                                                                                 SWT.NONE,
-				                                                                                 interfaceObject,
-				                                                                                 childObjectIndexes[1],
-				                                                                                 childCompositeIndex);
+				TNotificationInterfaceUI tNotificationInterfaceUI = new TNotificationInterfaceUI(editor, detailArea,
+						this, SWT.NONE, interfaceObject, childObjectIndexes[1], childCompositeIndex);
 				tNotificationInterfaceUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tNotificationInterfaceUI);
 				childCompositeIndex++;
@@ -350,11 +307,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 
 			if (notification.getPriority() != null) {
 				TPriorityExpr priorityObject = notification.getPriority();
-				TPriorityExprUI tPriorityUI =
-				                              new TPriorityExprUI(editor, detailArea,
-				                                                  childCompositeIndex,
-				                                                  childObjectIndexes[2], SWT.NONE,
-				                                                  this, priorityObject);
+				TPriorityExprUI tPriorityUI = new TPriorityExprUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[2], SWT.NONE, this, priorityObject);
 				tPriorityUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPriorityUI);
 				childCompositeIndex++;
@@ -363,32 +317,17 @@ public class TNotificationUI extends AbstractParentTagSection {
 			}
 			if (notification.getPeopleAssignments() != null) {
 				TPeopleAssignments tPeopleAssignmentObject = notification.getPeopleAssignments();
-				TPeopleAssignmentsUI tPeopleAssignmentsUI =
-				                                            new TPeopleAssignmentsUI(
-				                                                                     editor,
-				                                                                     detailArea,
-				                                                                     this,
-				                                                                     SWT.NONE,
-				                                                                     tPeopleAssignmentObject,
-				                                                                     childObjectIndexes[3],
-				                                                                     childCompositeIndex);
+				TPeopleAssignmentsUI tPeopleAssignmentsUI = new TPeopleAssignmentsUI(editor, detailArea, this, SWT.NONE,
+						tPeopleAssignmentObject, childObjectIndexes[3], childCompositeIndex);
 				tPeopleAssignmentsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPeopleAssignmentsUI);
 				childCompositeIndex++;
 				childObjectIndexes[3]++;
 			}
 			if (notification.getPresentationElements() != null) {
-				TPresentationElements tPresentationElementsObject =
-				                                                    notification.getPresentationElements();
-				TPresentationElementsUI tPreserntationElementsUI =
-				                                                   new TPresentationElementsUI(
-				                                                                               editor,
-				                                                                               detailArea,
-				                                                                               this,
-				                                                                               SWT.NONE,
-				                                                                               tPresentationElementsObject,
-				                                                                               childObjectIndexes[4],
-				                                                                               childCompositeIndex);
+				TPresentationElements tPresentationElementsObject = notification.getPresentationElements();
+				TPresentationElementsUI tPreserntationElementsUI = new TPresentationElementsUI(editor, detailArea, this,
+						SWT.NONE, tPresentationElementsObject, childObjectIndexes[4], childCompositeIndex);
 				tPreserntationElementsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPreserntationElementsUI);
 				childCompositeIndex++;
@@ -397,11 +336,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 			if (notification.getRenderings() != null) {
 
 				TRenderings tRenderingsObject = notification.getRenderings();
-				TRenderingsUI tRenderingsUI =
-				                              new TRenderingsUI(editor, detailArea, this, SWT.NONE,
-				                                                tRenderingsObject,
-				                                                childObjectIndexes[5],
-				                                                childCompositeIndex);
+				TRenderingsUI tRenderingsUI = new TRenderingsUI(editor, detailArea, this, SWT.NONE, tRenderingsObject,
+						childObjectIndexes[5], childCompositeIndex);
 				tRenderingsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tRenderingsUI);
 				childCompositeIndex++;
@@ -436,8 +372,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -449,15 +384,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElements =
-					                                                (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElements = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElements.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElements.setCompositeIndex(tPresentationElements.getCompositeIndex() - 1);
 					}
@@ -482,8 +415,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -498,15 +430,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -530,8 +460,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -545,15 +474,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tPriorityUI.setObjectIndex(tPriorityUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -563,9 +490,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 					if (tRenderingsUI.getCompositeIndex() > childCompositeIndex) {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
-				} else {
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE)) {
 			this.childObjectIndexes[3]--;
@@ -577,8 +502,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -589,8 +513,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
@@ -599,8 +522,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -610,9 +532,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 					if (tRenderingsUI.getCompositeIndex() > childCompositeIndex) {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
-				} else {
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PRESENTATION_ELEMENTS_TITLE)) {
 			this.childObjectIndexes[4]--;
@@ -624,8 +544,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -636,15 +555,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -657,13 +574,12 @@ public class TNotificationUI extends AbstractParentTagSection {
 					if (tRenderingsUI.getCompositeIndex() > childCompositeIndex) {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
-				} else {
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.RENDERINGS_TITLE)) {
 			this.childObjectIndexes[5]--;
-			notification.setRenderings(null);;
+			notification.setRenderings(null);
+			;
 			for (Composite compositeInstance : childComposites) {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
@@ -671,8 +587,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tDocumentationUI.setCompositeIndex(tDocumentationUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-					TNotificationInterfaceUI tNotificationInterfaceUI =
-					                                                    (TNotificationInterfaceUI) compositeInstance;
+					TNotificationInterfaceUI tNotificationInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 					if (tNotificationInterfaceUI.getCompositeIndex() > childCompositeIndex) {
 						tNotificationInterfaceUI.setCompositeIndex(tNotificationInterfaceUI.getCompositeIndex() - 1);
 					}
@@ -683,15 +598,13 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -705,9 +618,7 @@ public class TNotificationUI extends AbstractParentTagSection {
 						tRenderingsUI.setObjectIndex(tRenderingsUI.getObjectIndex() - 1);
 					}
 
-				} else {
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -725,28 +636,23 @@ public class TNotificationUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(notification.getDocumentation()
-				                                       .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(notification.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TNotificationInterfaceUI) {
-				TNotificationInterfaceUI tTaskInterfaceUI =
-				                                            (TNotificationInterfaceUI) compositeInstance;
+				TNotificationInterfaceUI tTaskInterfaceUI = (TNotificationInterfaceUI) compositeInstance;
 				tTaskInterfaceUI.onPageRefresh(textEditor);
 				tTaskInterfaceUI.loadModel(notification.getInterface());
 			} else if (compositeInstance instanceof TPriorityExprUI) {
 				TPriorityExprUI tPriorityUI = (TPriorityExprUI) compositeInstance;
 				tPriorityUI.loadModel(notification.getPriority());
 			} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-				TPeopleAssignmentsUI tPeopleAssignmentsUI =
-				                                            (TPeopleAssignmentsUI) compositeInstance;
+				TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 				tPeopleAssignmentsUI.tPeopleAssignments = notification.getPeopleAssignments();
 				tPeopleAssignmentsUI.onPageRefresh(textEditor);
 				tPeopleAssignmentsUI.loadModel(notification.getPeopleAssignments());
 
 			} else if (compositeInstance instanceof TPresentationElementsUI) {
-				TPresentationElementsUI tPresentationElementsUI =
-				                                                  (TPresentationElementsUI) compositeInstance;
-				tPresentationElementsUI.presentationElements =
-				                                               notification.getPresentationElements();
+				TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
+				tPresentationElementsUI.presentationElements = notification.getPresentationElements();
 				tPresentationElementsUI.onPageRefresh(textEditor);
 				tPresentationElementsUI.loadModel(notification.getPresentationElements());
 
@@ -782,8 +688,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -793,8 +699,8 @@ public class TNotificationUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

@@ -51,9 +51,9 @@ import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.wb.swt.SWTResourceManager;
 
 /**
- * The UI class representing the "task" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "task" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TTaskUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;// one array element for each child object
@@ -79,18 +79,15 @@ public class TTaskUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TTaskUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer,
-	               int styleBit, Object objectModel, int objectIndex, int compositeIndex)
-	                                                                                     throws JAXBException {
+	public TTaskUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE,
-		                    HTEditorConstants.INTERFACE_TITLE, HTEditorConstants.PRIORITY_TITLE,
-		                    HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE,
-		                    HTEditorConstants.COMPLETION_BEHAVIOR_TITLE,
-		                    HTEditorConstants.DELEGATION_TITLE,
-		                    HTEditorConstants.PRESENTATION_ELEMENTS_TITLE,
-		                    HTEditorConstants.OUTCOME_TITLE, HTEditorConstants.SEARCHBY_TITLE,
-		                    HTEditorConstants.RENDERINGS_TITLE, }, HTEditorConstants.TASK_TITLE);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE, HTEditorConstants.INTERFACE_TITLE,
+						HTEditorConstants.PRIORITY_TITLE, HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE,
+						HTEditorConstants.COMPLETION_BEHAVIOR_TITLE, HTEditorConstants.DELEGATION_TITLE,
+						HTEditorConstants.PRESENTATION_ELEMENTS_TITLE, HTEditorConstants.OUTCOME_TITLE,
+						HTEditorConstants.SEARCHBY_TITLE, HTEditorConstants.RENDERINGS_TITLE, },
+				HTEditorConstants.TASK_TITLE);
 		this.task = (TTask) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -110,8 +107,7 @@ public class TTaskUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnUpdate(XMLEditor textEditor) throws JAXBException {
 		task.setName(((Text) textBoxesList.get(0)).getText());
-		task.setActualOwnerRequired(TBoolean.fromValue(((Combo) textBoxesList.get(1)).getText()
-		                                                                             .toLowerCase()));
+		task.setActualOwnerRequired(TBoolean.fromValue(((Combo) textBoxesList.get(1)).getText().toLowerCase()));
 		centralUtils.marshal(textEditor);
 	}
 
@@ -142,18 +138,15 @@ public class TTaskUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			task.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -163,11 +156,8 @@ public class TTaskUI extends AbstractParentTagSection {
 				tTaskInterface.setPortType(new QName(""));
 				tTaskInterface.setOperation("");
 				task.setInterface(tTaskInterface);
-				TTaskInterfaceUI tTaskInterfaceUI =
-				                                    new TTaskInterfaceUI(editor, composite, this,
-				                                                         SWT.NONE, tTaskInterface,
-				                                                         childObjectIndexes[1],
-				                                                         childCompositeIndex);
+				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, composite, this, SWT.NONE,
+						tTaskInterface, childObjectIndexes[1], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
 				childObjectIndexes[1]++;
 				childCompositeIndex++;
@@ -178,11 +168,8 @@ public class TTaskUI extends AbstractParentTagSection {
 				tPriorityExpr.setExpressionLanguage("");
 				tPriorityExpr.getContent().add(0, "");
 				task.setPriority(tPriorityExpr);
-				TPriorityExprUI tPriorityExprUI =
-				                                  new TPriorityExprUI(editor, composite,
-				                                                      childCompositeIndex,
-				                                                      childObjectIndexes[2],
-				                                                      SWT.NONE, this, tPriorityExpr);
+				TPriorityExprUI tPriorityExprUI = new TPriorityExprUI(editor, composite, childCompositeIndex,
+						childObjectIndexes[2], SWT.NONE, this, tPriorityExpr);
 				childComposites.add(childCompositeIndex, tPriorityExprUI);
 				childObjectIndexes[2]++;
 				childCompositeIndex++;
@@ -191,15 +178,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[3] < 1) {
 				TPeopleAssignments tPeopleAssignments = new TPeopleAssignments();
 				task.setPeopleAssignments(tPeopleAssignments);
-				TPeopleAssignmentsUI tPeopleAssignmentsUI =
-				                                            new TPeopleAssignmentsUI(
-				                                                                     editor,
-				                                                                     composite,
-				                                                                     this,
-				                                                                     SWT.NONE,
-				                                                                     tPeopleAssignments,
-				                                                                     childObjectIndexes[3],
-				                                                                     childCompositeIndex);
+				TPeopleAssignmentsUI tPeopleAssignmentsUI = new TPeopleAssignmentsUI(editor, composite, this, SWT.NONE,
+						tPeopleAssignments, childObjectIndexes[3], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tPeopleAssignmentsUI);
 				childObjectIndexes[3]++;
 				childCompositeIndex++;
@@ -208,15 +188,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[4] < 1) {
 				TCompletionBehavior tCompletionBehavior = new TCompletionBehavior();
 				task.setCompletionBehavior(tCompletionBehavior);
-				TCompletionBehaviorUI tCompletionBehaviorUI =
-				                                              new TCompletionBehaviorUI(
-				                                                                        editor,
-				                                                                        composite,
-				                                                                        this,
-				                                                                        SWT.NONE,
-				                                                                        tCompletionBehavior,
-				                                                                        childObjectIndexes[4],
-				                                                                        childCompositeIndex);
+				TCompletionBehaviorUI tCompletionBehaviorUI = new TCompletionBehaviorUI(editor, composite, this,
+						SWT.NONE, tCompletionBehavior, childObjectIndexes[4], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tCompletionBehaviorUI);
 				childObjectIndexes[4]++;
 				childCompositeIndex++;
@@ -225,10 +198,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[5] < 1) {
 				TDelegation tDelegation = new TDelegation();
 				task.setDelegation(tDelegation);
-				TDelegationUI tDelegationUI =
-				                              new TDelegationUI(editor, composite, this, SWT.NONE,
-				                                                tDelegation, childObjectIndexes[5],
-				                                                childCompositeIndex);
+				TDelegationUI tDelegationUI = new TDelegationUI(editor, composite, this, SWT.NONE, tDelegation,
+						childObjectIndexes[5], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tDelegationUI);
 				childObjectIndexes[5]++;
 				childCompositeIndex++;
@@ -237,15 +208,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[6] < 1) {
 				TPresentationElements tPresentationElements = new TPresentationElements();
 				task.setPresentationElements(tPresentationElements);
-				TPresentationElementsUI tPresentationElementsUI =
-				                                                  new TPresentationElementsUI(
-				                                                                              editor,
-				                                                                              composite,
-				                                                                              this,
-				                                                                              SWT.NONE,
-				                                                                              tPresentationElements,
-				                                                                              childObjectIndexes[6],
-				                                                                              childCompositeIndex);
+				TPresentationElementsUI tPresentationElementsUI = new TPresentationElementsUI(editor, composite, this,
+						SWT.NONE, tPresentationElements, childObjectIndexes[6], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tPresentationElementsUI);
 				childObjectIndexes[6]++;
 				childCompositeIndex++;
@@ -257,10 +221,8 @@ public class TTaskUI extends AbstractParentTagSection {
 				tQuery.setQueryLanguage("");
 				tQuery.getContent().add(0, "");
 				task.setOutcome(tQuery);
-				TQueryUI tQueryUI =
-				                    new TQueryUI(editor, detailArea, this, SWT.NONE, tQuery,
-				                                 childObjectIndexes[7], childCompositeIndex,
-				                                 HTEditorConstants.OUTCOME_TITLE);
+				TQueryUI tQueryUI = new TQueryUI(editor, detailArea, this, SWT.NONE, tQuery, childObjectIndexes[7],
+						childCompositeIndex, HTEditorConstants.OUTCOME_TITLE);
 				childComposites.add(childCompositeIndex, tQueryUI);
 				childObjectIndexes[7]++;
 				childCompositeIndex++;
@@ -270,11 +232,8 @@ public class TTaskUI extends AbstractParentTagSection {
 				TExpression tExpression = new TExpression();
 				tExpression.setExpressionLanguage("");
 				task.setSearchBy(tExpression);
-				TExpressionUI tExpressionUI =
-				                              new TExpressionUI(editor, composite, this, SWT.NONE,
-				                                                tExpression, childObjectIndexes[8],
-				                                                childCompositeIndex,
-				                                                HTEditorConstants.SEARCHBY_TITLE);
+				TExpressionUI tExpressionUI = new TExpressionUI(editor, composite, this, SWT.NONE, tExpression,
+						childObjectIndexes[8], childCompositeIndex, HTEditorConstants.SEARCHBY_TITLE);
 				childComposites.add(childCompositeIndex, tExpressionUI);
 				childObjectIndexes[8]++;
 				childCompositeIndex++;
@@ -283,10 +242,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (childObjectIndexes[9] < 1) {
 				TRenderings tRenderings = new TRenderings();
 				task.setRenderings(tRenderings);
-				TRenderingsUI tRenderingsUI =
-				                              new TRenderingsUI(editor, composite, this, SWT.NONE,
-				                                                tRenderings, childObjectIndexes[9],
-				                                                childCompositeIndex);
+				TRenderingsUI tRenderingsUI = new TRenderingsUI(editor, composite, this, SWT.NONE, tRenderings,
+						childObjectIndexes[9], childCompositeIndex);
 				childComposites.add(childCompositeIndex, tRenderingsUI);
 				childObjectIndexes[9]++;
 				childCompositeIndex++;
@@ -369,8 +326,8 @@ public class TTaskUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -388,18 +345,11 @@ public class TTaskUI extends AbstractParentTagSection {
 		childCompositeIndex = 0;
 
 		if (childComposites.size() == 0) {
-			ArrayList<TDocumentation> documentationGroup =
-			                                               (ArrayList<TDocumentation>) task.getDocumentation();
-			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-				TDocumentationUI tDocumentationUI =
-				                                    new TDocumentationUI(
-				                                                         editor,
-				                                                         detailArea,
-				                                                         childCompositeIndex,
-				                                                         childObjectIndexes[0],
-				                                                         SWT.NONE,
-				                                                         this,
-				                                                         documentationGroup.get(childObjectIndexes[0]));
+			ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) task.getDocumentation();
+			for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+					.size(); documentationGroupIndex++) {
+				TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 				tDocumentationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDocumentationUI);
 				childCompositeIndex++;
@@ -408,11 +358,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 			if (task.getInterface() != null) {
 				TTaskInterface interfaceObject = task.getInterface();
-				TTaskInterfaceUI tTaskInterfaceUI =
-				                                    new TTaskInterfaceUI(editor, detailArea, this,
-				                                                         SWT.NONE, interfaceObject,
-				                                                         childObjectIndexes[1],
-				                                                         childCompositeIndex);
+				TTaskInterfaceUI tTaskInterfaceUI = new TTaskInterfaceUI(editor, detailArea, this, SWT.NONE,
+						interfaceObject, childObjectIndexes[1], childCompositeIndex);
 				tTaskInterfaceUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tTaskInterfaceUI);
 				childCompositeIndex++;
@@ -421,11 +368,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 			if (task.getPriority() != null) {
 				TPriorityExpr priorityObject = task.getPriority();
-				TPriorityExprUI tPriorityUI =
-				                              new TPriorityExprUI(editor, detailArea,
-				                                                  childCompositeIndex,
-				                                                  childObjectIndexes[2], SWT.NONE,
-				                                                  this, priorityObject);
+				TPriorityExprUI tPriorityUI = new TPriorityExprUI(editor, detailArea, childCompositeIndex,
+						childObjectIndexes[2], SWT.NONE, this, priorityObject);
 				tPriorityUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPriorityUI);
 				childCompositeIndex++;
@@ -434,15 +378,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getPeopleAssignments() != null) {
 				TPeopleAssignments peopleAssignmentObject = task.getPeopleAssignments();
-				TPeopleAssignmentsUI tPeopleAssingmentsUI =
-				                                            new TPeopleAssignmentsUI(
-				                                                                     editor,
-				                                                                     detailArea,
-				                                                                     this,
-				                                                                     SWT.NONE,
-				                                                                     peopleAssignmentObject,
-				                                                                     childObjectIndexes[3],
-				                                                                     childCompositeIndex);
+				TPeopleAssignmentsUI tPeopleAssingmentsUI = new TPeopleAssignmentsUI(editor, detailArea, this, SWT.NONE,
+						peopleAssignmentObject, childObjectIndexes[3], childCompositeIndex);
 				tPeopleAssingmentsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPeopleAssingmentsUI);
 				childCompositeIndex++;
@@ -452,15 +389,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			if (task.getCompletionBehavior() != null) {
 
 				TCompletionBehavior tCompletionBehaviorObject = task.getCompletionBehavior();
-				TCompletionBehaviorUI tCompletionBehaviorUI =
-				                                              new TCompletionBehaviorUI(
-				                                                                        editor,
-				                                                                        detailArea,
-				                                                                        this,
-				                                                                        SWT.NONE,
-				                                                                        tCompletionBehaviorObject,
-				                                                                        childObjectIndexes[4],
-				                                                                        childCompositeIndex);
+				TCompletionBehaviorUI tCompletionBehaviorUI = new TCompletionBehaviorUI(editor, detailArea, this,
+						SWT.NONE, tCompletionBehaviorObject, childObjectIndexes[4], childCompositeIndex);
 				tCompletionBehaviorUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tCompletionBehaviorUI);
 				childCompositeIndex++;
@@ -468,11 +398,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getDelegation() != null) {
 				TDelegation tDelegationObject = task.getDelegation();
-				TDelegationUI tDelegationUI =
-				                              new TDelegationUI(editor, detailArea, this, SWT.NONE,
-				                                                tDelegationObject,
-				                                                childObjectIndexes[5],
-				                                                childCompositeIndex);
+				TDelegationUI tDelegationUI = new TDelegationUI(editor, detailArea, this, SWT.NONE, tDelegationObject,
+						childObjectIndexes[5], childCompositeIndex);
 				tDelegationUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tDelegationUI);
 				childCompositeIndex++;
@@ -480,15 +407,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getPresentationElements() != null) {
 				TPresentationElements tPresentationElementsObject = task.getPresentationElements();
-				TPresentationElementsUI tPreserntationElementsUI =
-				                                                   new TPresentationElementsUI(
-				                                                                               editor,
-				                                                                               detailArea,
-				                                                                               this,
-				                                                                               SWT.NONE,
-				                                                                               tPresentationElementsObject,
-				                                                                               childObjectIndexes[6],
-				                                                                               childCompositeIndex);
+				TPresentationElementsUI tPreserntationElementsUI = new TPresentationElementsUI(editor, detailArea, this,
+						SWT.NONE, tPresentationElementsObject, childObjectIndexes[6], childCompositeIndex);
 				tPreserntationElementsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tPreserntationElementsUI);
 				childCompositeIndex++;
@@ -496,10 +416,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getOutcome() != null) {
 				TQuery toObject = task.getOutcome();
-				TQueryUI tQueryUI =
-				                    new TQueryUI(editor, detailArea, this, SWT.NONE, toObject,
-				                                 childObjectIndexes[7], childCompositeIndex,
-				                                 HTEditorConstants.OUTCOME_TITLE);
+				TQueryUI tQueryUI = new TQueryUI(editor, detailArea, this, SWT.NONE, toObject, childObjectIndexes[7],
+						childCompositeIndex, HTEditorConstants.OUTCOME_TITLE);
 				tQueryUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tQueryUI);
 				childCompositeIndex++;
@@ -507,12 +425,8 @@ public class TTaskUI extends AbstractParentTagSection {
 			}
 			if (task.getSearchBy() != null) {
 				TExpression tSearchByObject = task.getSearchBy();
-				TExpressionUI tSearchByUI =
-				                            new TExpressionUI(editor, detailArea, this, SWT.NONE,
-				                                              tSearchByObject,
-				                                              childObjectIndexes[8],
-				                                              childCompositeIndex,
-				                                              HTEditorConstants.SEARCHBY_TITLE);
+				TExpressionUI tSearchByUI = new TExpressionUI(editor, detailArea, this, SWT.NONE, tSearchByObject,
+						childObjectIndexes[8], childCompositeIndex, HTEditorConstants.SEARCHBY_TITLE);
 				tSearchByUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tSearchByUI);
 				childCompositeIndex++;
@@ -521,11 +435,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 			if (task.getRenderings() != null) {
 				TRenderings tRenderingsObject = task.getRenderings();
-				TRenderingsUI tRenderingsUI =
-				                              new TRenderingsUI(editor, detailArea, this, SWT.NONE,
-				                                                tRenderingsObject,
-				                                                childObjectIndexes[9],
-				                                                childCompositeIndex);
+				TRenderingsUI tRenderingsUI = new TRenderingsUI(editor, detailArea, this, SWT.NONE, tRenderingsObject,
+						childObjectIndexes[9], childCompositeIndex);
 				tRenderingsUI.initialize(editor);
 				childComposites.add(childCompositeIndex, tRenderingsUI);
 				childCompositeIndex++;
@@ -545,8 +456,6 @@ public class TTaskUI extends AbstractParentTagSection {
 	 */
 	@Override
 	public void refreshChildren(String itemName, int childCompositeIndex, int childObjectIndex) {
-		System.err.println("refresh childresn called:" + itemName + "checked string" +
-		                   HTEditorConstants.SEARCHBY_TITLE);
 		if (itemName.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			this.childObjectIndexes[0]--;
 			task.getDocumentation().remove(childObjectIndex);
@@ -573,15 +482,13 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -595,8 +502,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -619,10 +525,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.INTERFACE_TITLE)) {
 			this.childObjectIndexes[1]--;
@@ -650,15 +553,13 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -672,8 +573,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -695,8 +595,6 @@ public class TTaskUI extends AbstractParentTagSection {
 					if (tRenderingsUI.getCompositeIndex() > childCompositeIndex) {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
-
-				} else {
 
 				}
 			}
@@ -724,15 +622,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setObjectIndex(tPriorityUI.getObjectIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -746,8 +642,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -770,10 +665,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PEOPLE_ASSIGNMENTS_TITLE)) {
 			this.childObjectIndexes[3]--;
@@ -796,8 +688,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
@@ -807,8 +698,7 @@ public class TTaskUI extends AbstractParentTagSection {
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -822,8 +712,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -846,10 +735,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.COMPLETION_BEHAVIOR_TITLE)) {
 			this.childObjectIndexes[4]--;
@@ -872,15 +758,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -897,8 +781,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -921,10 +804,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.DELEGATION_TITLE)) {
 			this.childObjectIndexes[5]--;
@@ -947,15 +827,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -972,8 +850,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -996,10 +873,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.PRESENTATION_ELEMENTS_TITLE)) {
 			this.childObjectIndexes[6]--;
@@ -1021,15 +895,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -1042,8 +914,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -1069,10 +940,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.OUTCOME_TITLE)) {
 			this.childObjectIndexes[7]--;
@@ -1094,15 +962,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -1115,8 +981,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -1142,15 +1007,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.SEARCHBY_TITLE)) {
 			System.err.println("refresh childresn called and went into the elseif:" + itemName);
 			this.childObjectIndexes[8]--;
-			task.setSearchBy(null);;
+			task.setSearchBy(null);
+			;
 			for (Composite compositeInstance : childComposites) {
 				if (compositeInstance instanceof TDocumentationUI) {
 					TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
@@ -1168,15 +1031,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -1189,8 +1050,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElementsUI =
-					                                                  (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElementsUI.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElementsUI.setCompositeIndex(tPresentationElementsUI.getCompositeIndex() - 1);
 					}
@@ -1216,10 +1076,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setCompositeIndex(tRenderingsUI.getCompositeIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		} else if (itemName.equalsIgnoreCase(HTEditorConstants.RENDERINGS_TITLE)) {
 			this.childObjectIndexes[9]--;
@@ -1242,15 +1099,13 @@ public class TTaskUI extends AbstractParentTagSection {
 						tPriorityUI.setCompositeIndex(tPriorityUI.getCompositeIndex() - 1);
 					}
 				} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-					TPeopleAssignmentsUI tPeopleAssignmentsUI =
-					                                            (TPeopleAssignmentsUI) compositeInstance;
+					TPeopleAssignmentsUI tPeopleAssignmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 					if (tPeopleAssignmentsUI.getCompositeIndex() > childCompositeIndex) {
 						tPeopleAssignmentsUI.setCompositeIndex(tPeopleAssignmentsUI.getCompositeIndex() - 1);
 					}
 
 				} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-					TCompletionBehaviorUI tCompletionBehaviorUI =
-					                                              (TCompletionBehaviorUI) compositeInstance;
+					TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 					if (tCompletionBehaviorUI.getCompositeIndex() > childCompositeIndex) {
 						tCompletionBehaviorUI.setCompositeIndex(tCompletionBehaviorUI.getCompositeIndex() - 1);
 					}
@@ -1263,8 +1118,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				}
 
 				else if (compositeInstance instanceof TPresentationElementsUI) {
-					TPresentationElementsUI tPresentationElements =
-					                                                (TPresentationElementsUI) compositeInstance;
+					TPresentationElementsUI tPresentationElements = (TPresentationElementsUI) compositeInstance;
 					if (tPresentationElements.getCompositeIndex() > childCompositeIndex) {
 						tPresentationElements.setCompositeIndex(tPresentationElements.getCompositeIndex() - 1);
 					}
@@ -1279,10 +1133,7 @@ public class TTaskUI extends AbstractParentTagSection {
 						tRenderingsUI.setObjectIndex(tRenderingsUI.getObjectIndex() - 1);
 					}
 
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -1303,8 +1154,7 @@ public class TTaskUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(task.getDocumentation()
-				                               .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(task.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			} else if (compositeInstance instanceof TTaskInterfaceUI) {
 				TTaskInterfaceUI tTaskInterfaceUI = (TTaskInterfaceUI) compositeInstance;
 				tTaskInterfaceUI.taskInterface = task.getInterface();
@@ -1314,15 +1164,13 @@ public class TTaskUI extends AbstractParentTagSection {
 				TPriorityExprUI tPriorityUI = (TPriorityExprUI) compositeInstance;
 				tPriorityUI.loadModel(task.getPriority());
 			} else if (compositeInstance instanceof TPeopleAssignmentsUI) {
-				TPeopleAssignmentsUI tPeopleAssingmentsUI =
-				                                            (TPeopleAssignmentsUI) compositeInstance;
+				TPeopleAssignmentsUI tPeopleAssingmentsUI = (TPeopleAssignmentsUI) compositeInstance;
 				tPeopleAssingmentsUI.tPeopleAssignments = task.getPeopleAssignments();
 				tPeopleAssingmentsUI.onPageRefresh(textEditor);
 				tPeopleAssingmentsUI.loadModel(task.getPeopleAssignments());
 
 			} else if (compositeInstance instanceof TCompletionBehaviorUI) {
-				TCompletionBehaviorUI tCompletionBehaviorUI =
-				                                              (TCompletionBehaviorUI) compositeInstance;
+				TCompletionBehaviorUI tCompletionBehaviorUI = (TCompletionBehaviorUI) compositeInstance;
 				tCompletionBehaviorUI.completionBehavior = task.getCompletionBehavior();
 				tCompletionBehaviorUI.onPageRefresh(textEditor);
 				tCompletionBehaviorUI.loadModel(task.getCompletionBehavior());
@@ -1333,8 +1181,7 @@ public class TTaskUI extends AbstractParentTagSection {
 				tDelegationUI.loadModel(task.getDelegation());
 
 			} else if (compositeInstance instanceof TPresentationElementsUI) {
-				TPresentationElementsUI tPresentationElementsUI =
-				                                                  (TPresentationElementsUI) compositeInstance;
+				TPresentationElementsUI tPresentationElementsUI = (TPresentationElementsUI) compositeInstance;
 				tPresentationElementsUI.presentationElements = task.getPresentationElements();
 				tPresentationElementsUI.onPageRefresh(textEditor);
 				tPresentationElementsUI.loadModel(task.getPresentationElements());
@@ -1362,8 +1209,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -1373,8 +1220,8 @@ public class TTaskUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */

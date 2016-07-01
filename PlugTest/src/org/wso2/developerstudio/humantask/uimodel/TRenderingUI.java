@@ -40,9 +40,9 @@ import org.wso2.developerstudio.humantask.models.TDocumentation;
 import org.wso2.developerstudio.humantask.models.TRendering;
 
 /**
- * The UI class representing the "rendering" xml element in the .ht file
- * All the functionalities of that element are performed in this class, by
- * implementing and overriding the abstract super class methods.
+ * The UI class representing the "rendering" xml element in the .ht file All the
+ * functionalities of that element are performed in this class, by implementing
+ * and overriding the abstract super class methods.
  */
 public class TRenderingUI extends AbstractParentTagSection {
 	private int[] childObjectIndexes;
@@ -67,12 +67,10 @@ public class TRenderingUI extends AbstractParentTagSection {
 	 * @param compositeIndex
 	 * @throws JAXBException
 	 */
-	public TRenderingUI(XMLEditor textEditor, Composite parentComposite,
-	                    Composite parentTagContainer, int styleBit, Object objectModel,
-	                    int objectIndex, int compositeIndex) throws JAXBException {
+	public TRenderingUI(XMLEditor textEditor, Composite parentComposite, Composite parentTagContainer, int styleBit,
+			Object objectModel, int objectIndex, int compositeIndex) throws JAXBException {
 		super(textEditor, parentComposite, parentTagContainer, styleBit,
-		      new String[] { HTEditorConstants.DOCUMENTATION_TITLE },
-		      HTEditorConstants.RENDERING_TITLE);
+				new String[] { HTEditorConstants.DOCUMENTATION_TITLE }, HTEditorConstants.RENDERING_TITLE);
 		this.rendering = (TRendering) objectModel;
 		this.setObjectIndex(objectIndex);
 		this.setCompositeIndex(compositeIndex);
@@ -104,8 +102,7 @@ public class TRenderingUI extends AbstractParentTagSection {
 	@Override
 	public void onBtnRemove(XMLEditor textEditor) throws JAXBException {
 		AbstractParentTagSection transition = (AbstractParentTagSection) parentTagContainer;
-		transition.refreshChildren(HTEditorConstants.RENDERING_TITLE, getCompositeIndex(),
-		                           getObjectIndex());
+		transition.refreshChildren(HTEditorConstants.RENDERING_TITLE, getCompositeIndex(), getObjectIndex());
 		centralUtils.marshal(textEditor);
 		Composite parentComposite = this.getParent();
 		this.dispose();
@@ -116,8 +113,8 @@ public class TRenderingUI extends AbstractParentTagSection {
 	 * Whenever a tab change occur from text editor to UI editor, this method is
 	 * invoked. It disposes all the child Sections in this section and recreate
 	 * them and call initialize() of each of them to reinitialize their
-	 * attribute values, according to the single model maintained by both the
-	 * UI editor and text .editor
+	 * attribute values, according to the single model maintained by both the UI
+	 * editor and text .editor
 	 * 
 	 * @param textEditor
 	 * @throws JAXBException
@@ -133,18 +130,11 @@ public class TRenderingUI extends AbstractParentTagSection {
 		childComposites.clear();
 		childCompositeIndex = 0;
 
-		ArrayList<TDocumentation> documentationGroup =
-		                                               (ArrayList<TDocumentation>) rendering.getDocumentation();
-		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup.size(); documentationGroupIndex++) {
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(
-			                                                         editor,
-			                                                         detailArea,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE,
-			                                                         this,
-			                                                         documentationGroup.get(childObjectIndexes[0]));
+		ArrayList<TDocumentation> documentationGroup = (ArrayList<TDocumentation>) rendering.getDocumentation();
+		for (int documentationGroupIndex = 0; documentationGroupIndex < documentationGroup
+				.size(); documentationGroupIndex++) {
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, detailArea, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, documentationGroup.get(childObjectIndexes[0]));
 			tDocumentationUI.initialize(editor);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childCompositeIndex++;
@@ -177,18 +167,15 @@ public class TRenderingUI extends AbstractParentTagSection {
 	 * @throws JAXBException
 	 */
 	@Override
-	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor,
-	                             Composite composite) throws JAXBException {
+	public void onCreateNewChild(String selection, ScrolledComposite sc3, XMLEditor editor, Composite composite)
+			throws JAXBException {
 		if (selection.equalsIgnoreCase(HTEditorConstants.DOCUMENTATION_TITLE)) {
 			TDocumentation tDocumentation = new TDocumentation();
 			tDocumentation.setLang("");
 			tDocumentation.getContent().add(new String(""));
 			rendering.getDocumentation().add(childObjectIndexes[0], tDocumentation);
-			TDocumentationUI tDocumentationUI =
-			                                    new TDocumentationUI(editor, composite,
-			                                                         childCompositeIndex,
-			                                                         childObjectIndexes[0],
-			                                                         SWT.NONE, this, tDocumentation);
+			TDocumentationUI tDocumentationUI = new TDocumentationUI(editor, composite, childCompositeIndex,
+					childObjectIndexes[0], SWT.NONE, this, tDocumentation);
 			childComposites.add(childCompositeIndex, tDocumentationUI);
 			childObjectIndexes[0]++;
 			childCompositeIndex++;
@@ -260,10 +247,7 @@ public class TRenderingUI extends AbstractParentTagSection {
 					if (tDocumentationUI.getObjectIndex() > childObjectIndex) {
 						tDocumentationUI.setObjectIndex(tDocumentationUI.getObjectIndex() - 1);
 					}
-				} else {
-
 				}
-
 			}
 		}
 		childComposites.remove(childCompositeIndex);
@@ -284,8 +268,7 @@ public class TRenderingUI extends AbstractParentTagSection {
 		for (Composite compositeInstance : childComposites) {
 			if (compositeInstance instanceof TDocumentationUI) {
 				TDocumentationUI tDocumentationUI = (TDocumentationUI) compositeInstance;
-				tDocumentationUI.loadModel(rendering.getDocumentation()
-				                                    .get(tDocumentationUI.getObjectIndex()));
+				tDocumentationUI.loadModel(rendering.getDocumentation().get(tDocumentationUI.getObjectIndex()));
 			}
 		}
 	}
@@ -312,8 +295,8 @@ public class TRenderingUI extends AbstractParentTagSection {
 
 	/**
 	 * Returns This section's(composite's) index (index of any type of child
-	 * class objects created in the parent Section) as
-	 * per the order created in this object's parent
+	 * class objects created in the parent Section) as per the order created in
+	 * this object's parent
 	 * 
 	 * @return This section's(composite's) index
 	 */
@@ -323,8 +306,8 @@ public class TRenderingUI extends AbstractParentTagSection {
 
 	/**
 	 * Set this section's(composite's) index (index of any type of child class
-	 * objects created in the parent Section)
-	 * as per the order created in this object's parent
+	 * objects created in the parent Section) as per the order created in this
+	 * object's parent
 	 * 
 	 * @param compositeIndex
 	 */
